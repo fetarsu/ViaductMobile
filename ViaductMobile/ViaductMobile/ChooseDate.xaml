@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="ViaductMobile.ChooseDate">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid BackgroundColor="#272727">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Style="{StaticResource headingLabel}" Margin="10">Wybierz datę</Label>
+            <DatePicker Grid.Row="1" x:Name="chooseDay" TextColor="White" HorizontalOptions="Center">
+                <DatePicker.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android" Value="90 0 0 0"></On>
+                        <On Platform="UWP" Value="0, 0, 0, -150"></On>
+                    </OnPlatform>
+                </DatePicker.Margin>
+            </DatePicker>
+            <Button Style="{StaticResource typicalButton}" Grid.Row="2" Text="Dalej"  Clicked="MoveToNewReportClicked">
+                <Button.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android" Value="10, 80, 10, 30"></On>
+                        <On Platform="UWP" Value="100, 100, 100, 100"></On>
+                    </OnPlatform>
+                </Button.Margin>
+            </Button>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
+             x:Class="ViaductMobile.NewReport">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ScrollView HeightRequest="3000">
+        <Grid BackgroundColor="#272727">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
+        <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}"
+              ExpandAnimationLength="500"
+              CollapseAnimationEasing="{x:Static Easing.CubicOut}"
+              CollapseAnimationLength="500" Grid.Row="0">
+            <Expander.Header>
+                <Label Text="Baboon"
+               FontAttributes="Bold"
+               FontSize="40" BackgroundColor="Red" />
+            </Expander.Header>
+            <Grid Padding="10">
+                <dg:DataGrid x:Name="settlementDataGrid">
+                    <dg:DataGrid.Columns>
+                        <dg:DataGridColumn Title="Team" PropertyName="Name" Width="2*"/>
+                        <dg:DataGridColumn Title="Win" PropertyName="Win" Width="0.95*"/>
+                        <dg:DataGridColumn Title="Loose" PropertyName="Loose"  Width="1*"/>
+                        <dg:DataGridColumn Title="Home" PropertyName="Home"/>
+                    </dg:DataGrid.Columns>
+                </dg:DataGrid>
+            </Grid>
+        </Expander>
+        <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}"
+                  ExpandAnimationLength="500"
+                  CollapseAnimationEasing="{x:Static Easing.CubicOut}"
+                  CollapseAnimationLength="500" Grid.Row="1">
+            <Expander.Header>
+                <Label Text="Baboon"
+                   FontAttributes="Bold"
+                   FontSize="40" BackgroundColor="Red" />
+            </Expander.Header>
+            <Grid Padding="10">
+                <dg:DataGrid x:Name="settlementDataGrid2">
+                    <dg:DataGrid.Columns>
+                        <dg:DataGridColumn Title="Team" PropertyName="Name" Width="2*"/>
+                        <dg:DataGridColumn Title="Win" PropertyName="Win" Width="0.95*"/>
+                        <dg:DataGridColumn Title="Loose" PropertyName="Loose"  Width="1*"/>
+                        <dg:DataGridColumn Title="Home" PropertyName="Home"/>
+                    </dg:DataGrid.Columns>
+                </dg:DataGrid>
+            </Grid>
+        </Expander>
+    </Grid>
+    </ScrollView>
+</ContentPage>
