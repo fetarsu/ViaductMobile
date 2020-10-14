@@ -5,7 +5,10 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Models;
+using ViaductMobile.View;
 using Xamarin.Forms;
+using static ViaductMobile.Models._Enums;
 
 namespace ViaductMobile
 {
@@ -14,7 +17,7 @@ namespace ViaductMobile
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
-        User user;
+        User loggedUser;
         public MainPage()
         {
             InitializeComponent();
@@ -30,22 +33,46 @@ namespace ViaductMobile
             moveToLogin.Clicked += MoveToLoginClicked;
             this.ToolbarItems.Add(moveToLogin);
         }
-        public MainPage(User user)
+
+        public MainPage(User loggedUser)
         {
-            this.user = user;
+            this.loggedUser = loggedUser;
             InitializeComponent();
             //ToolbarItem welcomeItem = new ToolbarItem() { Text = "Witaj " + user.Nickname + "!" };
             //this.ToolbarItems.Add(welcomeItem);
-            if (user.Permission.Title.Equals("Admin") || user.Permission.Title.Equals("Dostawca"))
+            string userPermission = loggedUser.Permission;
+            if ((enPermission)Enum.Parse(typeof(enPermission), userPermission) == enPermission.Admin)
             {
-                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png" };
+                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png"};
+                ToolbarItem employeesPanel = new ToolbarItem() { Text = "Pracownicy", IconImageSource = "employees.png" };
+                ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = "house.png" };
+                this.ToolbarItems.Add(adressesPanel);
                 this.ToolbarItems.Add(deliveryCart);
+                this.ToolbarItems.Add(employeesPanel);
+                employeesPanel.Clicked += MoveToEmployeePanelClicked;
+                deliveryCart.Clicked += MoveToDelivererCartClicked;
             }
             ToolbarItem userPanel = new ToolbarItem() { Text = "Panel użytkownika", IconImageSource="user.png" };
+            userPanel.Clicked += MoveToUserPanelClicked;
             this.ToolbarItems.Add(userPanel);
 
         }
-
+        private void MoveToDelivererCartClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+        }
+        private void MoveToUserPanelClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new UserPanel(loggedUser))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+        }
         private void MoveToLoginClicked(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new LoginPage())
@@ -58,6 +85,14 @@ namespace ViaductMobile
         private void MoveToChooseDateClicked(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new ChooseDate())
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+        }
+        async void MoveToEmployeePanelClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new EmployeePanel(loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

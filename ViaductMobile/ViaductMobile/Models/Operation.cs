@@ -6,25 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 using ViaductMobile.Models;
 
-namespace ViaductMobile
+namespace ViaductMobile.Models
 {
-    public class User
+    public class Operation
     {
         public string Id { get; set; }
-        public string Nickname { get; set; }
-        public string Password { get; set; }
-        public int BarRate { get; set; }
-        public int KitchenRate { get; set; }
-        public int DeliverRate { get; set; }
-        public string Permission { get; set; }
+        public string Name { get; set; }
+        public DateTime Date { get; set; }
+        public int Authorizing { get; set; }
+        public decimal Amount { get; set; }
+        public string Type { get; set; }
+        public string ReportId { get; set; }
+        public virtual Report Report { get; set; }
+
 
         public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
-        public async Task<bool> SaveUser()
+        public async Task<bool> SaveOperations()
         {
 
             try
             {
-                await client.GetTable<User>().InsertAsync(this);
+                await client.GetTable<Operation>().InsertAsync(this);
                 return true;
             }
             catch (MobileServiceInvalidOperationException msioe)
@@ -37,16 +39,16 @@ namespace ViaductMobile
                 return false;
             }
         }
-        public async Task<List<User>> ReadUser()
+        public async Task<List<Operation>> ReadOperations()
         {
-            return await client.GetTable<User>().ToListAsync();
+            return await client.GetTable<Operation>().ToListAsync();
         }
 
-        public async Task<bool> UpdateUser(User item)
+        public async Task<bool> DeleteOperations(Operation item)
         {
             try
             {
-                await client.GetTable<User>().UpdateAsync(item);
+                await client.GetTable<Operation>().DeleteAsync(item);
                 return true;
             }
             catch (MobileServiceInvalidOperationException msioe)
@@ -59,24 +61,5 @@ namespace ViaductMobile
                 return false;
             }
         }
-        public async Task<bool> DeleteUser(User item)
-        {
-            try
-            {
-                await client.GetTable<User>().DeleteAsync(item);
-                return true;
-            }
-            catch (MobileServiceInvalidOperationException msioe)
-            {
-                var response = await msioe.Response.Content.ReadAsStringAsync();
-                return false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
     }
 }
-

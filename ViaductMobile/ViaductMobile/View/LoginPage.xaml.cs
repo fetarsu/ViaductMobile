@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ViaductMobile.Algorithms;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -29,33 +29,24 @@ namespace ViaductMobile
             return true;
         }
 
-        //async void SaveButton_Clicked(object sender, EventArgs e)
-        //{
-        //    Book book = new Book()
-        //    {
-        //        Name = loginEntry.Text,
-        //        Author = passwordEntry.Text
-        //    };
-
-        //    bool result = await book.SaveBook();
-        //}
         async void LoginButton_Clicked(object sender, EventArgs e)
         {
             UserDialogs.Instance.ShowLoading("Proszę czekać...");
-            User user = new User();
-            var listOfUsers = await user.ReadBooks();
-            if (listOfUsers.Where(x => x.Login.Equals(loginEntry.Text) && x.Password.Equals(passwordEntry.Text)).Any())
+            User loggedUser = new User();
+            var listOfUsers = await loggedUser.ReadUser();
+            loggedUser = listOfUsers.Where(x => x.Nickname.Equals(loginEntry.Text)).FirstOrDefault();
+            var result = SecurePasswordHasher.Verify(passwordEntry.Text, loggedUser.Password);
+            if (loggedUser != null && result == true)
             {
-                user = listOfUsers.Where(x => x.Login.Equals(loginEntry.Text) && x.Password.Equals(passwordEntry.Text)).FirstOrDefault();
                 UserDialogs.Instance.HideLoading();
-                App.Current.MainPage = new NavigationPage(new MainPage(user))
+                App.Current.MainPage = new NavigationPage(new MainPage(loggedUser))
                 {
                     BarBackgroundColor = Color.FromHex("#3B3B3B"),
                     BarTextColor = Color.White
                 };
             }
-            else 
-            { 
+            else
+            {
                 await DisplayAlert("Błąd", "Zły login lub hasło", "OK");
                 UserDialogs.Instance.HideLoading();
             }

@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using Acr.UserDialogs;
 using Xamarin.Forms;
+using Xfx;
 
 namespace ViaductMobile.Droid
 {
@@ -18,10 +19,12 @@ namespace ViaductMobile.Droid
         {
             global::Xamarin.Forms.Forms.SetFlags("Expander_Experimental");
             UserDialogs.Init(() => (Activity)Forms.Context);
+            XfxControls.Init();
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);

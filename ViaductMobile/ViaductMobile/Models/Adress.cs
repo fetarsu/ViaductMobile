@@ -8,23 +8,20 @@ using ViaductMobile.Models;
 
 namespace ViaductMobile
 {
-    public class User
+    public class Adress
     {
         public string Id { get; set; }
-        public string Nickname { get; set; }
-        public string Password { get; set; }
-        public int BarRate { get; set; }
-        public int KitchenRate { get; set; }
-        public int DeliverRate { get; set; }
-        public string Permission { get; set; }
+        public string Street { get; set; }
+        public string Number { get; set; }
+        public decimal Amount { get; set; }
 
         public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
-        public async Task<bool> SaveUser()
+        public async Task<bool> SaveAdress()
         {
 
             try
             {
-                await client.GetTable<User>().InsertAsync(this);
+                await client.GetTable<Adress>().InsertAsync(this);
                 return true;
             }
             catch (MobileServiceInvalidOperationException msioe)
@@ -37,16 +34,16 @@ namespace ViaductMobile
                 return false;
             }
         }
-        public async Task<List<User>> ReadUser()
+        public async Task<List<Adress>> ReadAdress()
         {
-            return await client.GetTable<User>().ToListAsync();
+            return await client.GetTable<Adress>().ToListAsync();
         }
 
-        public async Task<bool> UpdateUser(User item)
+        public async Task<bool> DeleteAdress(Adress item)
         {
             try
             {
-                await client.GetTable<User>().UpdateAsync(item);
+                await client.GetTable<Adress>().DeleteAsync(item);
                 return true;
             }
             catch (MobileServiceInvalidOperationException msioe)
@@ -59,11 +56,12 @@ namespace ViaductMobile
                 return false;
             }
         }
-        public async Task<bool> DeleteUser(User item)
+
+        public async Task<bool> UpdateAdress(Adress item)
         {
             try
             {
-                await client.GetTable<User>().DeleteAsync(item);
+                await client.GetTable<Adress>().UpdateAsync(item);
                 return true;
             }
             catch (MobileServiceInvalidOperationException msioe)

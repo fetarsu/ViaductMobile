@@ -8,8 +8,6 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
-
-
     <Grid BackgroundColor="#272727">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -26,14 +24,15 @@
         <Label  Style="{StaticResource typicalLabel}" Grid.Row="1" Text="Login:" Margin="10, 10, 10, 0" Padding="0"/>
         <Entry  Style="{StaticResource typicalEntry}" Grid.Row="2" x:Name="loginEntry">
             <Entry.Margin>
-                <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="Android" Value="10, 10, 10, 10"></On>
-                    <On Platform="UWP" Value="100, 100, 100, 100"></On>
-                </OnPlatform>
+                <OnIdiom x:TypeArguments="Thickness">
+                    <OnIdiom.Phone>10,10,10,10</OnIdiom.Phone>
+                    <OnIdiom.Desktop>100,100,100,100</OnIdiom.Desktop>
+                    <OnIdiom.Tablet>50,50,50,50</OnIdiom.Tablet>
+                </OnIdiom>
             </Entry.Margin>
         </Entry>
         <Label  Style="{StaticResource typicalLabel}" Grid.Row="3" Text="Hasło:" Margin="10, 10, 10, 0" Padding="0"/>
         <Entry  Style="{StaticResource typicalEntry}" Grid.Row="4" IsPassword="True" x:Name="passwordEntry" Margin="10, 10, 10, 10"/>
         <Button Style="{StaticResource typicalButton}" Grid.Row="5" Text="Wyślij" x:Name="saveButton" Clicked="LoginButton_Clicked" Margin="10, 10, 10, 10"/>
     </Grid>
-    </ContentPage>
+</ContentPage>

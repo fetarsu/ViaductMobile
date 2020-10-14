@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="ViaductMobile.View.UserPanel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ScrollView HeightRequest="3000">
+        <Grid BackgroundColor="#272727">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Style="{StaticResource typicalLabel}" FontSize="40" HorizontalOptions="CenterAndExpand"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="welcomeLabel" Margin="10"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Row="1" Grid.Column="0" x:Name="permissionLabel" Margin="10"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Row="1" Grid.Column="1" x:Name="barRateLabel" Margin="10"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Row="2" Grid.Column="0" x:Name="kitchenRateLabel" Margin="10"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Row="2" Grid.Column="1" x:Name="delivererRateLabel" Margin="10"></Label>
+            <Button Style="{StaticResource typicalButton}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="Zmień hasło" Margin="10" Clicked="ChangePasswordClicked"></Button>
+        </Grid>
+    </ScrollView>
+</ContentPage>

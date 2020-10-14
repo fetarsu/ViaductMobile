@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
+             x:Class="ViaductMobile.NewReport">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ScrollView HeightRequest="3000">
+        <Grid BackgroundColor="#272727">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                
+            </Grid.RowDefinitions>
+            <dg:DataGrid x:Name="reportDataGrid" ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+                <x:Arguments>
+                    <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                </x:Arguments>
+                <dg:DataGrid.Columns>
+                    <dg:DataGridColumn Title="Start" PropertyName="Start" Width="*"/>
+                    <dg:DataGridColumn Title="Raport" PropertyName="ReportAmount" Width="*"/>
+                    <dg:DataGridColumn Title="Terminal" PropertyName="Terminal" Width="*"/>
+                    <dg:DataGridColumn Title="Pb" PropertyName="ShouldBe" Width="*"/>
+                    <dg:DataGridColumn Title="Jest" PropertyName="AmountIn" Width="*"/>
+                    <dg:DataGridColumn Title="Rożnica" PropertyName="Difference" Width="*"/>
+                    <dg:DataGridColumn Title="Pizze" PropertyName="Pizzas" Width="*"/>
+                </dg:DataGrid.Columns>
+                <dg:DataGrid.RowsBackgroundColorPalette>
+                    <dg:PaletteCollection>
+                        <Color>#F2F2F2</Color>
+                        <Color>#FFFFFF</Color>
+                    </dg:PaletteCollection>
+                </dg:DataGrid.RowsBackgroundColorPalette>
+            </dg:DataGrid>
+            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="1" Grid.ColumnSpan="3">
+                <Expander.Header>
+                    <Label Text="Pracownicy" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
+                </Expander.Header>
+                <StackLayout>
+                <ScrollView VerticalOptions="FillAndExpand" >
+                        <dg:DataGrid x:Name="employeesDataGrid" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedUser}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True" Grid.Row="1" Grid.ColumnSpan="3">
+                            <x:Arguments>
+                                <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                            </x:Arguments>
+                            <dg:DataGrid.Columns>
+                                <dg:DataGridColumn Title="Pseudonim" PropertyName="Nickname" Width="*"/>
+                                <dg:DataGridColumn Title="Stawka" PropertyName="Rate" Width="*"/>
+                                <dg:DataGridColumn Title="Praca od" PropertyName="WorkFrom" Width="*"/>
+                                <dg:DataGridColumn Title="Praca do" PropertyName="WorkTo" Width="*"/>
+                                <dg:DataGridColumn Title="Dniówka" PropertyName="DayWage" Width="*"/>
+                                <dg:DataGridColumn Title="Premia" PropertyName="Bonus" Width="*"/>
+                            </dg:DataGrid.Columns>
+                            <dg:DataGrid.RowsBackgroundColorPalette>
+                                <dg:PaletteCollection>
+                                    <Color>#F2F2F2</Color>
+                                    <Color>#FFFFFF</Color>
+                                </dg:PaletteCollection>
+                            </dg:DataGrid.RowsBackgroundColorPalette>
+                        </dg:DataGrid>
+                    </ScrollView>
+                    <StackLayout Orientation="Horizontal">
+                    <Button Text="Dodaj" HorizontalOptions="StartAndExpand"></Button>
+                    <Button Text="Edytuj" HorizontalOptions="CenterAndExpand"></Button>
+                    <Button Text="Usuń" HorizontalOptions="EndAndExpand"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </Expander>
+            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="2" Grid.ColumnSpan="3">
+                <Expander.Header>
+                    <Label Text="Operacje" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
+                </Expander.Header>
+                <StackLayout>
+                    <ScrollView VerticalOptions="FillAndExpand" >
+                        <dg:DataGrid x:Name="operationDataGrid" ItemsSource="{Binding Operations}" SelectedItem="{Binding SelectedOperation}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True" Grid.Row="2" Grid.ColumnSpan="3">
+                            <x:Arguments>
+                                <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                            </x:Arguments>
+                            <dg:DataGrid.Columns>
+                                <dg:DataGridColumn Title="Nazwa" PropertyName="Name" Width="*"/>
+                                <dg:DataGridColumn Title="Autoryzujacy" PropertyName="Authorizing" Width="*"/>
+                                <dg:DataGridColumn Title="Numer" PropertyName="DocumentNumber" Width="*"/>
+                                <dg:DataGridColumn Title="Kwota" PropertyName="Amount" Width="*"/>
+                                <dg:DataGridColumn Title="Typ" PropertyName="Type" Width="*"/>
+                            </dg:DataGrid.Columns>
+                            <dg:DataGrid.RowsBackgroundColorPalette>
+                                <dg:PaletteCollection>
+                                    <Color>#F2F2F2</Color>
+                                    <Color>#FFFFFF</Color>
+                                </dg:PaletteCollection>
+                            </dg:DataGrid.RowsBackgroundColorPalette>
+                        </dg:DataGrid>
+                    </ScrollView>
+                    <StackLayout Orientation="Horizontal">
+                        <Button Text="Dodaj" HorizontalOptions="StartAndExpand"></Button>
+                        <Button Text="Edytuj" HorizontalOptions="CenterAndExpand"></Button>
+                        <Button Text="Usuń" HorizontalOptions="EndAndExpand"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </Expander>
+            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="3" Grid.ColumnSpan="3">
+                <Expander.Header>
+                    <Label Text="Dostawy" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
+                </Expander.Header>
+                <StackLayout>
+                    <ScrollView VerticalOptions="FillAndExpand" >
+                        <dg:DataGrid x:Name="delivererDataGrid" ItemsSource="{Binding Deliverers}" SelectedItem="{Binding SelectedUser}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True" Grid.Row="2" Grid.ColumnSpan="3">
+                            <x:Arguments>
+                                <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                            </x:Arguments>
+                            <dg:DataGrid.Columns>
+                                <dg:DataGridColumn Title="Pseudonim" PropertyName="Nickname" Width="*"/>
+                                <dg:DataGridColumn Title="Kursy" PropertyName="Courses" Width="*"/>
+                                <dg:DataGridColumn Title="Vk" PropertyName="V_k" Width="*"/>
+                                <dg:DataGridColumn Title="Vg" PropertyName="V_g" Width="*"/>
+                                <dg:DataGridColumn Title="Po" PropertyName="P_o" Width="*"/>
+                                <dg:DataGridColumn Title="Pg" PropertyName="P_g" Width="*"/>
+                                <dg:DataGridColumn Title="Go" PropertyName="G_o" Width="*"/>
+                                <dg:DataGridColumn Title="Gg" PropertyName="G_g" Width="*"/>
+                                <dg:DataGridColumn Title="Uo" PropertyName="Uber_o" Width="*"/>
+                                <dg:DataGridColumn Title="Ug" PropertyName="Uber_g" Width="*"/>
+                                <dg:DataGridColumn Title="So" PropertyName="S_o" Width="*"/>
+                                <dg:DataGridColumn Title="Sg" PropertyName="S_g" Width="*"/>
+                                <dg:DataGridColumn Title="KiK" PropertyName="KiK" Width="*"/>
+                                <dg:DataGridColumn Title="Dostawy" PropertyName="DeliveriesNumber" Width="*"/>
+                                <dg:DataGridColumn Title="Do kasy" PropertyName="AmountToCash" Width="*"/>
+                            </dg:DataGrid.Columns>
+                            <dg:DataGrid.RowsBackgroundColorPalette>
+                                <dg:PaletteCollection>
+                                    <Color>#F2F2F2</Color>
+                                    <Color>#FFFFFF</Color>
+                                </dg:PaletteCollection>
+                            </dg:DataGrid.RowsBackgroundColorPalette>
+                        </dg:DataGrid>
+                    </ScrollView>
+                    <StackLayout Orientation="Horizontal">
+                        <Button Text="Dodaj" HorizontalOptions="StartAndExpand"></Button>
+                        <Button Text="Edytuj" HorizontalOptions="CenterAndExpand"></Button>
+                        <Button Text="Usuń" HorizontalOptions="EndAndExpand"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </Expander>
+            <Button Style="{StaticResource typicalButton}" BackgroundColor="DarkRed" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Text="Wyślij raport"></Button>
+        </Grid>
+    </ScrollView>
+</ContentPage>

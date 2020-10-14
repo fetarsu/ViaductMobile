@@ -14,7 +14,12 @@ namespace ViaductMobile
     {
         public NewReport()
         {
+            Xamarin.Forms.DataGrid.DataGridComponent.Init();
             InitializeComponent();
+            BindingContext = new ViewModels.ReportTableVM();
+            BindingContext = new ViewModels.EmployeeTableVM();
+            BindingContext = new ViewModels.OperationTableVM();
+            BindingContext = new ViewModels.DelivererTableVM();
         }
         private void BackClicked(object sender, EventArgs e)
         {

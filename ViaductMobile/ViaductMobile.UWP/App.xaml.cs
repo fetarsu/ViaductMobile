@@ -41,6 +41,9 @@ namespace ViaductMobile.UWP
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
+            Rg.Plugins.Popup.Popup.Init();
+            Xamarin.Forms.Forms.Init(e, Rg.Plugins.Popup.Popup.GetExtraAssemblies());
+
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 this.DebugSettings.EnableFrameRateCounter = true;
@@ -58,7 +61,7 @@ namespace ViaductMobile.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                Xamarin.Forms.Forms.Init(e);
+
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

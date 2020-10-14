@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="ViaductMobile.View.DelivererCart"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+        <Grid BackgroundColor="#272727">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" >Data: </Label>
+        <DatePicker Grid.Column="1" Grid.Row="0" x:Name="chooseDayPicker" TextColor="White" HorizontalOptions="Center" DateSelected="chooseDay_PropertyChanged">
+                <DatePicker.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android" Value="0 0 0 0"></On>
+                        <On Platform="UWP" Value="0, 0, 0, -150"></On>
+                    </OnPlatform>
+                </DatePicker.Margin>
+            </DatePicker >
+            <Picker Grid.Column="2" Grid.Row="0" x:Name="usersPicker"></Picker>
+            <ScrollView VerticalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+                <Grid Padding="10">
+                    <dg:DataGrid x:Name="delivererCartDataGrid" ItemsSource="{Binding Supplies}" SelectedItem="{Binding SelectedSupply}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True">
+                        <x:Arguments>
+                            <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                        </x:Arguments>
+                        <dg:DataGrid.Columns>
+                            <dg:DataGridColumn Title="Adres" PropertyName="Adress" Width="2*"/>
+                            <dg:DataGridColumn Title="Kwota dostawy" PropertyName="Amount" Width="*"/>
+                            <dg:DataGridColumn Title="Kwota kursu" PropertyName="Course" Width="*"/>
+                            <dg:DataGridColumn Title="Platforma" PropertyName="Platform" Width="*"/>
+                            <dg:DataGridColumn Title="Skład" PropertyName="Components" Width="*"/>
+                        </dg:DataGrid.Columns>
+                        <dg:DataGrid.RowsBackgroundColorPalette>
+                            <dg:PaletteCollection>
+                                <Color>#F2F2F2</Color>
+                                <Color>#FFFFFF</Color>
+                            </dg:PaletteCollection>
+                        </dg:DataGrid.RowsBackgroundColorPalette>
+                    </dg:DataGrid>
+                </Grid>
+            </ScrollView>
+            <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="2" Text="Dodaj" Clicked="AddSupply"></Button>
+        <Button Style="{StaticResource typicalButton}" Grid.Column="1" Grid.Row="2" Text="Edytuj" Clicked="EditSupply"></Button>
+        <Button Style="{StaticResource typicalButton}" Grid.Column="2" Grid.Row="2" Text="Usuń" Clicked="DeleteSupply"></Button>
+        </Grid>
+</ContentPage>

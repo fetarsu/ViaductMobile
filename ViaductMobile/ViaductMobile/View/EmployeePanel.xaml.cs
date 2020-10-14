@@ -1,0 +1,62 @@
+﻿using Rg.Plugins.Popup.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using ViaductMobile.View.Popups;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace ViaductMobile
+{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class EmployeePanel : ContentPage
+    {
+        User loggedUser;
+        public EmployeePanel(User loggedUser)
+        {
+            Xamarin.Forms.DataGrid.DataGridComponent.Init();
+            InitializeComponent();
+            BindingContext = new ViewModels.EmployeePanelVM();
+            this.loggedUser = loggedUser;
+        }
+        public EmployeePanel()
+        {
+            Xamarin.Forms.DataGrid.DataGridComponent.Init();
+            InitializeComponent();
+            BindingContext = new ViewModels.EmployeePanelVM();
+        }
+        private void BackClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new MainPage(loggedUser))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+        }
+
+        [Obsolete]
+        private async void AddClicked(object sender, EventArgs e)
+        {
+            await PopupNavigation.PushAsync(new AddEmployee(employeesDataGrid));
+        }
+        [Obsolete]
+        private async void EditClicked(object sender, EventArgs e)
+        {
+            User clickedRow = (User)employeesDataGrid.SelectedItem;
+            if (clickedRow != null)
+            {
+                await PopupNavigation.PushAsync(new AddEmployee(clickedRow, employeesDataGrid));
+            }
+        }
+
+        async void DeleteClicked(object sender, EventArgs e)
+        {
+            User x = (User)employeesDataGrid.SelectedItem;
+            await x.DeleteUser(x);
+            employeesDataGrid.ItemsSource = new ViewModels.EmployeePanelVM().Users;
+        }
+    }
+}

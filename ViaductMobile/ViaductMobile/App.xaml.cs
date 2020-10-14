@@ -12,7 +12,7 @@ namespace ViaductMobile
             MainPage = new NavigationPage(new MainPage())
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
+                BarTextColor = Color.White,
             };
         }
 
