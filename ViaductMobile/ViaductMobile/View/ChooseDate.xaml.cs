@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ViaductMobile.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,6 +12,8 @@ namespace ViaductMobile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ChooseDate : ContentPage
     {
+        List<Report> reportt;
+        public Report readReportt = new Report();
         public ChooseDate()
         {
             InitializeComponent();
@@ -36,9 +38,30 @@ namespace ViaductMobile
             };
             return true;
         }
-        private void MoveToNewReportClicked(object sender, EventArgs e)
+        private async void MoveToNewReportClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new NewReport())
+
+            reportt = await readReportt.ReadTodayReport(chooseDay.Date);
+            readReportt = reportt.SingleOrDefault();
+            if(readReportt == null)
+            {
+                Report readReport = new Report();
+                readReport.Start = 0;
+                readReport.ReportAmount = 0;
+                readReport.Terminal = 0;
+                readReport.Date = chooseDay.Date;
+                readReport.ShouldBe = 0;
+                readReport.AmountIn = 0;
+                readReport.Difference = 0;
+                readReport.Pizzas = 0;
+                await readReport.SaveReport();
+                App.Current.MainPage = new NavigationPage(new NewReport(readReport))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
+            App.Current.MainPage = new NavigationPage(new NewReport(readReportt))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

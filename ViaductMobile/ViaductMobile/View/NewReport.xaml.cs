@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ViaductMobile.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,8 +12,10 @@ namespace ViaductMobile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewReport : ContentPage
     {
-        public NewReport()
+        Report readReport;
+        public NewReport(Report readReport)
         {
+            this.readReport = readReport;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             InitializeComponent();
             BindingContext = new ViewModels.ReportTableVM();

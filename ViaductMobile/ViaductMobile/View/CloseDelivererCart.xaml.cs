@@ -12,23 +12,41 @@ using Xamarin.Forms.Xaml;
 namespace ViaductMobile.View
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class DelivererCart : ContentPage
+    public partial class CloseDelivererCart : ContentPage
     {
         User loggedUser;
         Report report;
         bool closed;
+        Decimal cash, bonus;
         Deliverer newDeliverer;
         DateTime deliverDate;
-        public DelivererCart(User loggedUser)
+        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, Decimal cash, Decimal bonus)
         {
             this.loggedUser = loggedUser;
             InitializeComponent();
-            Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            BindingContext = new ViewModels.DelivererCartVM();
+            this.newDeliverer = newDeliverer;
+            this.cash = cash;
+            this.bonus = bonus;
+            coursesLabel.Text = newDeliverer.Courses.ToString();
+            VkLabel.Text = newDeliverer.V_k.ToString();
+            VgLabel.Text = newDeliverer.V_g.ToString();
+            PoLabel.Text = newDeliverer.P_o.ToString();
+            PgLabel.Text = newDeliverer.P_g.ToString();
+            GoLabel.Text = newDeliverer.G_o.ToString();
+            GgLabel.Text = newDeliverer.G_g.ToString();
+            UberGLabel.Text = newDeliverer.Uber_g.ToString();
+            UberOLabel.Text = newDeliverer.Uber_o.ToString();
+            SoLabel.Text = newDeliverer.S_o.ToString();
+            SgLabel.Text = newDeliverer.S_g.ToString();
+            KikLabel.Text = newDeliverer.Kik.ToString();
+            delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
+            bonusLabel.Text = bonus.ToString();
+            cashForDayLabel.Text = cash.ToString();
+            AmountToCashLabel.Text = newDeliverer.AmountToCash.ToString();
             deliverDate = chooseDayPicker.Date = DateTime.Now;
             ReadAllUsers();
         }
-        public DelivererCart(User loggedUser, Deliverer newDeliverer)
+        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer)
         {
             this.newDeliverer = newDeliverer;
             this.loggedUser = loggedUser;
@@ -62,27 +80,6 @@ namespace ViaductMobile.View
             return true;
         }
 
-        private void AddSupply(object sender, EventArgs e)
-        {
-            App.Current.MainPage = new NavigationPage(new AddSupply(delivererCartDataGrid, loggedUser))
-            {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
-        }
-        [Obsolete]
-        private void EditSupply(object sender, EventArgs e)
-        {
-            Supply clickedRow = (Supply)delivererCartDataGrid.SelectedItem;
-            if (clickedRow != null)
-            {
-                App.Current.MainPage = new NavigationPage(new AddSupply(clickedRow, delivererCartDataGrid, loggedUser))
-                {
-                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                    BarTextColor = Color.White
-                };
-            }
-        }
         [Obsolete]
         private async void CloseDayClicked(object sender, EventArgs e)
         {
@@ -91,18 +88,11 @@ namespace ViaductMobile.View
             var listOfSupplys = new ViewModels.DelivererCartVM().Supplies;
             await PopupNavigation.PushAsync(new CloseDeliverDay(loggedUser, listOfSupplys, deliverDate));
         }
-
-        async void DeleteSupply(object sender, EventArgs e)
-        {
-            Supply x = (Supply)delivererCartDataGrid.SelectedItem;
-            await x.DeleteSupply(x);
-            delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM().Supplies;
-        }
         async void ReadAllUsers()
         {
             var x = await loggedUser.ReadAllUsers();
             usersPicker.ItemsSource = x;
-            foreach(var item in x)
+            foreach (var item in x)
             {
                 if (item.Equals(loggedUser.Nickname))
                 {
@@ -110,11 +100,6 @@ namespace ViaductMobile.View
                 }
             }
 
-        }
-
-        private void usersPicker_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine("Xd");
         }
     }
 }

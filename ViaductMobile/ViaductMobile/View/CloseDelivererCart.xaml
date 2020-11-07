@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="ViaductMobile.View.CloseDelivererCart">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ScrollView HeightRequest="3000">
+        <Grid BackgroundColor="#272727">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" >Data:</Label>
+            <DatePicker Grid.Column="1" Grid.Row="0" x:Name="chooseDayPicker" TextColor="White" HorizontalOptions="Center" DateSelected="chooseDay_PropertyChanged">
+                <DatePicker.Margin>
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android" Value="0 0 0 0"></On>
+                        <On Platform="UWP" Value="0, 0, 0, -150"></On>
+                    </OnPlatform>
+                </DatePicker.Margin>
+            </DatePicker >
+            <Picker Grid.Column="0" Grid.Row="1" x:Name="usersPicker"></Picker>
+            <Button Style="{StaticResource typicalButton}" Grid.Row="1" Grid.Column="1" BackgroundColor="Green" Text="Przywróć dzień" Clicked="CloseDayClicked"></Button>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="2">Kursy</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="2" x:Name="coursesLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="3">Viaduct K</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="3" x:Name="VkLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="4">Viaduct G</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="4" x:Name="VgLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="5">Pyszne O</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="5" x:Name="PoLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="6">Pyszne G</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="6" x:Name="PgLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="7">Glovo O</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="7" x:Name="GoLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="8">Glovo G</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="8" x:Name="GgLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="9">Uber O</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="9" x:Name="UberOLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="10">Uber G</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="10" x:Name="UberGLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="11">Strona O</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="11" x:Name="SoLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="12">Strona G</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="12" x:Name="SgLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="13">KiK</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="13" x:Name="KikLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="14">Liczba Dostaw</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="14" x:Name="delivererNumberLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="15">Dniówka</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="15" x:Name="cashForDayLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="16">Premia</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="16" x:Name="bonusLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="17">Kwota do kasy</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="17" x:Name="AmountToCashLabel"></Label>
+    </Grid>
+    </ScrollView>
+</ContentPage>

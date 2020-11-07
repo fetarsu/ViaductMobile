@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
 
 namespace ViaductMobile.Models
@@ -43,9 +44,9 @@ namespace ViaductMobile.Models
             return await client.GetTable<Report>().ToListAsync();
         }
 
-        public async Task<List<String>> ReadTodayReport(DateTime date)
+        public async Task<List<Report>> ReadTodayReport(DateTime date)
         {
-            return await client.GetTable<Report>().Where(x => x.Date == date).Select(x => x.Id).ToListAsync();
+            return await client.GetTable<Report>().Where(x => x.Date.Month == date.Month && x.Date.Day == date.Day && x.Date.Year == date.Year).ToListAsync();
         }
     }
 }

@@ -22,7 +22,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <dg:DataGrid x:Name="reportDataGrid" ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
                 <x:Arguments>
@@ -44,7 +44,8 @@
                     </dg:PaletteCollection>
                 </dg:DataGrid.RowsBackgroundColorPalette>
             </dg:DataGrid>
-            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="1" Grid.ColumnSpan="3">
+            <Button Text="Edytuj" Grid.Row="1" Grid.ColumnSpan="3"></Button>
+            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="2" Grid.ColumnSpan="3">
                 <Expander.Header>
                     <Label Text="Pracownicy" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
                 </Expander.Header>
@@ -77,7 +78,7 @@
                     </StackLayout>
                 </StackLayout>
             </Expander>
-            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="2" Grid.ColumnSpan="3">
+            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="3" Grid.ColumnSpan="3">
                 <Expander.Header>
                     <Label Text="Operacje" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
                 </Expander.Header>
@@ -109,7 +110,7 @@
                     </StackLayout>
                 </StackLayout>
             </Expander>
-            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="3" Grid.ColumnSpan="3">
+            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="4" Grid.ColumnSpan="3">
                 <Expander.Header>
                     <Label Text="Dostawy" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
                 </Expander.Header>
@@ -151,7 +152,7 @@
                     </StackLayout>
                 </StackLayout>
             </Expander>
-            <Button Style="{StaticResource typicalButton}" BackgroundColor="DarkRed" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Text="Wyślij raport"></Button>
+            <Button Style="{StaticResource typicalButton}" BackgroundColor="DarkRed" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="Wyślij raport"></Button>
         </Grid>
     </ScrollView>
 </ContentPage>

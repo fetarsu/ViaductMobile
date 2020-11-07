@@ -76,6 +76,10 @@ namespace ViaductMobile
                 return false;
             }
         }
+        public async Task<List<String>> ReadAllUsers()
+        {
+            return await client.GetTable<User>().Select(x => x.Nickname).ToListAsync();
+        }
 
     }
 }

@@ -18,8 +18,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="8*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" >Data: </Label>
         <DatePicker Grid.Column="1" Grid.Row="0" x:Name="chooseDayPicker" TextColor="White" HorizontalOptions="Center" DateSelected="chooseDay_PropertyChanged">
                 <DatePicker.Margin>
@@ -29,7 +30,7 @@
                     </OnPlatform>
                 </DatePicker.Margin>
             </DatePicker >
-            <Picker Grid.Column="2" Grid.Row="0" x:Name="usersPicker"></Picker>
+            <Picker Grid.Column="2" Grid.Row="0" x:Name="usersPicker" SelectedIndexChanged="usersPicker_SelectedIndexChanged"></Picker>
             <ScrollView VerticalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
                 <Grid Padding="10">
                     <dg:DataGrid x:Name="delivererCartDataGrid" ItemsSource="{Binding Supplies}" SelectedItem="{Binding SelectedSupply}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True">
@@ -52,8 +53,9 @@
                     </dg:DataGrid>
                 </Grid>
             </ScrollView>
-            <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="2" Text="Dodaj" Clicked="AddSupply"></Button>
-        <Button Style="{StaticResource typicalButton}" Grid.Column="1" Grid.Row="2" Text="Edytuj" Clicked="EditSupply"></Button>
-        <Button Style="{StaticResource typicalButton}" Grid.Column="2" Grid.Row="2" Text="Usuń" Clicked="DeleteSupply"></Button>
+        <Button Style="{StaticResource typicalButton}" BackgroundColor="DarkRed" Grid.ColumnSpan="3" Grid.Row="2" Text="Zakończ dzień" Clicked="CloseDayClicked"></Button>
+        <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="3" Text="Dodaj" Clicked="AddSupply"></Button>
+        <Button Style="{StaticResource typicalButton}" Grid.Column="1" Grid.Row="3" Text="Edytuj" Clicked="EditSupply"></Button>
+        <Button Style="{StaticResource typicalButton}" Grid.Column="2" Grid.Row="3" Text="Usuń" Clicked="DeleteSupply"></Button>
         </Grid>
 </ContentPage>

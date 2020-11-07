@@ -33,7 +33,6 @@ namespace ViaductMobile.Models
         public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
         public async Task<bool> SaveDeliverer()
         {
-
             try
             {
                 await client.GetTable<Deliverer>().InsertAsync(this);

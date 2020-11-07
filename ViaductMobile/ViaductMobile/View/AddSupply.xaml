@@ -1,0 +1,96 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             BackgroundColor="Transparent"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid"
+             x:Class="ViaductMobile.View.AddSupply">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+            <Grid BackgroundColor="#272727">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <!-- XfxEntry-->
+                <Label Style="{StaticResource headingLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" HorizontalOptions="Center">Dodawanie dostawy</Label>
+                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+                    <SearchBar x:Name="searchBar" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="CenterAndExpand"
+                   Placeholder="Wyszukaj ulice..."
+                   CancelButtonColor="White"
+                   PlaceholderColor="White"
+                   TextColor="White"
+                   HorizontalTextAlignment="Start"
+                   TextChanged="OnTextChanged"
+                   Focused="ShowListView"/>
+                </StackLayout>
+                <Button Style="{StaticResource typicalButton}" Grid.Column="3" Grid.Row="1" Text="Dodaj" x:Name="addAdressButton" Clicked="addAdressButton_Clicked" Margin="0, 0, 10, 0"></Button>
+                <ListView x:Name="searchResults" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+                   HeightRequest="600"
+                   IsVisible="false"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="CenterAndExpand"  ItemSelected="changeSearchBar">
+                </ListView>
+                <Label Style="{StaticResource typicalLabel}" x:Name="adressLabel" Grid.Row="1" Grid.Column="0" IsVisible="false" Grid.ColumnSpan="3"></Label>
+                <Label Style="{StaticResource typicalLabel}" Grid.Row="3" Grid.Column="0" Text="Blok/mieszkanie" Grid.ColumnSpan="2"></Label>
+                <Entry Style="{StaticResource typicalEntry}"  Grid.Row="3" Grid.Column="2" Placeholder="Blok" x:Name="buildingEntry"></Entry>
+                <Entry Style="{StaticResource typicalEntry}"  Grid.Row="3" Grid.Column="3" Placeholder="m." x:Name="flatEntry"></Entry>
+                <Label Style="{StaticResource typicalLabel}" Grid.Row="4" Grid.Column="0" Text="Kwota dostawy" Grid.ColumnSpan="2"></Label>
+                <Entry Style="{StaticResource typicalEntry}" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" x:Name="amountEntry"></Entry>
+                <Label Style="{StaticResource typicalLabel}" Grid.Row="5" Grid.Column="0" Text="Platforma" Grid.ColumnSpan="2"></Label>
+                <Picker Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" x:Name="platformPicker"></Picker>
+                <Label Style="{StaticResource typicalLabel}" Grid.Row="6" Grid.Column="0" Text="Kwota kursu" Grid.ColumnSpan="2"></Label>
+                <Entry Style="{StaticResource typicalEntry}" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" x:Name="courseEntry"></Entry>
+                <Label Style="{StaticResource typicalLabel}" Grid.Row="7" Grid.Column="0" Text="Składnik" Grid.ColumnSpan="2" x:Name="componentLabel"></Label>
+                <StackLayout Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2">
+                    <SearchBar x:Name="searchsomponentBar" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="3" Placeholder="Wyszukaj ulice..." 
+                           CancelButtonColor="White" PlaceholderColor="White" TextChanged="OnTextChanged2" Focused="ShowListView2"/>
+                </StackLayout>
+                <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"  Text="Schowaj liste" Clicked="HideListView2" Margin="10" IsVisible="false" x:Name="hideButton"></Button>
+                <ListView x:Name="searchResults2" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4"
+                       HeightRequest="800"
+                       IsVisible="false"
+                       HorizontalOptions="Fill"
+                       VerticalOptions="CenterAndExpand"  ItemSelected="changeSearchBar2">
+                </ListView>
+                <dg:DataGrid x:Name="componentsDataGrid" Grid.Row="10" Grid.ColumnSpan="4" ItemsSource="{Binding Components}" SelectedItem="{Binding SelectedComponent}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="25" HeaderHeight="25" SelectionEnabled="True">
+                    <x:Arguments>
+                        <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                    </x:Arguments>
+                    <dg:DataGrid.Columns>
+                        <dg:DataGridColumn Title="Składnik" PropertyName="Name" Width="6*"/>
+                        <dg:DataGridColumn Title="Ilość" PropertyName="Count" Width="*"/>
+                    </dg:DataGrid.Columns>
+                    <dg:DataGrid.RowsBackgroundColorPalette>
+                        <dg:PaletteCollection>
+                            <Color>#F2F2F2</Color>
+                            <Color>#FFFFFF</Color>
+                        </dg:PaletteCollection>
+                    </dg:DataGrid.RowsBackgroundColorPalette>
+                </dg:DataGrid>
+                <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" Text="Dodaj" Clicked="Add_Clicked" Margin="10" x:Name="button1"></Button>
+            <Button Style="{StaticResource typicalButton}" Grid.Column="2" Grid.Row="11" Grid.ColumnSpan="2"  Text="Usuń" Margin="10" x:Name="button2" Clicked="Delete_Clicked"></Button>
+            </Grid>
+        </StackLayout>
+</ContentPage>

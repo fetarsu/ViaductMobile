@@ -1,12 +1,13 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ViaductMobile.Models;
 
-namespace ViaductMobile
+namespace ViaductMobile.Models
 {
     public class Adress
     {
@@ -74,7 +75,11 @@ namespace ViaductMobile
                 return false;
             }
         }
-
+        public static List<string> GetSearchResults(string queryString, List<String> list)
+        {
+            var normalizedQuery = queryString?.ToLower() ?? "";
+            return list.Where(f => f.ToLowerInvariant().Contains(normalizedQuery)).ToList();
+        }
     }
 }
 
