@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
 using Xamarin.Forms;
 
@@ -14,6 +15,7 @@ namespace ViaductMobile.ViewModels
         private List<Operation> operations;
         private Operation selectedItem;
         private bool isRefreshing;
+        Report readReport;
         #endregion
         #region Properties
         public List<Operation> Operations
@@ -37,10 +39,12 @@ namespace ViaductMobile.ViewModels
         public ICommand RefreshCommand { get; set; }
         #endregion
 
-        public OperationTableVM()
+        public OperationTableVM(Report readReport)
         {
+            this.readReport = readReport;
             Operation operations = new Operation();
-            Operations = Task.Run(() => operations.ReadOperations()).Result;
+            Operations = Task.Run(() => operations.ReadOperationsReport(readReport)).Result;
+            Methods.reportOperationList = Operations;
             RefreshCommand = new Command(CmdRefresh);
         }
 

@@ -19,13 +19,19 @@ namespace ViaductMobile.View
         public static List<String> adressesList = new List<String>();
         public static List<String> pizzasList = new List<String>();
         public static List<Components> componentsList = new List<Components>();
+        int cartListCount;
         Supply clickedRow;
         User loggedUser;
         bool edit;
-        string components, streetName;
+        string components, streetName, delivererId, selectedUser;
+        DateTime chosedDate;
         Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid;
-        public AddSupply(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser)
+        public AddSupply(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate, string selectedUser)
         {
+            this.delivererId = delivererId;
+            this.chosedDate = chosedDate;
+            this.selectedUser = selectedUser;
+            this.cartListCount = cartListCount;
             this.loggedUser = loggedUser;
             componentsList.Clear();
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
@@ -36,8 +42,9 @@ namespace ViaductMobile.View
             platformPicker.ItemsSource = Methods.platformList.Keys.ToList();
             LoadAdressesAndPizzas();
         }
-        public AddSupply(Supply clickedRow, Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser)
+        public AddSupply(Supply clickedRow, Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, string delivererId)
         {
+            this.delivererId = delivererId;
             this.loggedUser = loggedUser;
             componentsList.Clear();
             this.clickedRow = clickedRow;
@@ -103,6 +110,16 @@ namespace ViaductMobile.View
         }
         private async void Add_Clicked(object sender, EventArgs e)
         {
+            if(cartListCount == 0)
+            {
+                Deliverer d = new Deliverer();
+                d.Nickname = selectedUser;
+                chosedDate = chosedDate.AddDays(1);
+                d.Date = chosedDate;
+                d.Closed = false;
+                await d.SaveDeliverer();
+                delivererId = d.Id;
+            }
             components = " ";
             IEnumerable<Components> componentsIEnumerable = (IEnumerable<Components>)componentsDataGrid.ItemsSource;
             foreach (var item in componentsIEnumerable)
@@ -122,7 +139,7 @@ namespace ViaductMobile.View
                     Platform = platformPicker.SelectedItem.ToString(),
                     Components = components,
                     SumAmount = decimal.Parse(amountEntry.Text) + decimal.Parse(courseEntry.Text),
-                    DelivererId = loggedUser.Id
+                    DelivererId = delivererId
                 };
                 bool result = await newSupply.SaveSupply();
             }
@@ -134,7 +151,7 @@ namespace ViaductMobile.View
                 clickedRow.Platform = platformPicker.SelectedItem.ToString();
                 clickedRow.Components = components;
                 clickedRow.SumAmount = decimal.Parse(amountEntry.Text) + decimal.Parse(courseEntry.Text);
-                clickedRow.DelivererId = loggedUser.Id;
+                clickedRow.DelivererId = delivererId;
                 bool result = await clickedRow.UpdateSupply(clickedRow);
             }
             App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))

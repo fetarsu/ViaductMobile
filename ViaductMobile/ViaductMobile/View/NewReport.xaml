@@ -44,7 +44,7 @@
                     </dg:PaletteCollection>
                 </dg:DataGrid.RowsBackgroundColorPalette>
             </dg:DataGrid>
-            <Button Text="Edytuj" Grid.Row="1" Grid.ColumnSpan="3"></Button>
+            <Button Style="{StaticResource typicalButton}" Text="Edytuj" Grid.Row="1" Grid.ColumnSpan="3"></Button>
             <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="2" Grid.ColumnSpan="3">
                 <Expander.Header>
                     <Label Text="Pracownicy" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
@@ -58,8 +58,8 @@
                             <dg:DataGrid.Columns>
                                 <dg:DataGridColumn Title="Pseudonim" PropertyName="Nickname" Width="*"/>
                                 <dg:DataGridColumn Title="Stawka" PropertyName="Rate" Width="*"/>
-                                <dg:DataGridColumn Title="Praca od" PropertyName="WorkFrom" Width="*"/>
-                                <dg:DataGridColumn Title="Praca do" PropertyName="WorkTo" Width="*"/>
+                                <dg:DataGridColumn Title="Praca od" PropertyName="WorkFrom" Width="*" StringFormat="{}{0:HH\:mm}"></dg:DataGridColumn>
+                                <dg:DataGridColumn Title="Praca do" PropertyName="WorkTo" Width="*" StringFormat="{}{0:HH\:mm}"/>
                                 <dg:DataGridColumn Title="Dniówka" PropertyName="DayWage" Width="*"/>
                                 <dg:DataGridColumn Title="Premia" PropertyName="Bonus" Width="*"/>
                             </dg:DataGrid.Columns>
@@ -72,9 +72,9 @@
                         </dg:DataGrid>
                     </ScrollView>
                     <StackLayout Orientation="Horizontal">
-                    <Button Text="Dodaj" HorizontalOptions="StartAndExpand"></Button>
-                    <Button Text="Edytuj" HorizontalOptions="CenterAndExpand"></Button>
-                    <Button Text="Usuń" HorizontalOptions="EndAndExpand"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125" Clicked="Add_Employee_Clicked"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125" Clicked="Edit_Employee_Clicked"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125" Clicked="Delete_Employee_Clicked"></Button>
                     </StackLayout>
                 </StackLayout>
             </Expander>
@@ -104,9 +104,9 @@
                         </dg:DataGrid>
                     </ScrollView>
                     <StackLayout Orientation="Horizontal">
-                        <Button Text="Dodaj" HorizontalOptions="StartAndExpand"></Button>
-                        <Button Text="Edytuj" HorizontalOptions="CenterAndExpand"></Button>
-                        <Button Text="Usuń" HorizontalOptions="EndAndExpand"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125" Clicked="Add_Operation_Clicked"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125" Clicked="Edit_Operation_Clicked"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125" Clicked="Delete_Operation_Clicked"></Button>
                     </StackLayout>
                 </StackLayout>
             </Expander>
@@ -116,7 +116,7 @@
                 </Expander.Header>
                 <StackLayout>
                     <ScrollView VerticalOptions="FillAndExpand" >
-                        <dg:DataGrid x:Name="delivererDataGrid" ItemsSource="{Binding Deliverers}" SelectedItem="{Binding SelectedUser}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True" Grid.Row="2" Grid.ColumnSpan="3">
+                        <dg:DataGrid x:Name="delivererDataGrid" ItemsSource="{Binding Deliverers}" SelectedItem="{Binding SelectedUser}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True" Grid.Row="2" Grid.ColumnSpan="3" HeightRequest="190">
                             <x:Arguments>
                                 <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
                             </x:Arguments>
@@ -146,9 +146,9 @@
                         </dg:DataGrid>
                     </ScrollView>
                     <StackLayout Orientation="Horizontal">
-                        <Button Text="Dodaj" HorizontalOptions="StartAndExpand"></Button>
-                        <Button Text="Edytuj" HorizontalOptions="CenterAndExpand"></Button>
-                        <Button Text="Usuń" HorizontalOptions="EndAndExpand"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125"></Button>
+                        <Button Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125"></Button>
                     </StackLayout>
                 </StackLayout>
             </Expander>

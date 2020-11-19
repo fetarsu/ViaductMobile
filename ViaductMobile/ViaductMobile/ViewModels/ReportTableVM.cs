@@ -13,6 +13,7 @@ namespace ViaductMobile.ViewModels
         #region fields
         private List<Report> reports;
         private Report selectedItem;
+        Report readReport;
         private bool isRefreshing;
         #endregion
         #region Properties
@@ -37,10 +38,13 @@ namespace ViaductMobile.ViewModels
         public ICommand RefreshCommand { get; set; }
         #endregion
 
-        public ReportTableVM()
+        public ReportTableVM(Report readReport)
         {
+            this.readReport = readReport;
             Report report = new Report();
-            Reports = Task.Run(() => report.ReadReport()).Result;
+            List<Report> reportList = new List<Report>();
+            reportList.Add(readReport);
+            Reports = reportList;
             RefreshCommand = new Command(CmdRefresh);
         }
 

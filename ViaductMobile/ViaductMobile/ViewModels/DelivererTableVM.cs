@@ -14,6 +14,7 @@ namespace ViaductMobile.ViewModels
         private List<Deliverer> deliverers;
         private Deliverer selectedItem;
         private bool isRefreshing;
+        Report readReport;
         #endregion
         #region Properties
         public List<Deliverer> Deliverers
@@ -37,10 +38,11 @@ namespace ViaductMobile.ViewModels
         public ICommand RefreshCommand { get; set; }
         #endregion
 
-        public DelivererTableVM()
+        public DelivererTableVM(Report readReport)
         {
+            this.readReport = readReport;
             Deliverer deliverer = new Deliverer();
-            Deliverers = Task.Run(() => deliverer.ReadDeliverer()).Result;
+            Deliverers = Task.Run(() => deliverer.ReadDelivererReport(readReport)).Result;
             RefreshCommand = new Command(CmdRefresh);
         }
 

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
 using Xamarin.Forms;
 
@@ -12,6 +13,9 @@ namespace ViaductMobile.ViewModels
     {
         #region fields
         private List<Employee> employees;
+        Report readReport;
+        List<Employee> empList = new List<Employee>();
+        Employee employeee;
         private Employee selectedItem;
         private bool isRefreshing;
         #endregion
@@ -37,10 +41,19 @@ namespace ViaductMobile.ViewModels
         public ICommand RefreshCommand { get; set; }
         #endregion
 
-        public EmployeeTableVM()
+        public EmployeeTableVM(Report readReport)
         {
+            this.readReport = readReport;
             Employee employee = new Employee();
-            Employees = Task.Run(() => employee.ReadEmployee()).Result;
+            Employees = Task.Run(() => employee.ReadEmployeeReport(readReport)).Result;
+            Methods.reportEmployeeList = Employees;
+            RefreshCommand = new Command(CmdRefresh);
+        }
+        public EmployeeTableVM(List<Employee> list)
+        {
+            this.empList = list;
+            Employees = empList;
+            Methods.reportEmployeeList = Employees;
             RefreshCommand = new Command(CmdRefresh);
         }
 

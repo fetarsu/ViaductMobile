@@ -36,9 +36,9 @@ namespace ViaductMobile.Models
                 return false;
             }
         }
-        public async Task<List<Supply>> ReadSupply()
+        public async Task<List<Supply>> ReadSupply(string delivererId)
         {
-            return await client.GetTable<Supply>().ToListAsync();
+            return await client.GetTable<Supply>().Where(x => x.DelivererId == delivererId).ToListAsync();
         }
 
         public async Task<bool> DeleteSupply(Supply item)
@@ -76,7 +76,6 @@ namespace ViaductMobile.Models
                 return false;
             }
         }
-
     }
 }
 

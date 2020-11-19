@@ -45,7 +45,7 @@
                 </DatePicker.Margin>
             </DatePicker >
             <Picker Grid.Column="0" Grid.Row="1" x:Name="usersPicker"></Picker>
-            <Button Style="{StaticResource typicalButton}" Grid.Row="1" Grid.Column="1" BackgroundColor="Green" Text="Przywróć dzień" Clicked="CloseDayClicked"></Button>
+            <Button Style="{StaticResource typicalButton}" Grid.Row="1" Grid.Column="1" BackgroundColor="Green" Text="Przywróć dzień" Clicked="RestoreDayClicked"></Button>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="2">Kursy</Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="2" x:Name="coursesLabel"></Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="3">Viaduct K</Label>

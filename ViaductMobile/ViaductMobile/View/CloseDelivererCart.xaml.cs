@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
 using ViaductMobile.View.Popups;
 using Xamarin.Forms;
@@ -16,17 +17,21 @@ namespace ViaductMobile.View
     {
         User loggedUser;
         Report report;
-        bool closed;
+        bool closed, reload;
+        Deliverer cart;
+        public string userr;
+        List<Deliverer> cartList = new List<Deliverer>();
+        string delivererId, selectedUser, reportId;
         Decimal cash, bonus;
         Deliverer newDeliverer;
         DateTime deliverDate;
-        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, Decimal cash, Decimal bonus)
+        Employee newEmployee;
+        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, Employee newEmployee)
         {
             this.loggedUser = loggedUser;
             InitializeComponent();
             this.newDeliverer = newDeliverer;
-            this.cash = cash;
-            this.bonus = bonus;
+            this.newEmployee = newEmployee;
             coursesLabel.Text = newDeliverer.Courses.ToString();
             VkLabel.Text = newDeliverer.V_k.ToString();
             VgLabel.Text = newDeliverer.V_g.ToString();
@@ -45,20 +50,6 @@ namespace ViaductMobile.View
             AmountToCashLabel.Text = newDeliverer.AmountToCash.ToString();
             deliverDate = chooseDayPicker.Date = DateTime.Now;
             ReadAllUsers();
-        }
-        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer)
-        {
-            this.newDeliverer = newDeliverer;
-            this.loggedUser = loggedUser;
-            InitializeComponent();
-            Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            BindingContext = new ViewModels.DelivererCartVM();
-            deliverDate = chooseDayPicker.Date = DateTime.Now;
-        }
-
-        private void chooseDay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            Console.WriteLine("Xd");
         }
 
         private void BackClicked(object sender, EventArgs e)
@@ -81,12 +72,19 @@ namespace ViaductMobile.View
         }
 
         [Obsolete]
-        private async void CloseDayClicked(object sender, EventArgs e)
+        private async void RestoreDayClicked(object sender, EventArgs e)
         {
+            Supply s = new Supply();
             Report report = new Report();
             var id = report.ReadTodayReport(deliverDate);
-            var listOfSupplys = new ViewModels.DelivererCartVM().Supplies;
-            await PopupNavigation.PushAsync(new CloseDeliverDay(loggedUser, listOfSupplys, deliverDate));
+            var listOfSupplys = await s.ReadSupply(newDeliverer.Id);
+            newDeliverer.Closed = false;
+            await newDeliverer.UpdateDeliverer(newDeliverer);
+            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, listOfSupplys))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
         }
         async void ReadAllUsers()
         {
@@ -101,5 +99,67 @@ namespace ViaductMobile.View
             }
 
         }
+        private void usersPicker_Focused(object sender, FocusEventArgs e)
+        {
+            reload = true;
+        }
+
+        private void usersPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (reload == true)
+            {
+                userr = usersPicker.SelectedItem.ToString();
+                ReloadData();
+                reload = false;
+            }
+        }
+        private void chooseDay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (reload == true)
+            {
+                ReloadData();
+                reload = false;
+            }
+        }
+
+        async void ReloadData()
+        {
+            if (userr == null)
+            {
+                var x = await loggedUser.ReadAllUsers();
+                Methods.userList = x;
+                usersPicker.ItemsSource = x;
+                foreach (var item in x)
+                {
+                    if (item.Equals(loggedUser.Nickname))
+                    {
+                        usersPicker.SelectedItem = userr = item;
+                    }
+                }
+            }
+            DateTime datee = chooseDayPicker.Date;
+            cartList = await newDeliverer.ReadDelivererCart(datee, userr);
+            if (cartList.Count != 0)
+            {
+                cart = cartList.SingleOrDefault();
+                delivererId = cart.Id;
+                if (cart.Closed == false)
+                {
+
+                }
+                else
+                {
+                    Employee newEmployee = new Employee();
+                    var employeeList = await newEmployee.ReadEmployeeCart(userr, datee);
+                    newEmployee = employeeList.SingleOrDefault();
+                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, newEmployee))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
+            }
+        }
+
     }
 }

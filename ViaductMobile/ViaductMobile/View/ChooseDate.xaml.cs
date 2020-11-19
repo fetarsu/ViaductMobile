@@ -49,7 +49,7 @@ namespace ViaductMobile
                 readReport.Start = 0;
                 readReport.ReportAmount = 0;
                 readReport.Terminal = 0;
-                readReport.Date = chooseDay.Date;
+                readReport.Date = chooseDay.Date.AddDays(1);
                 readReport.ShouldBe = 0;
                 readReport.AmountIn = 0;
                 readReport.Difference = 0;
@@ -61,11 +61,14 @@ namespace ViaductMobile
                     BarTextColor = Color.White
                 };
             }
-            App.Current.MainPage = new NavigationPage(new NewReport(readReportt))
+            else
             {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
+                App.Current.MainPage = new NavigationPage(new NewReport(readReportt))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
         }
     }
 }

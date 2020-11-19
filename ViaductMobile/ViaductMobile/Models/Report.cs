@@ -44,6 +44,11 @@ namespace ViaductMobile.Models
             return await client.GetTable<Report>().ToListAsync();
         }
 
+        public async Task<List<Report>> ReadTodayReport(Report readReport)
+        {
+            return await client.GetTable<Report>().Where(x => x.Date.Day == readReport.Date.Day && x.Date.Month == readReport.Date.Month && x.Date.Year == readReport.Date.Year).ToListAsync();
+        }
+
         public async Task<List<Report>> ReadTodayReport(DateTime date)
         {
             return await client.GetTable<Report>().Where(x => x.Date.Month == date.Month && x.Date.Day == date.Day && x.Date.Year == date.Year).ToListAsync();

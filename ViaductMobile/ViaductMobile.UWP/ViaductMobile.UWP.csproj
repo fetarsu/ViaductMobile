@@ -137,6 +137,7 @@
     <Content Include="login.png" />
     <Content Include="logout.png" />
     <Content Include="money.png" />
+    <Content Include="pizza.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="user.png" />
   </ItemGroup>

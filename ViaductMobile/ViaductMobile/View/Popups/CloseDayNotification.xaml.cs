@@ -16,16 +16,15 @@ namespace ViaductMobile.View.Popups
     public partial class CloseDayNotification : PopupPage
     {
         Deliverer newDeliverer;
-        Decimal cash, bonus;
+        Employee newEmployee;
         User loggedUser;
         bool closed = true;
-        public CloseDayNotification(Deliverer newDeliverer, Decimal cash, Decimal bonus, User loggedUser)
+        public CloseDayNotification(Deliverer newDeliverer, Employee newEmployee, User loggedUser)
         {
             InitializeComponent();
             this.loggedUser = loggedUser;
             this.newDeliverer = newDeliverer;
-            this.cash = cash;
-            this.bonus = bonus;
+            this.newEmployee = newEmployee;
             nicknameLabel.Text = newDeliverer.Nickname;
             coursesLabel.Text = newDeliverer.Courses.ToString();
             VkLabel.Text = newDeliverer.V_k.ToString();
@@ -40,8 +39,8 @@ namespace ViaductMobile.View.Popups
             SgLabel.Text = newDeliverer.S_g.ToString();
             KikLabel.Text = newDeliverer.Kik.ToString();
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
-            bonusLabel.Text = bonus.ToString();
-            cashForDayLabel.Text = cash.ToString();
+            bonusLabel.Text = newEmployee.Bonus.ToString();
+            cashForDayLabel.Text = newEmployee.DayWage.ToString();
             AmountToCashLabel.Text = newDeliverer.AmountToCash.ToString();
         }
 
@@ -53,10 +52,12 @@ namespace ViaductMobile.View.Popups
         [Obsolete]
         private async void End_Clicked(object sender, EventArgs e)
         {
-            await newDeliverer.SaveDeliverer();
+            newDeliverer.Closed = true;
+            await newEmployee.SaveEmployee();
+            await newDeliverer.UpdateDeliverer(newDeliverer);
             await PopupNavigation.PopAsync(true);
             await PopupNavigation.PopAsync(true);
-            App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, newDeliverer, cash, bonus))
+            App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, newDeliverer, newEmployee))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

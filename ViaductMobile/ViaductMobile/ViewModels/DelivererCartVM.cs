@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,6 +14,8 @@ namespace ViaductMobile.ViewModels
         #region fields
         private List<Supply> supplies;
         private Supply selectedItem;
+        string selectedUser, delivererId;
+        DateTime selectedDate;
         private bool isRefreshing;
         #endregion
         #region Properties
@@ -37,10 +40,24 @@ namespace ViaductMobile.ViewModels
         public ICommand RefreshCommand { get; set; }
         #endregion
 
+        public DelivererCartVM(string delivererId)
+        {
+            this.delivererId = delivererId;
+            Supply deliverer = new Supply();
+            Supplies = Task.Run(() => deliverer.ReadSupply(delivererId)).Result;
+            RefreshCommand = new Command(CmdRefresh);
+        }
+        public DelivererCartVM(List<Supply> supplies)
+        {
+            this.supplies = supplies;
+            Supply deliverer = new Supply();
+            Supplies = supplies;
+            RefreshCommand = new Command(CmdRefresh);
+        }
         public DelivererCartVM()
         {
             Supply deliverer = new Supply();
-            Supplies = Task.Run(() => deliverer.ReadSupply()).Result;
+            Supplies = Task.Run(() => deliverer.ReadSupply(delivererId)).Result;
             RefreshCommand = new Command(CmdRefresh);
         }
 

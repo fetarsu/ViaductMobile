@@ -18,16 +18,20 @@ namespace ViaductMobile.View.Popups
         User loggedUser;
         decimal v_k, v_g, p_o, p_g, g_o, g_g, uber_o, uber_g, s_o, s_g, kik, amountToCash, courses, bonus;
         int deliverNumbers, v_count, p_count, g_count, uber_count, s_count, kik_count, deliverNumbers2;
+        string reportId;
+        Deliverer cart = new Deliverer();
         List<Supply> listOfSupplys = new List<Supply>();
         TimeSpan godzinaRozpoczecia, godzinaSkonczenia;
 
         DateTime deliverDate;
-        public CloseDeliverDay(User loggedUser, List<Supply> listOfSupplys, DateTime deliverDate)
+        public CloseDeliverDay(User loggedUser, List<Supply> listOfSupplys, DateTime deliverDate, string reportId, Deliverer cart)
         {
+            this.reportId = reportId;
             this.listOfSupplys = listOfSupplys;
             this.deliverDate = deliverDate;
             this.loggedUser = loggedUser;
             InitializeComponent();
+            this.cart = cart;
         }
 
         [Obsolete]
@@ -111,7 +115,7 @@ namespace ViaductMobile.View.Popups
                 bonus = 30;
                 deliverNumbers = -20;
                 int y = deliverNumbers / 5;
-                bonus =+ (y * 10);
+                bonus = +(y * 10);
             }
             TimeSpan godzina24 = new TimeSpan(24, 00, 00);
             double start_liczba = godzinaRozpoczecia.TotalHours;
@@ -130,24 +134,35 @@ namespace ViaductMobile.View.Popups
             decimal roznica2 = (decimal)(roznica);
             var cash = loggedUser.DeliverRate * roznica2;
             amountToCash = -courses + v_g + p_g + g_g + uber_g + s_g - tips - bonus;
-            Deliverer newDeliverer = new Deliverer() {
-                Nickname = loggedUser.Nickname,
-                Courses = courses,
-                V_k = v_k,
-                V_g = v_g,
-                P_o = p_o,
-                P_g = p_g,
-                G_o = g_o,
-                G_g = g_g,
-                Uber_o = uber_o,
-                Uber_g = uber_g,
-                S_o = s_o,
-                S_g = s_g,
-                Kik = kik,
-                DeliveriesNumber = deliverNumbers2,
-                AmountToCash = amountToCash
+            var tee = courses;
+            cart.Courses = courses;
+            cart.V_k = v_k;
+            cart.V_g = v_g;
+            cart.P_o = p_o;
+            cart.P_g = p_g;
+            cart.G_o = g_o;
+            cart.G_g = g_g;
+            cart.Uber_o = uber_o;
+            cart.Uber_g = uber_g;
+            cart.S_o = s_o;
+            cart.S_g = s_g;
+            cart.Kik = kik;
+            cart.DeliveriesNumber = deliverNumbers2;
+            cart.AmountToCash = amountToCash;
+            cart.ReportId = reportId;
+            Employee newEmpoloyee = new Employee()
+            {
+                Nickname = cart.Nickname,
+                Date = deliverDate,
+                Rate = loggedUser.DeliverRate.ToString(),
+                WorkFrom = Convert.ToDateTime(workFromEntry.Time.ToString()),
+                WorkTo = Convert.ToDateTime(workToEntry.Time.ToString()),
+                Position = "Deliverer",
+                DayWage = cash,
+                ReportId = reportId,
+                Bonus = bonus
             };
-            await PopupNavigation.PushAsync(new CloseDayNotification(newDeliverer, cash, bonus, loggedUser));
+            await PopupNavigation.PushAsync(new CloseDayNotification(cart, newEmpoloyee, loggedUser));
         }
     }
 }

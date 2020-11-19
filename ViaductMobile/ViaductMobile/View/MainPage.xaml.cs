@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
 using ViaductMobile.View;
 using Xamarin.Forms;
@@ -32,6 +33,7 @@ namespace ViaductMobile
             ToolbarItem moveToLogin = new ToolbarItem() { Text = "Zaloguj się", IconImageSource = "login.png"};
             moveToLogin.Clicked += MoveToLoginClicked;
             this.ToolbarItems.Add(moveToLogin);
+            Methods.ReadAllUsers();
         }
 
         public MainPage(User loggedUser)
