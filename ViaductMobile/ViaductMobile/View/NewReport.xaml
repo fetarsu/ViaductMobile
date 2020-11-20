@@ -44,8 +44,8 @@
                     </dg:PaletteCollection>
                 </dg:DataGrid.RowsBackgroundColorPalette>
             </dg:DataGrid>
-            <Button Style="{StaticResource typicalButton}" Text="Edytuj" Grid.Row="1" Grid.ColumnSpan="3"></Button>
-            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="2" Grid.ColumnSpan="3">
+            <Button Style="{StaticResource typicalButton}" Text="Edytuj" Grid.Row="1" Grid.ColumnSpan="3" Clicked="Edit_Report_Clicked"></Button>
+            <Expander x:Name="employeeExpander" ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="2" Grid.ColumnSpan="3">
                 <Expander.Header>
                     <Label Text="Pracownicy" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
                 </Expander.Header>
@@ -78,7 +78,7 @@
                     </StackLayout>
                 </StackLayout>
             </Expander>
-            <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="3" Grid.ColumnSpan="3">
+            <Expander x:Name="operationExpander" ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="3" Grid.ColumnSpan="3">
                 <Expander.Header>
                     <Label Text="Operacje" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
                 </Expander.Header>
@@ -145,11 +145,6 @@
                             </dg:DataGrid.RowsBackgroundColorPalette>
                         </dg:DataGrid>
                     </ScrollView>
-                    <StackLayout Orientation="Horizontal">
-                        <Button Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125"></Button>
-                        <Button Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125"></Button>
-                        <Button Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125"></Button>
-                    </StackLayout>
                 </StackLayout>
             </Expander>
             <Button Style="{StaticResource typicalButton}" BackgroundColor="DarkRed" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="Wyślij raport"></Button>

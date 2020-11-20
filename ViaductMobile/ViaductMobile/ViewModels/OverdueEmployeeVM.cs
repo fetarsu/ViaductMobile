@@ -2,29 +2,26 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
 using Xamarin.Forms;
 
-
 namespace ViaductMobile.ViewModels
 {
-    class OperationTableVM : INotifyPropertyChanged
+    class OverdueEmployeeVM : INotifyPropertyChanged
     {
         #region fields
-        private List<Operation> operations;
-        private Operation selectedItem;
+        private List<OverdueCash> overdues;
+        User user;
+        private OverdueCash selectedItem;
         private bool isRefreshing;
-        Report readReport;
-        List<Operation> opeList = new List<Operation>();
         #endregion
         #region Properties
-        public List<Operation> Operations
+        public List<OverdueCash> Overdues
         {
-            get { return operations; }
-            set { operations = value; OnPropertyChanged(nameof(Operations)); }
+            get { return overdues; }
+            set { overdues = value; OnPropertyChanged(nameof(Overdues)); }
         }
-        public Operation SelectedOperation
+        public OverdueCash SelectedOverdue
         {
             get { return selectedItem; }
             set
@@ -40,21 +37,14 @@ namespace ViaductMobile.ViewModels
         public ICommand RefreshCommand { get; set; }
         #endregion
 
-        public OperationTableVM(Report readReport)
+        public OverdueEmployeeVM(User user)
         {
-            this.readReport = readReport;
-            Operation operations = new Operation();
-            Operations = Task.Run(() => operations.ReadOperationsReport(readReport)).Result;
-            Methods.reportOperationList = Operations;
+            this.user = user;
+            OverdueCash overdue = new OverdueCash();
+            Overdues = Task.Run(() => overdue.ReadOverdueCash(user)).Result;
             RefreshCommand = new Command(CmdRefresh);
         }
-        public OperationTableVM(List<Operation> list)
-        {
-            this.opeList = list;
-            Operations = opeList;
-            Methods.reportOperationList = Operations;
-            RefreshCommand = new Command(CmdRefresh);
-        }
+
         private async void CmdRefresh()
         {
             IsRefreshing = true;

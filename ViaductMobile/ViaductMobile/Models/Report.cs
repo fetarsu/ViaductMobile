@@ -19,6 +19,7 @@ namespace ViaductMobile.Models
         public decimal ShouldBe { get; set; }
         public decimal AmountIn { get; set; }
         public decimal Difference { get; set; }
+        public bool Closed { get; set; }
         public int Pizzas { get; set; }
 
         public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
@@ -27,6 +28,23 @@ namespace ViaductMobile.Models
             try
             {
                 await client.GetTable<Report>().InsertAsync(this);
+                return true;
+            }
+            catch (MobileServiceInvalidOperationException msioe)
+            {
+                var response = await msioe.Response.Content.ReadAsStringAsync();
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> UpdateReport()
+        {
+            try
+            {
+                await client.GetTable<Report>().UpdateAsync(this);
                 return true;
             }
             catch (MobileServiceInvalidOperationException msioe)

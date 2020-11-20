@@ -18,27 +18,30 @@ namespace ViaductMobile.View.Popups
         string type;
         Operation operation;
         Report readReport;
-        bool edit;
-        Xamarin.Forms.DataGrid.DataGrid operationDataGrid;
-        public AddReportOperation(Xamarin.Forms.DataGrid.DataGrid operationDataGrid, Report readReport)
+        List<Employee> employeeList = new List<Employee>();
+        List<Operation> operationList = new List<Operation>();
+        bool edit, employeetable = false;
+        public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Report readReport)
         {
             InitializeComponent();
-            this.operationDataGrid = operationDataGrid;
             nicknamePicker.ItemsSource = Methods.userList;
             this.readReport = readReport;
+            this.employeeList = employeeListt;
+            this.operationList = operationListt;
             edit = false;
         }
-        public AddReportOperation(Operation operation, Xamarin.Forms.DataGrid.DataGrid operationDataGrid, Report readReport)
+        public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Operation operation, Report readReport)
         {          
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
             this.operation = operation;
-            this.operationDataGrid = operationDataGrid;
             this.readReport = readReport;
             operationNameEntry.Text = operation.Name;
             nicknamePicker.SelectedItem = operation.Authorizing;
             numberEntry.Text = operation.DocumentNumber;
             amountEntry.Text = operation.Amount.ToString();
+            this.employeeList = employeeListt;
+            this.operationList = operationListt;
             if (operation.Type.Equals("Faktura"))
                 yesInvoiceCheckBox.IsChecked = true;
             else
@@ -74,7 +77,9 @@ namespace ViaductMobile.View.Popups
                 };
                 bool result = await newOperation.SaveOperations();
                 await PopupNavigation.PopAsync(true);
-                App.Current.MainPage = new NavigationPage(new NewReport(readReport))
+                operationList.Add(newOperation);
+                Methods.reportOperationList = operationList;
+                App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
                 {
                     BarBackgroundColor = Color.FromHex("#3B3B3B"),
                     BarTextColor = Color.White
@@ -82,6 +87,7 @@ namespace ViaductMobile.View.Popups
             }
             else if(type != null)
             {
+                operationList.Remove(operation);
                 operation.Name = operationNameEntry.Text;
                 operation.Authorizing = nicknamePicker.SelectedItem.ToString();
                 operation.DocumentNumber = operation.DocumentNumber;
@@ -90,8 +96,10 @@ namespace ViaductMobile.View.Popups
                 operation.Type = type;
                 operation.ReportId = readReport.Id;
                 bool result = await operation.UpdateOpetarions(operation);
+                operationList.Add(operation);
                 await PopupNavigation.PopAsync(true);
-                App.Current.MainPage = new NavigationPage(new NewReport(readReport))
+                Methods.reportOperationList = operationList;
+                App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
                 {
                     BarBackgroundColor = Color.FromHex("#3B3B3B"),
                     BarTextColor = Color.White

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="ViaductMobile.View.AdressesPanel"
+             xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <Grid BackgroundColor="#272727">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ScrollView VerticalOptions="FillAndExpand"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" >
+            <Grid Padding="10">
+                <dg:DataGrid x:Name="employeesDataGrid" ItemsSource="{Binding Adresses}" SelectedItem="{Binding SelectedAdress}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True">
+                    <x:Arguments>
+                        <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
+                    </x:Arguments>
+                    <dg:DataGrid.Columns>
+                        <dg:DataGridColumn Title="Ulica" PropertyName="Street" Width="2*"/>
+                        <dg:DataGridColumn Title="Numer" PropertyName="Number" Width="*"/>
+                        <dg:DataGridColumn Title="Kwota" PropertyName="Amount" Width="*"/>
+                    </dg:DataGrid.Columns>
+                    <dg:DataGrid.RowsBackgroundColorPalette>
+                        <dg:PaletteCollection>
+                            <Color>#F2F2F2</Color>
+                            <Color>#FFFFFF</Color>
+                        </dg:PaletteCollection>
+                    </dg:DataGrid.RowsBackgroundColorPalette>
+                </dg:DataGrid>
+            </Grid>
+        </ScrollView>
+        <Button Style="{StaticResource typicalButton}" x:Name="addButton" Clicked="AddClicked" Grid.Row="1" Grid.Column="0" Text="Dodaj" Margin="10, 10, 10, 10"/>
+        <Button Style="{StaticResource typicalButton}" x:Name="editButton" Clicked="EditClicked" Grid.Row="1" Grid.Column="1" Text="Edytuj" Margin="10, 10, 10, 10"/>
+        <Button Style="{StaticResource typicalButton}" x:Name="deleteButton" Clicked="DeleteClicked" Grid.Row="1" Grid.Column="2" Text="Usuń" Margin="10, 10, 10, 10"/>
+    </Grid>
+</ContentPage>

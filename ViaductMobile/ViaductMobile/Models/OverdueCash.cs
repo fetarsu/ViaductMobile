@@ -53,10 +53,10 @@ namespace ViaductMobile
             }
         }
 
-        //public async Task<List<OverdueCash>> ReadOverdueCash()
-        //{
-        //    return await null;
-        //}
+        public async Task<List<OverdueCash>> ReadOverdueCash(User user)
+        {
+            return await client.GetTable<OverdueCash>().Where(x => x.UserId == user.Id).ToListAsync();
+        }
 
     }
 }

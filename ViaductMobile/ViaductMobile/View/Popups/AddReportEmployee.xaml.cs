@@ -18,39 +18,38 @@ namespace ViaductMobile.View.Popups
     {
         Employee employee;
         Report readReport;
-        bool edit;
+        bool edit, employeetable = true;
         User selectedUser = new User();
         List<Employee> employeeList = new List<Employee>();
         List<Operation> operationList = new List<Operation>();
         decimal cash, partOfCash;
         int rate;
         string nickname, position;
-        Xamarin.Forms.DataGrid.DataGrid employeesDataGrid, operationDataGrid;
         public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Report readReport)
         {
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
             positionPicker.ItemsSource = Methods.positionList;
             this.readReport = readReport;
-            Xamarin.Forms.DataGrid.DataGridComponent.Init();
             this.employeeList = employeeListt;
             this.operationList = operationListt;
             edit = false;
         }
-        public AddReportEmployee(Employee employee, Xamarin.Forms.DataGrid.DataGrid employeesDataGrid, Report readReport)
+        public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Employee employee, Report readReport)
         {
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
             positionPicker.ItemsSource = Methods.positionList;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             this.readReport = readReport;
-            this.employeesDataGrid = employeesDataGrid;
             this.employee = employee;
             nicknamePicker.SelectedItem = employee.Nickname;
             positionPicker.SelectedItem = employee.Position;
             workFromTimePicker.Time = employee.WorkFrom.TimeOfDay;
             workToTimePicker.Time = employee.WorkTo.TimeOfDay;
             bonusEntry.Text = employee.Bonus.ToString();
+            this.employeeList = employeeListt;
+            this.operationList = operationListt;
             edit = true;
         }
         [Obsolete]
@@ -124,6 +123,7 @@ namespace ViaductMobile.View.Popups
             }
             else if (answer == true && edit == true)
             {
+                employeeList.Remove(employee);
                 employee.Nickname = nicknamePicker.SelectedItem.ToString();
                 employee.Rate = rate.ToString();
                 employee.Position = positionPicker.SelectedItem.ToString();
@@ -134,6 +134,7 @@ namespace ViaductMobile.View.Popups
                 employee.ReportId = readReport.Id;
                 employee.Date = readReport.Date;
                 bool result = await employee.UpdateEmployee(employee);
+                employeeList.Add(employee);
             }
             else if (answer == false && edit == false)
             {
@@ -167,7 +168,7 @@ namespace ViaductMobile.View.Popups
             await DisplayAlert("", "Pomyślnie dodano pracownika", "OK");
             Methods.reportEmployeeList = employeeList;
             await PopupNavigation.PopAsync(true);
-            App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList))
+            App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

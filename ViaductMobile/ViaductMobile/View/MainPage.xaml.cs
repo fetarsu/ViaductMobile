@@ -48,16 +48,36 @@ namespace ViaductMobile
                 ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png"};
                 ToolbarItem employeesPanel = new ToolbarItem() { Text = "Pracownicy", IconImageSource = "employees.png" };
                 ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = "house.png" };
+                ToolbarItem pizzasPanel = new ToolbarItem() { Text = "Produkty", IconImageSource = "pizza.png" };
+                this.ToolbarItems.Add(pizzasPanel);
                 this.ToolbarItems.Add(adressesPanel);
                 this.ToolbarItems.Add(deliveryCart);
                 this.ToolbarItems.Add(employeesPanel);
                 employeesPanel.Clicked += MoveToEmployeePanelClicked;
                 deliveryCart.Clicked += MoveToDelivererCartClicked;
+                adressesPanel.Clicked += MoveToAdressesPanelClicked;
+                pizzasPanel.Clicked += MoveToPizzasPanelClicked;
             }
             ToolbarItem userPanel = new ToolbarItem() { Text = "Panel użytkownika", IconImageSource="user.png" };
             userPanel.Clicked += MoveToUserPanelClicked;
             this.ToolbarItems.Add(userPanel);
 
+        }
+        private void MoveToAdressesPanelClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new AdressesPanel(loggedUser))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+        }
+        private void MoveToPizzasPanelClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new PizzasPanel(loggedUser))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
         }
         private void MoveToDelivererCartClicked(object sender, EventArgs e)
         {

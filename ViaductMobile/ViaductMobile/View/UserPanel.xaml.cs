@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Models;
 using ViaductMobile.View.Popups;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -14,6 +15,8 @@ namespace ViaductMobile.View
     public partial class UserPanel : ContentPage
     {
         User loggedUser;
+        OverdueCash selectedRow;
+        DateTime currentDate;
         public UserPanel(User loggedUser)
         {
             InitializeComponent();
@@ -23,6 +26,8 @@ namespace ViaductMobile.View
             barRateLabel.Text = "Stawka bar: " + loggedUser.BarRate;
             kitchenRateLabel.Text = "Stawka kuchnia: " + loggedUser.KitchenRate;
             delivererRateLabel.Text = "Stawka dostawy: " + loggedUser.DeliverRate;
+            Xamarin.Forms.DataGrid.DataGridComponent.Init();
+            BindingContext = new ViewModels.OverdueEmployeeVM(loggedUser);
 
         }
         private void BackClicked(object sender, EventArgs e)
@@ -39,5 +44,35 @@ namespace ViaductMobile.View
         {
             await PopupNavigation.PushAsync(new ChangePassword(loggedUser));
         }
+        [Obsolete]
+
+        public async void GetDailyWage_Clicked(object sender, EventArgs e)
+        {
+            selectedRow = (OverdueCash)overdueDataGrid.SelectedItem;
+            currentDate = DateTime.Now;
+            if (currentDate.Hour < 7)
+            {
+                currentDate = currentDate.AddDays(-1);
+            }
+            Report report = new Report();
+            var reportList = await report.ReadTodayReport(currentDate);
+            if (reportList[0].Closed == false)
+            {
+                Operation operation = new Operation()
+                {
+                    Name = selectedRow.Reason,
+                    Authorizing = loggedUser.Nickname,
+                    DocumentNumber = null,
+                    Amount = selectedRow.Amount,
+                    Date = currentDate,
+                    Type = "brak",
+                    ReportId = reportList[0].Id
+                };
+                bool result = await operation.SaveOperations();
+                bool result2 = await selectedRow.DeleteOverdueCash(selectedRow);
+            }
+
+        }
+
     }
 }
