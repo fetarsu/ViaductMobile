@@ -9,6 +9,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
     </ContentPage.ToolbarItems>
+    <ScrollView HeightRequest="100">
         <StackLayout VerticalOptions="Center" HorizontalOptions="FillAndExpand">
             <Grid BackgroundColor="#272727">
                 <Grid.ColumnDefinitions>
@@ -59,7 +60,7 @@
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="4" Grid.Column="0" Text="Kwota dostawy" Grid.ColumnSpan="2"></Label>
                 <Entry Style="{StaticResource typicalEntry}" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" x:Name="amountEntry"></Entry>
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="5" Grid.Column="0" Text="Platforma" Grid.ColumnSpan="2"></Label>
-                <Picker Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" x:Name="platformPicker"></Picker>
+                <Picker Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" x:Name="platformPicker" SelectedIndexChanged="platformPicker_SelectedIndexChanged"></Picker>
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="6" Grid.Column="0" Text="Kwota kursu" Grid.ColumnSpan="2"></Label>
                 <Entry Style="{StaticResource typicalEntry}" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" x:Name="courseEntry"></Entry>
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="7" Grid.Column="0" Text="Składnik" Grid.ColumnSpan="2" x:Name="componentLabel"></Label>
@@ -69,7 +70,7 @@
                 </StackLayout>
                 <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"  Text="Schowaj liste" Clicked="HideListView2" Margin="10" IsVisible="false" x:Name="hideButton"></Button>
                 <ListView x:Name="searchResults2" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4"
-                       HeightRequest="800"
+                       HeightRequest="400"
                        IsVisible="false"
                        HorizontalOptions="Fill"
                        VerticalOptions="CenterAndExpand"  ItemSelected="changeSearchBar2">
@@ -90,7 +91,8 @@
                     </dg:DataGrid.RowsBackgroundColorPalette>
                 </dg:DataGrid>
                 <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" Text="Dodaj" Clicked="Add_Clicked" Margin="10" x:Name="button1"></Button>
-            <Button Style="{StaticResource typicalButton}" Grid.Column="2" Grid.Row="11" Grid.ColumnSpan="2"  Text="Usuń" Margin="10" x:Name="button2" Clicked="Delete_Clicked"></Button>
+                <Button Style="{StaticResource typicalButton}" Grid.Column="2" Grid.Row="11" Grid.ColumnSpan="2"  Text="Usuń" Margin="10" x:Name="button2" Clicked="Delete_Clicked"></Button>
             </Grid>
         </StackLayout>
+    </ScrollView>
 </ContentPage>

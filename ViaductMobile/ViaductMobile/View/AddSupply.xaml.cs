@@ -17,6 +17,8 @@ namespace ViaductMobile.View
     public partial class AddSupply : ContentPage
     {
         public static List<String> adressesList = new List<String>();
+        Adress adress = new Adress();
+        public List<Adress> adressList = new List<Adress>();
         public static List<String> pizzasList = new List<String>();
         public static List<Components> componentsList = new List<Components>();
         int cartListCount;
@@ -94,11 +96,11 @@ namespace ViaductMobile.View
 
         private async void LoadAdressesAndPizzas()
         {
-            Adress adress = new Adress();
             PizzasAndOthers pizzas = new PizzasAndOthers();
-            var x = await adress.ReadAdress();
+            adressList = await adress.ReadAdress();
+            var adressListDistinct = adressList.GroupBy(x => x.Street).Select(k => k.First());
             var y = await pizzas.ReadPizzas();
-            foreach (var item in x)
+            foreach (var item in adressListDistinct)
             {
                 adressesList.Add(item.Street);
             }
@@ -127,7 +129,17 @@ namespace ViaductMobile.View
                 components += item.Count + "x " + item.Name + ", ";
             }
 
-            //var x = componentss.GetEnumerator();
+            var newAdress = adressList.Where(x => x.Street.Equals(streetName) && x.Number.Equals(buildingEntry.Text)).FirstOrDefault();
+            if(newAdress == null)
+            {
+                Adress item = new Adress()
+                {
+                    Street = streetName,
+                    Number = buildingEntry.Text,
+                    Amount = decimal.Parse(courseEntry.Text)
+                };
+                bool result = await item.SaveAdress();
+            }
 
             if (edit == false)
             {
@@ -179,6 +191,8 @@ namespace ViaductMobile.View
             componentsDataGrid.ItemsSource = null;
             componentsDataGrid.ItemsSource = new ViewModels.ComponentsTableVM().Components;
             searchResults2.IsVisible = false;
+            HideListView2();
+
         }
 
         private void addAdressButton_Clicked(object sender, EventArgs e)
@@ -211,14 +225,41 @@ namespace ViaductMobile.View
             searchResults2.IsVisible = true;
             hideButton.IsVisible = true;
             componentLabel.IsVisible = false;
+            componentsDataGrid.IsVisible = false;
         }
 
         private void HideListView2(object sender, EventArgs e)
         {
+            HideListView2();
+        }
+        private void HideListView2()
+        {
             componentLabel.IsVisible = true;
             searchResults2.IsVisible = false;
             hideButton.IsVisible = false;
+            componentsDataGrid.IsVisible = true;
         }
+
+        private void platformPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(platformPicker.SelectedItem.ToString().Equals("Ug") || platformPicker.SelectedItem.ToString().Equals("Uo")
+                || platformPicker.SelectedItem.ToString().Equals("Go") || platformPicker.SelectedItem.ToString().Equals("Gg")){
+                courseEntry.Text = "7";
+            }
+            else if (platformPicker.SelectedItem.ToString().Equals("Po") || platformPicker.SelectedItem.ToString().Equals("Pg"))
+            {
+                courseEntry.Text = "5";
+            }
+            else if (platformPicker.SelectedItem.ToString().Equals("Kik"))
+            {
+                courseEntry.Text = "2";
+            }
+            else
+            {
+                courseEntry.Text = adressList.Where(x => x.Street.Equals(streetName) && x.Number.Equals(buildingEntry.Text)).Select(k => k.Amount).FirstOrDefault().ToString();
+            }
+        }
+
         private void Delete_Clicked(object sender, EventArgs e)
         {
             Components x = (Components)componentsDataGrid.SelectedItem;

@@ -29,21 +29,17 @@ namespace ViaductMobile.View
             this.loggedUser = loggedUser;
             InitializeComponent();
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            ReadAllUsers();
-            ReloadData();
+            usersPicker.ItemsSource = Methods.userList;
+            usersPicker.SelectedItem = loggedUser.Nickname;
         }
-        public DelivererCart(User loggedUser, /*DateTime chosedDate, string selectedUser, string delivererId,*/ List<Supply> listOfSupply)
+        public DelivererCart(User loggedUser, List<Supply> listOfSupply)
         {
-            //this.chosedDate = chosedDate;
-            //this.selectedUser = selectedUser;
-            //this.delivererId = delivererId;
             this.loggedUser = loggedUser;
             InitializeComponent();
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             usersPicker.ItemsSource = Methods.userList;
             usersPicker.SelectedItem = selectedUser;
             delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(listOfSupply).Supplies;
-            ReadAllUsers();
             ReloadData();
         }
 
@@ -119,19 +115,6 @@ namespace ViaductMobile.View
             Supply x = (Supply)delivererCartDataGrid.SelectedItem;
             await x.DeleteSupply(x);
             delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererId).Supplies;
-        }
-        async void ReadAllUsers()
-        {
-            var x = await loggedUser.ReadAllUsers();
-            Methods.userList = x;
-            usersPicker.ItemsSource = x;
-            foreach(var item in x)
-            {
-                if (item.Equals(loggedUser.Nickname))
-                {
-                    usersPicker.SelectedItem = userr = item;
-                }
-            }
         }
 
         private void usersPicker_Focused(object sender, FocusEventArgs e)
