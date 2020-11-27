@@ -40,6 +40,7 @@ namespace ViaductMobile.View.Popups
             passwordEntry.Text = "********";
             passwordEntry.IsReadOnly = true;
             permissionPicker.ItemsSource = Methods.permissionList;
+            permissionPicker.SelectedItem = clickedRow.Permission;
             edit = true;
         }
         [Obsolete]

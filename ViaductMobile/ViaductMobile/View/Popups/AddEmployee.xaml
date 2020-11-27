@@ -21,7 +21,7 @@
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="Center" Padding="20, 0" HorizontalOptions="FillAndExpand">
-        <Frame CornerRadius="10" Padding="0" BackgroundColor="CadetBlue">
+        <Frame Style="{StaticResource popupFrame}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -37,21 +37,21 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Dodawanie/Edycja Użytkownika</Label>
-                <Label Grid.Column="0" Grid.Row="1">Pseudonim</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Dodawanie/Edycja Użytkownika</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="1">Pseudonim</Label>
                 <Entry Grid.Column="1" Grid.Row="1" x:Name="nicknameEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="2">Hasło</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="2">Hasło</Label>
                 <Entry Grid.Column="1" Grid.Row="2" x:Name="passwordEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="3">Uprawnienia</Label>
-                <Picker Grid.Column="1" Grid.Row="3" x:Name="permissionPicker"></Picker>
-                <Label Grid.Column="0" Grid.Row="4">Stawka bar</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="3">Uprawnienia</Label>
+                <Picker Style="{StaticResource typicalPicker}" Grid.Column="1" Grid.Row="3" x:Name="permissionPicker"></Picker>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="4">Stawka bar</Label>
                 <Entry Grid.Column="1" Grid.Row="4" x:Name="barRateEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="5">Stawka kuchnia</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="5">Stawka kuchnia</Label>
                 <Entry Grid.Column="1" Grid.Row="5" x:Name="kitchenRateEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="6">Stawka dostawy</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="6">Stawka dostawy</Label>
                 <Entry Grid.Column="1" Grid.Row="6" x:Name="deliverRateEntry"></Entry>
-                <Button Grid.Column="0" Grid.Row="7" Text="Dodaj" Clicked="Add_Clicked"></Button>
-                <Button Grid.Column="1" Grid.Row="7" Text="Wróć" Clicked="Back_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="7" Text="Dodaj" Clicked="Add_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="7" Text="Wróć" Clicked="Back_Clicked"></Button>
             </Grid>
         </Frame>
     </StackLayout>

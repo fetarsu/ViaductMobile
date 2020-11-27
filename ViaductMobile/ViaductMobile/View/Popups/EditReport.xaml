@@ -21,7 +21,7 @@
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="Center" Padding="20, 0" HorizontalOptions="FillAndExpand">
-        <Frame CornerRadius="10" Padding="0" BackgroundColor="CadetBlue">
+        <Frame Style="{StaticResource popupFrame}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -36,19 +36,19 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Edycja Raportu</Label>
-                <Label Grid.Column="0" Grid.Row="1">Start</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Edycja Raportu</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="1">Start</Label>
                 <Entry Grid.Column="1" Grid.Row="1" x:Name="startEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="2">Raport</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="2">Raport</Label>
                 <Entry Grid.Column="1" Grid.Row="2" x:Name="reportEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="3">Terminal</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="3">Terminal</Label>
                 <Entry Grid.Column="1" Grid.Row="3" x:Name="terminalEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="4">Jest</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="4">Jest</Label>
                 <Entry Grid.Column="1" Grid.Row="4" x:Name="isEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="5">Pizze</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="5">Pizze</Label>
                 <Entry Grid.Column="1" Grid.Row="5" x:Name="pizzasEntry"></Entry>
-                <Button Grid.Column="0" Grid.Row="6" Text="Dodaj" Clicked="Add_Clicked"></Button>
-                <Button Grid.Column="1" Grid.Row="6" Text="Wróć" Clicked="Back_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="6" Text="Dodaj" Clicked="Add_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="6" Text="Wróć" Clicked="Back_Clicked"></Button>
             </Grid>
         </Frame>
     </StackLayout>

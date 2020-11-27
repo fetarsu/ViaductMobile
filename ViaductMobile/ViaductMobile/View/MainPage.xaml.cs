@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Acr.UserDialogs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,14 +24,6 @@ namespace ViaductMobile
         public MainPage()
         {
             InitializeComponent();
-            var ni = NetworkInterface.GetAllNetworkInterfaces()
-               .OrderBy(intf => intf.NetworkInterfaceType)
-               .FirstOrDefault(intf => intf.OperationalStatus == OperationalStatus.Up
-                     && (intf.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
-                         || intf.NetworkInterfaceType == NetworkInterfaceType.Ethernet));
-
-            var hw = ni.GetPhysicalAddress();
-            var x = string.Join(":", (from ma in hw.GetAddressBytes() select ma.ToString("X2")).ToArray());
             ToolbarItem moveToLogin = new ToolbarItem() { Text = "Zaloguj się", IconImageSource = "login.png"};
             moveToLogin.Clicked += MoveToLoginClicked;
             this.ToolbarItems.Add(moveToLogin);
@@ -38,34 +32,46 @@ namespace ViaductMobile
 
         public MainPage(User loggedUser)
         {
-            this.loggedUser = loggedUser;
             InitializeComponent();
-            //ToolbarItem welcomeItem = new ToolbarItem() { Text = "Witaj " + user.Nickname + "!" };
-            //this.ToolbarItems.Add(welcomeItem);
+            createReportButton.IsVisible = true;
+            this.loggedUser = loggedUser;
             string userPermission = loggedUser.Permission;
-            if ((enPermission)Enum.Parse(typeof(enPermission), userPermission) == enPermission.Admin)
+            if (userPermission.Equals("Admin"))
             {
-                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png"};
                 ToolbarItem employeesPanel = new ToolbarItem() { Text = "Pracownicy", IconImageSource = "employees.png" };
+                employeesPanel.Clicked += MoveToEmployeePanelClicked;
+                this.ToolbarItems.Add(employeesPanel);
+            }
+            if(userPermission.Equals("Admin") || loggedUser.DeliverRate > 0)
+            {
+                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png" };
                 ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = "house.png" };
                 ToolbarItem pizzasPanel = new ToolbarItem() { Text = "Produkty", IconImageSource = "pizza.png" };
                 this.ToolbarItems.Add(pizzasPanel);
                 this.ToolbarItems.Add(adressesPanel);
                 this.ToolbarItems.Add(deliveryCart);
-                this.ToolbarItems.Add(employeesPanel);
-                employeesPanel.Clicked += MoveToEmployeePanelClicked;
                 deliveryCart.Clicked += MoveToDelivererCartClicked;
                 adressesPanel.Clicked += MoveToAdressesPanelClicked;
                 pizzasPanel.Clicked += MoveToPizzasPanelClicked;
             }
-            ToolbarItem userPanel = new ToolbarItem() { Text = "Panel użytkownika", IconImageSource="user.png" };
+            ToolbarItem userPanel = new ToolbarItem() { Text = "Panel użytkownika", IconImageSource = "user.png" };
             userPanel.Clicked += MoveToUserPanelClicked;
             this.ToolbarItems.Add(userPanel);
-
+            ToolbarItem logout = new ToolbarItem() { Text = "Wyloguj", IconImageSource = "logout.png" };
+            logout.Clicked += MoveToLogout;
+            this.ToolbarItems.Add(logout);
         }
         private void MoveToAdressesPanelClicked(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new AdressesPanel(loggedUser))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+        }
+        private void MoveToLogout(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new MainPage())
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
@@ -106,7 +112,7 @@ namespace ViaductMobile
 
         private void MoveToChooseDateClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new ChooseDate())
+            App.Current.MainPage = new NavigationPage(new ChooseDate(loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

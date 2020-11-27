@@ -17,6 +17,8 @@ namespace ViaductMobile.View.Popups
     public partial class EditReport : PopupPage
     {
         Report readReport;
+        bool add;
+        string notification;
         Xamarin.Forms.DataGrid.DataGrid reportDataGrid;
         public EditReport(Report readReportt, Xamarin.Forms.DataGrid.DataGrid repordGrid)
         {
@@ -39,17 +41,57 @@ namespace ViaductMobile.View.Popups
         [Obsolete]
         private async void Add_Clicked(object sender, EventArgs e)
         {
-            readReport.Start = decimal.Parse(startEntry.Text);
-            readReport.ReportAmount = decimal.Parse(reportEntry.Text);
-            readReport.Terminal = decimal.Parse(terminalEntry.Text);
-            readReport.AmountIn = decimal.Parse(isEntry.Text);
-            readReport.Pizzas = int.Parse(pizzasEntry.Text);
-            readReport.ShouldBe = readReport.ShouldBe + readReport.ReportAmount - readReport.Terminal;
-            readReport.Difference = readReport.AmountIn - readReport.ShouldBe;
-            bool result = await readReport.UpdateReport();
-            List<Report> rList = new List<Report>();
-            rList.Add(readReport);
-            reportDataGrid.ItemsSource = rList;
+            add = true;
+            notification = "";
+            try { readReport.Start = decimal.Parse(startEntry.Text); }
+            catch
+            {
+                if (startEntry.Text == null || startEntry.Text == "")
+                    readReport.Start = 0;
+                else { add = false; notification += " start"; }
+            }
+            try { readReport.ReportAmount = decimal.Parse(reportEntry.Text); }
+            catch
+            {
+                if (reportEntry.Text == null || reportEntry.Text == "")
+                    readReport.ReportAmount = 0;
+                else { add = false; notification += " raport"; }
+            }
+
+            try { readReport.Terminal = decimal.Parse(terminalEntry.Text); }
+            catch
+            {
+                if (terminalEntry.Text == null || terminalEntry.Text == "")
+                    readReport.Terminal = 0;
+                else { add = false; notification += " terminal"; }
+            }
+            try { readReport.AmountIn = decimal.Parse(isEntry.Text); }
+            catch
+            {
+                if (isEntry.Text == null || isEntry.Text == "")
+                    readReport.AmountIn = 0;
+                else { add = false; notification += " jest"; }
+            }
+            try { readReport.Pizzas = int.Parse(pizzasEntry.Text); }
+            catch
+            {
+                if (pizzasEntry.Text == null || pizzasEntry.Text == "")
+                    readReport.Pizzas = 0;
+                else { add = false; notification += " pizze"; }
+            }
+            if(add == false)
+            {
+                await DisplayAlert("Uwaga", "Pole"+notification+" zostało źle wypełnione", "OK");
+            }
+            else
+            {
+                readReport.ShouldBe = readReport.ShouldBe + readReport.ReportAmount - readReport.Terminal;
+                readReport.Difference = readReport.AmountIn - readReport.ShouldBe;
+                bool result = await readReport.UpdateReport();
+                List<Report> rList = new List<Report>();
+                rList.Add(readReport);
+                reportDataGrid.ItemsSource = rList;
+            }
         }
         
     }

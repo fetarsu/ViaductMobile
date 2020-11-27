@@ -30,6 +30,15 @@ namespace ViaductMobile
                 BarTextColor = Color.White
             };
         }
+        protected override bool OnBackButtonPressed()
+        {
+            App.Current.MainPage = new NavigationPage(new MainPage(loggedUser))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+            return true;
+        }
 
         [Obsolete]
         private async void AddClicked(object sender, EventArgs e)

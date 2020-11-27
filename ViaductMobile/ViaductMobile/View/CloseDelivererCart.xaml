@@ -36,7 +36,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" >Data:</Label>
-            <DatePicker Grid.Column="1" Grid.Row="0" x:Name="chooseDayPicker" TextColor="White" HorizontalOptions="Center" DateSelected="chooseDay_PropertyChanged">
+            <DatePicker Grid.Column="1" Grid.Row="0" x:Name="chooseDayPicker" TextColor="White" HorizontalOptions="Center" DateSelected="chooseDayPicker_DateSelected" Focused="usersPicker_Focused">
                 <DatePicker.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
                         <On Platform="Android" Value="0 0 0 0"></On>
@@ -44,7 +44,7 @@
                     </OnPlatform>
                 </DatePicker.Margin>
             </DatePicker >
-            <Picker Grid.Column="0" Grid.Row="1" x:Name="usersPicker"></Picker>
+            <Picker Style="{StaticResource typicalPicker}" Grid.Column="0" Grid.Row="1" x:Name="usersPicker" SelectedIndexChanged="usersPicker_SelectedIndexChanged" Focused="usersPicker_Focused"></Picker>
             <Button Style="{StaticResource typicalButton}" Grid.Row="1" Grid.Column="1" BackgroundColor="Green" Text="Przywróć dzień" Clicked="RestoreDayClicked"></Button>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="2">Kursy</Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="2" x:Name="coursesLabel"></Label>

@@ -18,11 +18,15 @@ namespace ViaductMobile.View.Popups
         Deliverer newDeliverer;
         Employee newEmployee;
         User loggedUser;
+        string chosedUser;
+        DateTime deliverDate;
         bool closed = true;
-        public CloseDayNotification(Deliverer newDeliverer, Employee newEmployee, User loggedUser)
+        public CloseDayNotification(Deliverer newDeliverer, Employee newEmployee, User loggedUser, DateTime deliverDate, string chosedUser)
         {
             InitializeComponent();
             this.loggedUser = loggedUser;
+            this.deliverDate = deliverDate;
+            this.chosedUser = chosedUser;
             this.newDeliverer = newDeliverer;
             this.newEmployee = newEmployee;
             nicknameLabel.Text = newDeliverer.Nickname;
@@ -41,7 +45,7 @@ namespace ViaductMobile.View.Popups
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
             bonusLabel.Text = newEmployee.Bonus.ToString();
             cashForDayLabel.Text = newEmployee.DayWage.ToString();
-            AmountToCashLabel.Text = newDeliverer.AmountToCash.ToString();
+            AmountToCashLabel.Text = (newDeliverer.AmountToCash - newEmployee.DayWage - newEmployee.Bonus).ToString();
         }
 
         [Obsolete]
@@ -57,7 +61,7 @@ namespace ViaductMobile.View.Popups
             await newDeliverer.UpdateDeliverer(newDeliverer);
             await PopupNavigation.PopAsync(true);
             await PopupNavigation.PopAsync(true);
-            App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, newDeliverer, newEmployee))
+            App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, newDeliverer, newEmployee, deliverDate, chosedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

@@ -108,6 +108,8 @@ namespace ViaductMobile.View
             {
                 pizzasList.Add(item.Name);
             }
+            adressesList = adressesList.Distinct().ToList();
+            pizzasList = pizzasList.Distinct().ToList();
 
         }
         private async void Add_Clicked(object sender, EventArgs e)
@@ -130,7 +132,7 @@ namespace ViaductMobile.View
             }
 
             var newAdress = adressList.Where(x => x.Street.Equals(streetName) && x.Number.Equals(buildingEntry.Text)).FirstOrDefault();
-            if(newAdress == null)
+            if(newAdress == null && (platformPicker.SelectedItem.ToString().Equals("Vk") || platformPicker.SelectedItem.ToString().Equals("Vg") || platformPicker.SelectedItem.ToString().Equals("So") || platformPicker.SelectedItem.ToString().Equals("Sg")))
             {
                 Adress item = new Adress()
                 {
@@ -166,7 +168,7 @@ namespace ViaductMobile.View
                 clickedRow.DelivererId = delivererId;
                 bool result = await clickedRow.UpdateSupply(clickedRow);
             }
-            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, chosedDate))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
@@ -269,7 +271,7 @@ namespace ViaductMobile.View
         }
         private void BackClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, chosedDate))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
@@ -278,7 +280,7 @@ namespace ViaductMobile.View
 
         protected override bool OnBackButtonPressed()
         {
-            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, chosedDate))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

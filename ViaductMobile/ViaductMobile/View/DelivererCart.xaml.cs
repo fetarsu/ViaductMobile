@@ -16,7 +16,7 @@ namespace ViaductMobile.View
     public partial class DelivererCart : ContentPage
     {
         User loggedUser;
-        Report report;
+        Report report = new Report();
         bool closed, emptyDevliererId, reload = false;
         Deliverer newDeliverer = new Deliverer();
         Deliverer cart;
@@ -31,6 +31,18 @@ namespace ViaductMobile.View
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             usersPicker.ItemsSource = Methods.userList;
             usersPicker.SelectedItem = loggedUser.Nickname;
+            ReloadData();
+        }
+        public DelivererCart(User loggedUser, DateTime chosedDate)
+        {
+            this.chosedDate = chosedDate;
+            this.loggedUser = loggedUser;
+            InitializeComponent();
+            Xamarin.Forms.DataGrid.DataGridComponent.Init();
+            usersPicker.ItemsSource = Methods.userList;
+            usersPicker.SelectedItem = loggedUser.Nickname;
+            chooseDayPicker.Date = chosedDate.Date;
+            ReloadData();
         }
         public DelivererCart(User loggedUser, List<Supply> listOfSupply)
         {
@@ -62,59 +74,86 @@ namespace ViaductMobile.View
             return true;
         }
 
-        private void AddSupply(object sender, EventArgs e)
+        private async void AddSupply(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new AddSupply(delivererCartDataGrid, loggedUser, cartList.Count(), delivererId, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
+            if(report.Closed == true)
             {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
-        }
-        [Obsolete]
-        private void EditSupply(object sender, EventArgs e)
-        {
-            Supply clickedRow = (Supply)delivererCartDataGrid.SelectedItem;
-            if (clickedRow != null)
+                await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
+            }
+            else
             {
-                App.Current.MainPage = new NavigationPage(new AddSupply(clickedRow, delivererCartDataGrid, loggedUser, delivererId))
+                App.Current.MainPage = new NavigationPage(new AddSupply(delivererCartDataGrid, loggedUser, cartList.Count(), delivererId, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
                 {
                     BarBackgroundColor = Color.FromHex("#3B3B3B"),
                     BarTextColor = Color.White
                 };
+            }  
+        }
+        [Obsolete]
+        private async void EditSupply(object sender, EventArgs e)
+        {
+            if (report.Closed == true)
+            {
+                await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
             }
+            else
+            {
+                Supply clickedRow = (Supply)delivererCartDataGrid.SelectedItem;
+                if (clickedRow != null)
+                {
+                    App.Current.MainPage = new NavigationPage(new AddSupply(clickedRow, delivererCartDataGrid, loggedUser, delivererId))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
+            }    
         }
         [Obsolete]
         private async void CloseDayClicked(object sender, EventArgs e)
         {
-            Report report = new Report();
-            var idList = await report.ReadTodayReport(chooseDayPicker.Date);
-            if (!idList.Any())
+            if (report.Closed == true)
             {
-                Report readReport = new Report();
-                readReport.Start = 0;
-                readReport.ReportAmount = 0;
-                readReport.Terminal = 0;
-                readReport.Date = chooseDayPicker.Date;
-                readReport.ShouldBe = 0;
-                readReport.AmountIn = 0;
-                readReport.Difference = 0;
-                readReport.Pizzas = 0;
-                await readReport.SaveReport();
-                reportId = readReport.Id;
+                await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
             }
             else
             {
-                reportId = idList.SingleOrDefault().Id;
+                if (report != null)
+                {
+                    Report readReport = new Report();
+                    readReport.Start = 0;
+                    readReport.ReportAmount = 0;
+                    readReport.Terminal = 0;
+                    readReport.Date = chooseDayPicker.Date;
+                    readReport.ShouldBe = 0;
+                    readReport.AmountIn = 0;
+                    readReport.Difference = 0;
+                    readReport.Pizzas = 0;
+                    await readReport.SaveReport();
+                    reportId = readReport.Id;
+                }
+                else
+                {
+                    reportId = report.Id;
+                }
+                var listOfSupplys = new ViewModels.DelivererCartVM(delivererId).Supplies;
+                await PopupNavigation.PushAsync(new CloseDeliverDay(loggedUser, listOfSupplys, chooseDayPicker.Date, usersPicker.SelectedItem.ToString(), reportId, cart));
             }
-            var listOfSupplys = new ViewModels.DelivererCartVM(delivererId).Supplies;
-            await PopupNavigation.PushAsync(new CloseDeliverDay(loggedUser, listOfSupplys, chooseDayPicker.Date, reportId, cart));
+            
         }
 
         async void DeleteSupply(object sender, EventArgs e)
         {
-            Supply x = (Supply)delivererCartDataGrid.SelectedItem;
-            await x.DeleteSupply(x);
-            delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererId).Supplies;
+            if (report.Closed == true)
+            {
+                await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
+            }
+            else
+            {
+                Supply x = (Supply)delivererCartDataGrid.SelectedItem;
+                await x.DeleteSupply(x);
+                delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererId).Supplies;
+            }      
         }
 
         private void usersPicker_Focused(object sender, FocusEventArgs e)
@@ -144,10 +183,8 @@ namespace ViaductMobile.View
         {
             if(userr == null)
             {
-                var x = await loggedUser.ReadAllUsers();
-                Methods.userList = x;
-                usersPicker.ItemsSource = x;
-                foreach (var item in x)
+                var uList = Methods.userList;
+                foreach (var item in uList)
                 {
                     if (item.Equals(loggedUser.Nickname))
                     {
@@ -156,6 +193,8 @@ namespace ViaductMobile.View
                 }
             }
             DateTime datee = chooseDayPicker.Date;
+            var rList = await report.ReadTodayReport(datee);
+            report = rList.SingleOrDefault();
             cartList = await newDeliverer.ReadDelivererCart(datee, userr);
             if (cartList.Count != 0)
             {
@@ -173,7 +212,7 @@ namespace ViaductMobile.View
                     Employee newEmployee = new Employee();
                     var employeeList = await newEmployee.ReadEmployeeCart(userr, datee);
                     newEmployee = employeeList.SingleOrDefault();
-                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, newEmployee))
+                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, newEmployee, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
                     {
                         BarBackgroundColor = Color.FromHex("#3B3B3B"),
                         BarTextColor = Color.White

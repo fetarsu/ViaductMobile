@@ -44,10 +44,10 @@
                     </dg:PaletteCollection>
                 </dg:DataGrid.RowsBackgroundColorPalette>
             </dg:DataGrid>
-            <Button Style="{StaticResource typicalButton}" Text="Edytuj" Grid.Row="1" Grid.ColumnSpan="3" Clicked="Edit_Report_Clicked"></Button>
+            <Button x:Name="editReportButton" Style="{StaticResource typicalButton}" Text="Edytuj" Grid.Row="1" Grid.ColumnSpan="3" Clicked="Edit_Report_Clicked"></Button>
             <Expander x:Name="employeeExpander" ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="2" Grid.ColumnSpan="3">
                 <Expander.Header>
-                    <Label Text="Pracownicy" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
+                    <Label HorizontalTextAlignment="Center" Text="Pracownicy" FontAttributes="Bold" FontSize="40" BackgroundColor="#CC9A06"/>
                 </Expander.Header>
                 <StackLayout>
                 <ScrollView VerticalOptions="FillAndExpand" >
@@ -72,15 +72,15 @@
                         </dg:DataGrid>
                     </ScrollView>
                     <StackLayout Orientation="Horizontal">
-                        <Button Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125" Clicked="Add_Employee_Clicked"></Button>
-                        <Button Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125" Clicked="Edit_Employee_Clicked"></Button>
-                        <Button Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125" Clicked="Delete_Employee_Clicked"></Button>
+                        <Button x:Name="addEmployeeButton" Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125" Clicked="Add_Employee_Clicked"></Button>
+                        <Button x:Name="editEmployeeButton" Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125" Clicked="Edit_Employee_Clicked"></Button>
+                        <Button x:Name="deleteEmployeeButton" Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125" Clicked="Delete_Employee_Clicked"></Button>
                     </StackLayout>
                 </StackLayout>
             </Expander>
             <Expander x:Name="operationExpander" ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="3" Grid.ColumnSpan="3">
                 <Expander.Header>
-                    <Label Text="Operacje" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
+                    <Label HorizontalTextAlignment="Center" Text="Operacje" FontAttributes="Bold" FontSize="40" BackgroundColor="#CC9A06"/>
                 </Expander.Header>
                 <StackLayout>
                     <ScrollView VerticalOptions="FillAndExpand" >
@@ -104,15 +104,15 @@
                         </dg:DataGrid>
                     </ScrollView>
                     <StackLayout Orientation="Horizontal">
-                        <Button Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125" Clicked="Add_Operation_Clicked"></Button>
-                        <Button Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125" Clicked="Edit_Operation_Clicked"></Button>
-                        <Button Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125" Clicked="Delete_Operation_Clicked"></Button>
+                        <Button x:Name="addOperationButton" Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125" Clicked="Add_Operation_Clicked"></Button>
+                        <Button x:Name="editOperationButton" Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125" Clicked="Edit_Operation_Clicked"></Button>
+                        <Button x:Name="deleteOperationButton" Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125" Clicked="Delete_Operation_Clicked"></Button>
                     </StackLayout>
                 </StackLayout>
             </Expander>
             <Expander ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="4" Grid.ColumnSpan="3">
                 <Expander.Header>
-                    <Label Text="Dostawy" FontAttributes="Bold" FontSize="40" BackgroundColor="ForestGreen"/>
+                    <Label HorizontalTextAlignment="Center" Text="Dostawy" FontAttributes="Bold" FontSize="40" BackgroundColor="#CC9A06"/>
                 </Expander.Header>
                 <StackLayout>
                     <ScrollView VerticalOptions="FillAndExpand" >
@@ -147,7 +147,7 @@
                     </ScrollView>
                 </StackLayout>
             </Expander>
-            <Button Style="{StaticResource typicalButton}" BackgroundColor="DarkRed" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="Wyślij raport"></Button>
+            <Button x:Name="sendReportButton" Style="{StaticResource typicalButton}" BackgroundColor="DarkRed" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="Zakończ dzień" Clicked="SendReportClicked"></Button>
         </Grid>
     </ScrollView>
 </ContentPage>

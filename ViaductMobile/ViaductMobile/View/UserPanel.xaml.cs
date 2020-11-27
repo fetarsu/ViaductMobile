@@ -1,4 +1,5 @@
-﻿using Rg.Plugins.Popup.Services;
+﻿using Acr.UserDialogs;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,6 @@ namespace ViaductMobile.View
             delivererRateLabel.Text = "Stawka dostawy: " + loggedUser.DeliverRate;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             BindingContext = new ViewModels.OverdueEmployeeVM(loggedUser);
-
         }
         private void BackClicked(object sender, EventArgs e)
         {
@@ -37,6 +37,15 @@ namespace ViaductMobile.View
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
             };
+        }
+        protected override bool OnBackButtonPressed()
+        {
+            App.Current.MainPage = new NavigationPage(new MainPage(loggedUser))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+            return true;
         }
 
         [Obsolete]
@@ -71,6 +80,7 @@ namespace ViaductMobile.View
                 bool result = await operation.SaveOperations();
                 bool result2 = await selectedRow.DeleteOverdueCash(selectedRow);
             }
+            overdueDataGrid.ItemsSource = new ViewModels.OverdueEmployeeVM(loggedUser).Overdues;
 
         }
 

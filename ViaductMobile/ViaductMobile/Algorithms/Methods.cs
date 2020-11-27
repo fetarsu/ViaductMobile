@@ -9,8 +9,9 @@ namespace ViaductMobile.Algorithms
 {
     class Methods
     {
+        public static readonly string version = "1.0";
         public static readonly List<string> permissionList = new List<string>() { "Admin", "Manager", "Pracownik" };
-        public static readonly List<string> positionList = new List<string>() { "Bar", "Kuchnia", "Kierownictwo" };
+        public static readonly List<string> positionList = new List<string>() { "Bar", "Kuchnia", "Dostawy", "Kierownictwo" };
         public static Dictionary<String, Decimal> platformList = new Dictionary<String, Decimal>();
         public static List<Report> test;
         public static List<Employee> reportEmployeeList;
@@ -24,6 +25,13 @@ namespace ViaductMobile.Algorithms
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
         public static async void ReadAllUsers()
+        {
+            User user = new User();
+            List<string> userListt = new List<string>();
+            userListt = await user.ReadAllUsers();
+            userList = userListt;
+        }
+        public static async void CheckVersion()
         {
             User user = new User();
             List<string> userListt = new List<string>();

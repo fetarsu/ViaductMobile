@@ -60,7 +60,7 @@
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="4" Grid.Column="0" Text="Kwota dostawy" Grid.ColumnSpan="2"></Label>
                 <Entry Style="{StaticResource typicalEntry}" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" x:Name="amountEntry"></Entry>
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="5" Grid.Column="0" Text="Platforma" Grid.ColumnSpan="2"></Label>
-                <Picker Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" x:Name="platformPicker" SelectedIndexChanged="platformPicker_SelectedIndexChanged"></Picker>
+                <Picker Style="{StaticResource typicalPicker}" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" x:Name="platformPicker" SelectedIndexChanged="platformPicker_SelectedIndexChanged"></Picker>
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="6" Grid.Column="0" Text="Kwota kursu" Grid.ColumnSpan="2"></Label>
                 <Entry Style="{StaticResource typicalEntry}" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" x:Name="courseEntry"></Entry>
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="7" Grid.Column="0" Text="Składnik" Grid.ColumnSpan="2" x:Name="componentLabel"></Label>
@@ -75,7 +75,7 @@
                        HorizontalOptions="Fill"
                        VerticalOptions="CenterAndExpand"  ItemSelected="changeSearchBar2">
                 </ListView>
-                <dg:DataGrid x:Name="componentsDataGrid" Grid.Row="10" Grid.ColumnSpan="4" ItemsSource="{Binding Components}" SelectedItem="{Binding SelectedComponent}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="25" HeaderHeight="25" SelectionEnabled="True">
+                <dg:DataGrid x:Name="componentsDataGrid" Grid.Row="10" Grid.ColumnSpan="4" ItemsSource="{Binding Components}" SelectedItem="{Binding SelectedComponent}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="25" HeaderHeight="25" SelectionEnabled="True" HeightRequest="250">
                     <x:Arguments>
                         <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
                     </x:Arguments>

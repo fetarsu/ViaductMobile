@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acr.UserDialogs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,37 +14,64 @@ namespace ViaductMobile
     public partial class ChooseDate : ContentPage
     {
         List<Report> reportt;
+        User loggedUser;
         public Report readReportt = new Report();
         public ChooseDate()
         {
             InitializeComponent();
             chooseDay.Date = DateTime.Now;
         }
-
-        private void BackClicked(object sender, EventArgs e)
+        public ChooseDate(User loggedUser)
         {
-            App.Current.MainPage = new NavigationPage(new MainPage())
-            {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
+            InitializeComponent();
+            this.loggedUser = loggedUser;
+            chooseDay.Date = DateTime.Now;
         }
-
         protected override bool OnBackButtonPressed()
         {
-            App.Current.MainPage = new NavigationPage(new MainPage())
+            if (loggedUser != null)
             {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
+                App.Current.MainPage = new NavigationPage(new MainPage(loggedUser))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
+            else
+            {
+                App.Current.MainPage = new NavigationPage(new MainPage())
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
             return true;
+        }
+        private void BackClicked(object sender, EventArgs e)
+        {
+            if (loggedUser != null)
+            {
+                App.Current.MainPage = new NavigationPage(new MainPage(loggedUser))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
+            else
+            {
+                App.Current.MainPage = new NavigationPage(new MainPage())
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
         }
         private async void MoveToNewReportClicked(object sender, EventArgs e)
         {
-
+            UserDialogs.Instance.ShowLoading("Proszę czekać...");
             reportt = await readReportt.ReadTodayReport(chooseDay.Date);
-            readReportt = reportt.SingleOrDefault();
-            if(readReportt == null)
+            readReportt = reportt.SingleOrDefault(); 
+            if (readReportt == null)
             {
                 Report readReport = new Report();
                 readReport.Start = 0;
@@ -55,20 +83,44 @@ namespace ViaductMobile
                 readReport.Difference = 0;
                 readReport.Pizzas = 0;
                 await readReport.SaveReport();
-                App.Current.MainPage = new NavigationPage(new NewReport(readReport))
+                if(loggedUser != null)
                 {
-                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                    BarTextColor = Color.White
-                };
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, loggedUser))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
+                else
+                {
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReport))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
             }
             else
             {
-                App.Current.MainPage = new NavigationPage(new NewReport(readReportt))
+                if (loggedUser != null)
                 {
-                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                    BarTextColor = Color.White
-                };
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReportt, loggedUser))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
+                else
+                {
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReportt))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
+                
             }
+            UserDialogs.Instance.HideLoading();
         }
     }
 }

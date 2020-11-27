@@ -15,21 +15,25 @@ namespace ViaductMobile.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CloseDelivererCart : ContentPage
     {
-        User loggedUser;
+        User loggedUser, chosedUser;
         Report report;
         bool closed, reload;
         Deliverer cart;
         public string userr;
         List<Deliverer> cartList = new List<Deliverer>();
-        string delivererId, selectedUser, reportId;
+        string delivererId, selectedUser, reportId, chosedUserr;
         Decimal cash, bonus;
         Deliverer newDeliverer;
-        DateTime deliverDate;
+        DateTime deliverDate, chosedDate;
         Employee newEmployee;
-        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, Employee newEmployee)
+        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, Employee newEmployee, DateTime chosedDate, string chosedUserr)
         {
-            this.loggedUser = loggedUser;
             InitializeComponent();
+            this.chosedDate = chosedDate;
+            this.chosedUserr = chosedUserr;
+            this.loggedUser = loggedUser;
+            chooseDayPicker.Date = chosedDate.Date;
+            usersPicker.SelectedItem = chosedUserr;
             this.newDeliverer = newDeliverer;
             this.newEmployee = newEmployee;
             coursesLabel.Text = newDeliverer.Courses.ToString();
@@ -61,6 +65,15 @@ namespace ViaductMobile.View
             };
         }
 
+        private void chooseDayPicker_DateSelected(object sender, DateChangedEventArgs e)
+        {
+            if (reload == true)
+            {
+                ReloadData();
+                reload = false;
+            }
+        }
+
         protected override bool OnBackButtonPressed()
         {
             App.Current.MainPage = new NavigationPage(new MainPage(loggedUser))
@@ -76,15 +89,27 @@ namespace ViaductMobile.View
         {
             Supply s = new Supply();
             Report report = new Report();
-            var id = report.ReadTodayReport(deliverDate);
-            var listOfSupplys = await s.ReadSupply(newDeliverer.Id);
-            newDeliverer.Closed = false;
-            await newDeliverer.UpdateDeliverer(newDeliverer);
-            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, listOfSupplys))
+            var reportList = await report.ReadTodayReport(deliverDate);
+            var reportt = reportList.SingleOrDefault();
+            if(reportt.Closed == true)
             {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
+                await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
+            }
+            else
+            {
+                var listOfSupplys = await s.ReadSupply(newDeliverer.Id);
+                newDeliverer.Closed = false;
+                await newDeliverer.UpdateDeliverer(newDeliverer);
+                var emp = await newEmployee.ReadEmployeeCart(usersPicker.SelectedItem.ToString(), chooseDayPicker.Date);
+                var employee = emp.SingleOrDefault();
+                var result = employee.DeleteEmployee(employee);
+                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, listOfSupplys))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
+            
         }
         async void ReadAllUsers()
         {
@@ -113,14 +138,7 @@ namespace ViaductMobile.View
                 reload = false;
             }
         }
-        private void chooseDay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (reload == true)
-            {
-                ReloadData();
-                reload = false;
-            }
-        }
+
 
         async void ReloadData()
         {
@@ -145,19 +163,34 @@ namespace ViaductMobile.View
                 delivererId = cart.Id;
                 if (cart.Closed == false)
                 {
-
+                    if (delivererId != null)
+                    {
+                        App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, datee))
+                        {
+                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                            BarTextColor = Color.White
+                        };
+                    }
                 }
                 else
                 {
                     Employee newEmployee = new Employee();
                     var employeeList = await newEmployee.ReadEmployeeCart(userr, datee);
                     newEmployee = employeeList.SingleOrDefault();
-                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, newEmployee))
+                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, newEmployee, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
                     {
                         BarBackgroundColor = Color.FromHex("#3B3B3B"),
                         BarTextColor = Color.White
                     };
                 }
+            }
+            else
+            {
+                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, datee))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
             }
         }
 

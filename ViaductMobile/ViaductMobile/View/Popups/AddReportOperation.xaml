@@ -21,7 +21,7 @@
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="Center" Padding="20, 0" HorizontalOptions="FillAndExpand">
-        <Frame CornerRadius="10" Padding="0" BackgroundColor="CadetBlue">
+        <Frame Style="{StaticResource popupFrame}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -36,21 +36,21 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Dodawanie/Edycja Operacji</Label>
-                <Label Grid.Column="0" Grid.Row="1">Wpisz nazwę operacji</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Dodawanie/Edycja Operacji</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="1">Wpisz nazwę operacji</Label>
                 <Entry Grid.Column="1" Grid.Row="1" x:Name="operationNameEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="2">Wybierz autoryzującego</Label>
-                <Picker Grid.Column="1" Grid.Row="2" x:Name="nicknamePicker"></Picker>
-                <Label Grid.Column="0" Grid.Row="3">Numer dokumentu (opcjonalnie)</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="2">Wybierz autoryzującego</Label>
+                <Picker Style="{StaticResource typicalPicker}" Grid.Column="1" Grid.Row="2" x:Name="nicknamePicker"></Picker>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="3">Numer dokumentu (opcjonalnie)</Label>
                 <Entry Grid.Column="1" Grid.Row="3" x:Name="numberEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="4">Kwota</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="4">Kwota</Label>
                 <Entry Grid.Column="1" Grid.Row="4" x:Name="amountEntry"></Entry>
-                <Label Grid.Column="0" Grid.Row="5" HorizontalOptions="StartAndExpand">Faktura</Label>
-                <Label Grid.Column="1" Grid.Row="5" HorizontalOptions="StartAndExpand">Brak faktury</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="5" HorizontalOptions="StartAndExpand">Faktura</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="5" HorizontalOptions="StartAndExpand">Brak faktury</Label>
                 <CheckBox Grid.Column="0" Grid.Row="5" HorizontalOptions="End" VerticalOptions="Start" x:Name="yesInvoiceCheckBox"></CheckBox>
                 <CheckBox Grid.Column="1" Grid.Row="5" HorizontalOptions="End" VerticalOptions="Start" x:Name="noInvoiceCheckBox"></CheckBox>
-                <Button Grid.Column="0" Grid.Row="6" Text="Dodaj" Clicked="Add_Clicked"></Button>
-                <Button Grid.Column="1" Grid.Row="6" Text="Wróć" Clicked="Back_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="6" Text="Dodaj" Clicked="Add_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="6" Text="Wróć" Clicked="Back_Clicked"></Button>
             </Grid>
         </Frame>
     </StackLayout>

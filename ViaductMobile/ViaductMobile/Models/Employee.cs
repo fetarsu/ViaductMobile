@@ -83,7 +83,8 @@ namespace ViaductMobile
 
         public async Task<List<Employee>> ReadEmployeeCart(string user, DateTime date)
         {
-            return await client.GetTable<Employee>().Where(x => x.Nickname == user && x.Date.Day == date.Day && x.Date.Month == x.Date.Month && x.Date.Year == x.Date.Year && x.Position == "Deliverer").ToListAsync();
+            var a = client.GetTable<Employee>().Where(x => x.Nickname == user && x.Date.Day == date.Day && x.Date.Month == date.Month && x.Date.Year == date.Year && x.Position == "Dostawy").ToListAsync();
+            return await a;
         }
 
     }

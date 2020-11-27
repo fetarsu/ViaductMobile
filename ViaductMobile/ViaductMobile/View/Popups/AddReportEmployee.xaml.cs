@@ -88,6 +88,11 @@ namespace ViaductMobile.View.Popups
                 rate = selectedUser.KitchenRate;
                 cash = rate * roznica2;
             }
+            else if (positionPicker.SelectedItem.Equals("Dostawy"))
+            {
+                rate = selectedUser.DeliverRate;
+                cash = rate * roznica2;
+            }
             else if (positionPicker.SelectedItem.Equals("Kierownictwo"))
             {
                 rate = 0;

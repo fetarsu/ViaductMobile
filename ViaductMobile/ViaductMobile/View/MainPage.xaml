@@ -18,8 +18,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
-        <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="createReportButton" Text="Dodaj Raport" Clicked="MoveToChooseDateClicked" Margin="5, 50, 10, -40"/>
-        <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" x:Name="viewReportButton" Text="Wyświetl Raport" Margin="5, 80, 10, -70"/>
+        <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="createReportButton" Text="Dodaj Raport" Clicked="MoveToChooseDateClicked" Margin="5, 50, 10, -40" IsVisible="false"/>
+        <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" x:Name="viewReportButton" Text="Wyświetl Raport" Margin="5, 80, 10, -70" IsVisible="false"/>
 
     </Grid>
 
