@@ -61,13 +61,16 @@ namespace ViaductMobile
             logout.Clicked += MoveToLogout;
             this.ToolbarItems.Add(logout);
         }
-        private void MoveToAdressesPanelClicked(object sender, EventArgs e)
+        private async void MoveToAdressesPanelClicked(object sender, EventArgs e)
         {
+            UserDialogs.Instance.ShowLoading("Proszę czekać...");
+            await Task.Delay(100);
             App.Current.MainPage = new NavigationPage(new AdressesPanel(loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
             };
+            UserDialogs.Instance.HideLoading();
         }
         private void MoveToLogout(object sender, EventArgs e)
         {
@@ -77,29 +80,38 @@ namespace ViaductMobile
                 BarTextColor = Color.White
             };
         }
-        private void MoveToPizzasPanelClicked(object sender, EventArgs e)
+        private async void MoveToPizzasPanelClicked(object sender, EventArgs e)
         {
+            UserDialogs.Instance.ShowLoading("Proszę czekać...");
+            await Task.Delay(100);
             App.Current.MainPage = new NavigationPage(new PizzasPanel(loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
             };
+            UserDialogs.Instance.HideLoading();
         }
-        private void MoveToDelivererCartClicked(object sender, EventArgs e)
+        private async void MoveToDelivererCartClicked(object sender, EventArgs e)
         {
+            UserDialogs.Instance.ShowLoading("Proszę czekać...");
+            await Task.Delay(100);
             App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
             };
+            UserDialogs.Instance.HideLoading();
         }
-        private void MoveToUserPanelClicked(object sender, EventArgs e)
+        private async void MoveToUserPanelClicked(object sender, EventArgs e)
         {
+            UserDialogs.Instance.ShowLoading("Proszę czekać...");
+            await Task.Delay(100);
             App.Current.MainPage = new NavigationPage(new UserPanel(loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
             };
+            UserDialogs.Instance.HideLoading();
         }
         private void MoveToLoginClicked(object sender, EventArgs e)
         {
@@ -118,13 +130,16 @@ namespace ViaductMobile
                 BarTextColor = Color.White
             };
         }
-        async void MoveToEmployeePanelClicked(object sender, EventArgs e)
+        private async void MoveToEmployeePanelClicked(object sender, EventArgs e)
         {
+            UserDialogs.Instance.ShowLoading("Proszę czekać...");
+            await Task.Delay(100);
             App.Current.MainPage = new NavigationPage(new EmployeePanel(loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
             };
+            UserDialogs.Instance.HideLoading();
         }
     }
 }

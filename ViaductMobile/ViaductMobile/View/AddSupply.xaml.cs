@@ -44,10 +44,12 @@ namespace ViaductMobile.View
             platformPicker.ItemsSource = Methods.platformList.Keys.ToList();
             LoadAdressesAndPizzas();
         }
-        public AddSupply(Supply clickedRow, Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, string delivererId)
+        public AddSupply(Supply clickedRow, Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate)
         {
             this.delivererId = delivererId;
+            this.chosedDate = chosedDate;
             this.loggedUser = loggedUser;
+            this.cartListCount = cartListCount;
             componentsList.Clear();
             this.clickedRow = clickedRow;
             this.delivererCartDataGrid = delivererCartDataGrid;
@@ -73,11 +75,23 @@ namespace ViaductMobile.View
             platformPicker.ItemsSource = Methods.platformList.Keys.ToList();
             platformPicker.SelectedItem = clickedRow.Platform;
             string[] tokens = clickedRow.Adress.Split(' ');
-            string[] tokens2 = tokens[2].Split('.');
-            adressLabel.Text = tokens[0];
-            streetName = tokens[0];
-            buildingEntry.Text = tokens[1];
-            flatEntry.Text = tokens2[1];
+            
+            if (tokens.Length == 4)
+            {
+                string[] tokens2 = tokens[3].Split('.');
+                adressLabel.Text = tokens[0] + " " + tokens[1];
+                streetName = tokens[0] + " " + tokens[1];
+                buildingEntry.Text = tokens[2];
+                flatEntry.Text = tokens2[1];
+            }
+            else
+            {
+                string[] tokens2 = tokens[2].Split('.');
+                adressLabel.Text = tokens[0];
+                streetName = tokens[0];
+                buildingEntry.Text = tokens[1];
+                flatEntry.Text = tokens2[1];
+            }
             edit = true;
             addAdressButton.Text = "Usuń";
             searchBar.IsVisible = false;

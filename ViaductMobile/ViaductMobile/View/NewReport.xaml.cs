@@ -182,8 +182,8 @@ namespace ViaductMobile
         {
             operationExpander.IsExpanded = false;
             Operation x = (Operation)operationDataGrid.SelectedItem;
-            await x.DeleteOperations(x);
             listOperation.Remove(x);
+            await x.DeleteOperations(x);
             operationDataGrid.ItemsSource = new ViewModels.OperationTableVM(listOperation).Operations;
             operationExpander.IsExpanded = true;
         }

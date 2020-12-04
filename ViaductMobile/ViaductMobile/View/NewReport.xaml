@@ -49,6 +49,7 @@
                 <Expander.Header>
                     <Label HorizontalTextAlignment="Center" Text="Pracownicy" FontAttributes="Bold" FontSize="40" BackgroundColor="#CC9A06"/>
                 </Expander.Header>
+                <Expander.Content>
                 <StackLayout>
                 <ScrollView VerticalOptions="FillAndExpand" >
                         <dg:DataGrid x:Name="employeesDataGrid" ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedUser}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True" Grid.Row="1" Grid.ColumnSpan="3">
@@ -77,6 +78,7 @@
                         <Button x:Name="deleteEmployeeButton" Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125" Clicked="Delete_Employee_Clicked"></Button>
                     </StackLayout>
                 </StackLayout>
+                </Expander.Content>
             </Expander>
             <Expander x:Name="operationExpander" ExpandAnimationEasing="{x:Static Easing.CubicIn}" ExpandAnimationLength="500" CollapseAnimationEasing="{x:Static Easing.CubicOut}" CollapseAnimationLength="500" Grid.Row="3" Grid.ColumnSpan="3">
                 <Expander.Header>

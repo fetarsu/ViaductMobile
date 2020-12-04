@@ -19,6 +19,7 @@ namespace ViaductMobile.View.Popups
         Report readReport;
         bool add;
         string notification;
+        decimal shouldBe, reportAmount, terminal;
         Xamarin.Forms.DataGrid.DataGrid reportDataGrid;
         public EditReport(Report readReportt, Xamarin.Forms.DataGrid.DataGrid repordGrid)
         {
@@ -30,6 +31,9 @@ namespace ViaductMobile.View.Popups
             terminalEntry.Text = readReport.Terminal.ToString();
             isEntry.Text = readReport.AmountIn.ToString();
             pizzasEntry.Text = readReport.Pizzas.ToString();
+            shouldBe = readReport.ShouldBe;
+            reportAmount = readReport.ReportAmount;
+            terminal = readReport.Terminal;
         }
 
         [Obsolete]
@@ -85,7 +89,7 @@ namespace ViaductMobile.View.Popups
             }
             else
             {
-                readReport.ShouldBe = readReport.ShouldBe + readReport.ReportAmount - readReport.Terminal;
+                readReport.ShouldBe = shouldBe + (readReport.ReportAmount - reportAmount) - (readReport.Terminal - terminal);
                 readReport.Difference = readReport.AmountIn - readReport.ShouldBe;
                 bool result = await readReport.UpdateReport();
                 List<Report> rList = new List<Report>();

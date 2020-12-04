@@ -30,18 +30,25 @@ namespace ViaductMobile.View.Popups
         [Obsolete]
         private async void Change_Clicked(object sender, EventArgs e)
         {
-            var verifyPassword = SecurePasswordHasher.Verify(oldPasswordEntry.Text, loggedUser.Password);
-            if (newPasswordEntry.Text.Equals(new2PasswordEntry.Text) && verifyPassword == true && newPasswordEntry.Text.Length > 5)
+            if (oldPasswordEntry.Text == null || newPasswordEntry.Text == null || new2PasswordEntry.Text == null)
             {
-                var hash = SecurePasswordHasher.Hash(newPasswordEntry.Text);
-                loggedUser.Password = hash;
-                bool result = await loggedUser.UpdateUser(loggedUser);
-                await DisplayAlert("Udało się", "Hasło zostało poprawnie zmienione", "OK");
-                await PopupNavigation.PopAsync(true);
+                await DisplayAlert("Bład", "przynajmniej jedno z pól jest puste", "OK");
             }
             else
             {
-                await DisplayAlert("Bład", "Stare hasło jest niepoprawne lub nowe haslo nie jest identyczne lub haslo ma mniej niz 6 znakow", "OK");
+                var verifyPassword = SecurePasswordHasher.Verify(oldPasswordEntry.Text, loggedUser.Password);
+                if (newPasswordEntry.Text.Equals(new2PasswordEntry.Text) && verifyPassword == true && newPasswordEntry.Text.Length > 5)
+                {
+                    var hash = SecurePasswordHasher.Hash(newPasswordEntry.Text);
+                    loggedUser.Password = hash;
+                    bool result = await loggedUser.UpdateUser(loggedUser);
+                    await DisplayAlert("Udało się", "Hasło zostało poprawnie zmienione", "OK");
+                    await PopupNavigation.PopAsync(true);
+                }
+                else
+                {
+                    await DisplayAlert("Bład", "Stare hasło jest niepoprawne lub nowe haslo nie jest identyczne lub haslo ma mniej niz 6 znakow", "OK");
+                }
             }
         }
     }

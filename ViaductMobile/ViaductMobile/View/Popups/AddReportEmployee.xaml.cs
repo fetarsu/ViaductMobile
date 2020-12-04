@@ -18,13 +18,13 @@ namespace ViaductMobile.View.Popups
     {
         Employee employee;
         Report readReport;
-        bool edit, employeetable = true;
+        bool edit, employeetable = true, answer, add;
         User selectedUser = new User();
         List<Employee> employeeList = new List<Employee>();
         List<Operation> operationList = new List<Operation>();
-        decimal cash, partOfCash;
+        decimal cash, partOfCash, bonus;
         int rate;
-        string nickname, position;
+        string nickname, position, notification;
         public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Report readReport)
         {
             InitializeComponent();
@@ -61,53 +61,89 @@ namespace ViaductMobile.View.Popups
         [Obsolete]
         private async void Add_Clicked(object sender, EventArgs e)
         {
-            List<User> selectedUserList = await selectedUser.FindSinleUser(nicknamePicker.SelectedItem.ToString());
-            selectedUser = selectedUserList.SingleOrDefault();
-            TimeSpan godzina24 = new TimeSpan(24, 00, 00);
-            double start_liczba = workFromTimePicker.Time.TotalHours;
-            double koniec_liczba = workToTimePicker.Time.TotalHours;
-            double roznica, minusRozpoczecie;
+            add = true;
+            notification = "";
 
-            if (koniec_liczba >= 0 && koniec_liczba < 8)
+            try { bonus = decimal.Parse(bonusEntry.Text); }
+            catch
             {
-                minusRozpoczecie = (godzina24 - workFromTimePicker.Time).TotalHours;
-                roznica = minusRozpoczecie + koniec_liczba;
+                if (bonusEntry.Text == null || bonusEntry.Text == "")
+                    bonus = 0;
+                else { add = false; notification += " bonus "; }
+            }
+            if (nicknamePicker.SelectedItem == null)
+            {
+                add = false;
+                notification += "osoba ";
+            }
+            if (positionPicker.SelectedItem == null)
+            {
+                add = false;
+                notification += "stanowisko ";
+            }
+            if (add == false)
+            {
+                await DisplayAlert("Uwaga", "Pole" + notification + " zostało źle wypełnione", "OK");
             }
             else
             {
-                roznica = (workToTimePicker.Time - workFromTimePicker.Time).TotalHours;
+                List<User> selectedUserList = await selectedUser.FindSinleUser(nicknamePicker.SelectedItem.ToString());
+                selectedUser = selectedUserList.SingleOrDefault();
+                TimeSpan godzina24 = new TimeSpan(24, 00, 00);
+                double start_liczba = workFromTimePicker.Time.TotalHours;
+                double koniec_liczba = workToTimePicker.Time.TotalHours;
+                double roznica, minusRozpoczecie;
+
+                if (koniec_liczba >= 0 && koniec_liczba < 8)
+                {
+                    minusRozpoczecie = (godzina24 - workFromTimePicker.Time).TotalHours;
+                    roznica = minusRozpoczecie + koniec_liczba;
+                }
+                else
+                {
+                    roznica = (workToTimePicker.Time - workFromTimePicker.Time).TotalHours;
+                }
+                decimal roznica2 = (decimal)(roznica);
+                if (positionPicker.SelectedItem.Equals("Bar"))
+                {
+                    rate = selectedUser.BarRate;
+                    cash = rate * roznica2;
+                }
+                else if (positionPicker.SelectedItem.Equals("Kuchnia"))
+                {
+                    rate = selectedUser.KitchenRate;
+                    cash = rate * roznica2;
+                }
+                else if (positionPicker.SelectedItem.Equals("Dostawy"))
+                {
+                    rate = selectedUser.DeliverRate;
+                    cash = rate * roznica2;
+                }
+                else if (positionPicker.SelectedItem.Equals("Kierownictwo"))
+                {
+                    rate = 0;
+                    cash = 0;
+                }
+
+                PickUpDailyWage();
             }
-            decimal roznica2 = (decimal)(roznica);
-            if (positionPicker.SelectedItem.Equals("Bar"))
-            {
-                rate = selectedUser.BarRate;
-                cash = rate * roznica2;
-            }
-            else if (positionPicker.SelectedItem.Equals("Kuchnia"))
-            {
-                rate = selectedUser.KitchenRate;
-                cash = rate * roznica2;
-            }
-            else if (positionPicker.SelectedItem.Equals("Dostawy"))
-            {
-                rate = selectedUser.DeliverRate;
-                cash = rate * roznica2;
-            }
-            else if (positionPicker.SelectedItem.Equals("Kierownictwo"))
-            {
-                rate = 0;
-                cash = 0;
-            }
-            PickUpDailyWage();
         }
         [Obsolete]
         async void PickUpDailyWage()
         {
-            bool answer = await DisplayAlert("Pytanie", "Czy odebrało Ci się całą dniówkę " + cash +"zł?", "Tak", "Nie");
-            if(answer == false)
+
+            answer = await DisplayAlert("Pytanie", "Czy odebrało Ci się całą dniówkę: " + cash + " i premie: " + bonusEntry.Text + "zł?", "Tak", "Nie");
+            if (answer == false)
             {
-                string result = await DisplayPromptAsync("Nieodebrana dniówka", "Wpisz część dniówki jaką udało Ci się odebrać (sama liczba, 0 = nic)");
-                partOfCash = decimal.Parse(result);
+                do
+                {
+                    string result = await DisplayPromptAsync("Nieodebrana dniówka", "Wpisz część dniówki jaką udało Ci się odebrać (sama liczba, 0 = nic)");
+                    partOfCash = decimal.Parse(result);
+                    if (partOfCash > cash + decimal.Parse(bonusEntry.Text))
+                    {
+                        await DisplayAlert("Błąd", "Pieniądze które chcesz odebrać przekraczają sumę dniówki i premii", "OK");
+                    }
+                } while (partOfCash > cash + decimal.Parse(bonusEntry.Text));
             }
             if (answer == true && edit == false)
             {
@@ -119,7 +155,7 @@ namespace ViaductMobile.View.Popups
                     WorkFrom = Convert.ToDateTime(workFromTimePicker.Time.ToString()),
                     WorkTo = Convert.ToDateTime(workToTimePicker.Time.ToString()),
                     DayWage = cash,
-                    Bonus = decimal.Parse(bonusEntry.Text),
+                    Bonus = bonus,
                     ReportId = readReport.Id,
                     Date = readReport.Date
                 };
@@ -135,7 +171,7 @@ namespace ViaductMobile.View.Popups
                 employee.WorkFrom = Convert.ToDateTime(workFromTimePicker.Time.ToString());
                 employee.WorkTo = Convert.ToDateTime(workToTimePicker.Time.ToString());
                 employee.DayWage = cash;
-                employee.Bonus = decimal.Parse(bonusEntry.Text);
+                employee.Bonus = bonus;
                 employee.ReportId = readReport.Id;
                 employee.Date = readReport.Date;
                 bool result = await employee.UpdateEmployee(employee);
@@ -151,7 +187,7 @@ namespace ViaductMobile.View.Popups
                     WorkFrom = Convert.ToDateTime(workFromTimePicker.Time.ToString()),
                     WorkTo = Convert.ToDateTime(workToTimePicker.Time.ToString()),
                     DayWage = partOfCash,
-                    Bonus = decimal.Parse(bonusEntry.Text),
+                    Bonus = bonus,
                     ReportId = readReport.Id,
                     Date = readReport.Date
                 };

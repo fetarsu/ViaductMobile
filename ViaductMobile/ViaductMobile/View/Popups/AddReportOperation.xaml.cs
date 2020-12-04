@@ -15,12 +15,13 @@ namespace ViaductMobile.View.Popups
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddReportOperation : PopupPage
     {
-        string type;
+        string type, notification, operationName, number;
+        decimal amount;
         Operation operation;
         Report readReport;
         List<Employee> employeeList = new List<Employee>();
         List<Operation> operationList = new List<Operation>();
-        bool edit, employeetable = false;
+        bool edit, employeetable = false, add;
         public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Report readReport)
         {
             InitializeComponent();
@@ -31,7 +32,7 @@ namespace ViaductMobile.View.Popups
             edit = false;
         }
         public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Operation operation, Report readReport)
-        {          
+        {
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
             this.operation = operation;
@@ -57,57 +58,84 @@ namespace ViaductMobile.View.Popups
         [Obsolete]
         private async void Add_Clicked(object sender, EventArgs e)
         {
-            if (yesInvoiceCheckBox.IsChecked == true && noInvoiceCheckBox.IsChecked == false)
-                type = "faktura";
-            else if (yesInvoiceCheckBox.IsChecked == false && noInvoiceCheckBox.IsChecked == true)
-                type = "brak";
-            else
-                type = null;
-            if (edit == false && type != null)
+            add = true;
+            notification = "";
+            if (operationNameEntry.Text == "" || operationNameEntry.Text == null)
             {
-                Operation newOperation = new Operation()
-                {
-                    Name = operationNameEntry.Text,
-                    Authorizing = nicknamePicker.SelectedItem.ToString(),
-                    DocumentNumber = numberEntry.Text,
-                    Amount = decimal.Parse(amountEntry.Text),
-                    Date = readReport.Date,
-                    Type = type,
-                    ReportId = readReport.Id
-                };
-                bool result = await newOperation.SaveOperations();
-                await PopupNavigation.PopAsync(true);
-                operationList.Add(newOperation);
-                Methods.reportOperationList = operationList;
-                App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
-                {
-                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                    BarTextColor = Color.White
-                };
+                add = false;
+                notification += "nazwa operacji ";
             }
-            else if(type != null)
+            if (nicknamePicker.SelectedItem == null)
             {
-                operationList.Remove(operation);
-                operation.Name = operationNameEntry.Text;
-                operation.Authorizing = nicknamePicker.SelectedItem.ToString();
-                operation.DocumentNumber = operation.DocumentNumber;
-                operation.Amount = decimal.Parse(amountEntry.Text);
-                operation.Date = readReport.Date;
-                operation.Type = type;
-                operation.ReportId = readReport.Id;
-                bool result = await operation.UpdateOpetarions(operation);
-                operationList.Add(operation);
-                await PopupNavigation.PopAsync(true);
-                Methods.reportOperationList = operationList;
-                App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
-                {
-                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                    BarTextColor = Color.White
-                };
+                add = false;
+                notification += "autoryzujący ";
+            }
+            if (numberEntry.Text == null || numberEntry.Text == "")
+                number = "";
+            try { amount = decimal.Parse(amountEntry.Text); }
+            catch
+            {
+                if (amountEntry.Text == null || amountEntry.Text == "")
+                    amount = 0;
+                else { add = false; notification += "kwota "; }
+            }
+            if ((yesInvoiceCheckBox.IsChecked == true && noInvoiceCheckBox.IsChecked == true) || (yesInvoiceCheckBox.IsChecked == false && noInvoiceCheckBox.IsChecked == false))
+            {
+                add = false; notification += "faktura ";
+            }
+            if (add == false)
+            {
+                await DisplayAlert("Uwaga", "Pole " + notification + " zostało źle wypełnione", "OK");
             }
             else
             {
-                await DisplayAlert("Błąd", "Zaznaczyłeś jednocześnie że operacja ma i nie ma faktury, popraw to", "OK");
+                if (yesInvoiceCheckBox.IsChecked == true && noInvoiceCheckBox.IsChecked == false)
+                    type = "faktura";
+                else if (yesInvoiceCheckBox.IsChecked == false && noInvoiceCheckBox.IsChecked == true)
+                    type = "brak";
+
+                if (edit == false)
+                {
+                    Operation newOperation = new Operation()
+                    {
+                        Name = operationName,
+                        Authorizing = nicknamePicker.SelectedItem.ToString(),
+                        DocumentNumber = number,
+                        Amount = amount,
+                        Date = readReport.Date,
+                        Type = type,
+                        ReportId = readReport.Id
+                    };
+                    bool result = await newOperation.SaveOperations();
+                    await PopupNavigation.PopAsync(true);
+                    operationList.Add(newOperation);
+                    Methods.reportOperationList = operationList;
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
+                else
+                {
+                    operationList.Remove(operation);
+                    operation.Name = operationName;
+                    operation.Authorizing = nicknamePicker.SelectedItem.ToString();
+                    operation.DocumentNumber = number;
+                    operation.Amount = amount;
+                    operation.Date = readReport.Date;
+                    operation.Type = type;
+                    operation.ReportId = readReport.Id;
+                    bool result = await operation.UpdateOpetarions(operation);
+                    operationList.Add(operation);
+                    await PopupNavigation.PopAsync(true);
+                    Methods.reportOperationList = operationList;
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
             }
         }
     }

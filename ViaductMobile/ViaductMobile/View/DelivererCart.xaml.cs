@@ -23,7 +23,7 @@ namespace ViaductMobile.View
         public string userr;
         List<Deliverer> cartList = new List<Deliverer>();
         string delivererId, selectedUser, reportId;
-        DateTime deliverDate, chosedDate;
+        DateTime deliverDate, chosedDate, dateee;
         public DelivererCart(User loggedUser)
         {
             this.loggedUser = loggedUser;
@@ -101,7 +101,7 @@ namespace ViaductMobile.View
                 Supply clickedRow = (Supply)delivererCartDataGrid.SelectedItem;
                 if (clickedRow != null)
                 {
-                    App.Current.MainPage = new NavigationPage(new AddSupply(clickedRow, delivererCartDataGrid, loggedUser, delivererId))
+                    App.Current.MainPage = new NavigationPage(new AddSupply(clickedRow, delivererCartDataGrid, loggedUser, cartList.Count(), delivererId, chooseDayPicker.Date))
                     {
                         BarBackgroundColor = Color.FromHex("#3B3B3B"),
                         BarTextColor = Color.White
@@ -120,17 +120,25 @@ namespace ViaductMobile.View
             {
                 if (report != null)
                 {
-                    Report readReport = new Report();
-                    readReport.Start = 0;
-                    readReport.ReportAmount = 0;
-                    readReport.Terminal = 0;
-                    readReport.Date = chooseDayPicker.Date;
-                    readReport.ShouldBe = 0;
-                    readReport.AmountIn = 0;
-                    readReport.Difference = 0;
-                    readReport.Pizzas = 0;
-                    await readReport.SaveReport();
-                    reportId = readReport.Id;
+                    var readedReport = await report.ReadTodayReport(chooseDayPicker.Date);
+                    if(readedReport[0] != null)
+                    {
+                        reportId = readedReport[0].Id;
+                    }
+                    else
+                    {
+                        Report readReport = new Report();
+                        readReport.Start = 0;
+                        readReport.ReportAmount = 0;
+                        readReport.Terminal = 0;
+                        readReport.Date = chooseDayPicker.Date;
+                        readReport.ShouldBe = 0;
+                        readReport.AmountIn = 0;
+                        readReport.Difference = 0;
+                        readReport.Pizzas = 0;
+                        await readReport.SaveReport();
+                        reportId = readReport.Id;
+                    }  
                 }
                 else
                 {
@@ -170,12 +178,13 @@ namespace ViaductMobile.View
                 reload = false;
             }
         }
-        private void chooseDay_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void chooseDay_PropertyChanged(object sender, EventArgs e)
         {
             if (reload == true)
             {
-                ReloadData();
+                dateee = chooseDayPicker.Date;
                 reload = false;
+                ReloadData();
             }
         }
 
@@ -192,7 +201,11 @@ namespace ViaductMobile.View
                     }
                 }
             }
-            DateTime datee = chooseDayPicker.Date;
+            if(dateee.Year == 0001)
+            {
+                dateee = chooseDayPicker.Date;
+            }
+            DateTime datee = dateee;
             var rList = await report.ReadTodayReport(datee);
             report = rList.SingleOrDefault();
             cartList = await newDeliverer.ReadDelivererCart(datee, userr);

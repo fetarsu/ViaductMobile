@@ -15,7 +15,9 @@ namespace ViaductMobile.View.Popups
     public partial class AddEmployee : PopupPage
     {
         User clickedRow;
-        bool edit;
+        bool edit, add;
+        string notification;
+        int bar, kitchen, deliverer;
         Xamarin.Forms.DataGrid.DataGrid employeesDataGrid;
         public AddEmployee(Xamarin.Forms.DataGrid.DataGrid employeesDataGrid)
         {
@@ -53,7 +55,53 @@ namespace ViaductMobile.View.Popups
         [Obsolete]
         private async void Add_Clicked(object sender, EventArgs e)
         {
-            if(edit == false)
+            add = true;
+            notification = "";
+            if (nicknameEntry.Text == null)
+            {
+                add = false;
+                notification += "pseudonim ";
+            }
+            if (passwordEntry.Text == null)
+            {
+                add = false;
+                notification += "hasło ";
+            }
+            else
+            {
+                if (passwordEntry.Text.Length < 6)
+                {
+                    add = false;
+                    notification += "hasło ";
+                }
+            }
+            if (permissionPicker.SelectedItem == null)
+            {
+                add = false;
+                notification += "uprawnienia ";
+            }
+            try { bar = int.Parse(barRateEntry.Text); }
+            catch
+            {
+                if (barRateEntry.Text == null || barRateEntry.Text == "")
+                    bar = 0;
+                else { add = false; notification += "stawka bar "; }
+            }
+            try { bar = int.Parse(barRateEntry.Text); }
+            catch
+            {
+                if (kitchenRateEntry.Text == null || kitchenRateEntry.Text == "")
+                    kitchen = 0;
+                else { add = false; notification += "stawka kuchnia "; }
+            }
+            try { deliverer = int.Parse(deliverRateEntry.Text); }
+            catch
+            {
+                if (deliverRateEntry.Text == null || deliverRateEntry.Text == "")
+                    deliverer = 0;
+                else { add = false; notification += "stawka dostawy "; }
+            }
+            if (edit == false)
             {
                 var hash = SecurePasswordHasher.Hash(passwordEntry.Text);
                 User newUser = new User()
@@ -61,9 +109,9 @@ namespace ViaductMobile.View.Popups
                     Nickname = nicknameEntry.Text,
                     Password = hash,
                     Permission = permissionPicker.SelectedItem.ToString(),
-                    BarRate = int.Parse(barRateEntry.Text),
-                    KitchenRate = int.Parse(kitchenRateEntry.Text),
-                    DeliverRate = int.Parse(deliverRateEntry.Text)
+                    BarRate = bar,
+                    KitchenRate = kitchen,
+                    DeliverRate = deliverer
                 };
                 bool result = await newUser.SaveUser();
             }
@@ -71,9 +119,9 @@ namespace ViaductMobile.View.Popups
             {
                 clickedRow.Nickname = nicknameEntry.Text;
                 clickedRow.Permission = permissionPicker.SelectedItem.ToString();
-                clickedRow.BarRate = int.Parse(barRateEntry.Text);
-                clickedRow.KitchenRate = int.Parse(kitchenRateEntry.Text);
-                clickedRow.DeliverRate = int.Parse(deliverRateEntry.Text);
+                clickedRow.BarRate = bar;
+                clickedRow.KitchenRate = kitchen;
+                clickedRow.DeliverRate = deliverer;
                 bool result = await clickedRow.UpdateUser(clickedRow);
             }
             employeesDataGrid.ItemsSource = new ViewModels.EmployeePanelVM().Users;
