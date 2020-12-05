@@ -26,12 +26,15 @@ namespace ViaductMobile
 
         private async void LoadStatics()
         {
+            User user = new User();
+            Methods.userList = await user.ReadAllUsers();
             Platform adress = new Platform();
             var x = await adress.ReadPlatform();
             foreach (var item in x)
             {
                 Methods.platformList.Add(item.Name, item.Course);
             }
+
         }
 
         protected override void OnSleep()

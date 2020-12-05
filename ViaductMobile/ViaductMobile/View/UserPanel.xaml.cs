@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Microcharts;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using ViaductMobile.Models;
 using ViaductMobile.View.Popups;
 using Xamarin.Forms;
+using SkiaSharp;
 using Xamarin.Forms.Xaml;
 
 namespace ViaductMobile.View
@@ -15,6 +17,31 @@ namespace ViaductMobile.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UserPanel : ContentPage
     {
+        ChartEntry[] entries = new[]
+        {
+            new ChartEntry(2553)
+            {
+                Label = "Listopad",
+                ValueLabel = "2553",
+                ValueLabelColor = SKColor.Parse("#FFFFFF"),
+                Color = SKColor.Parse("#2c3e50")
+            },
+            new ChartEntry(3592)
+            {
+                Label = "Grudzień",
+                ValueLabel = "3592",
+                ValueLabelColor = SKColor.Parse("#FFFFFF"),
+                Color = SKColor.Parse("#77d065")
+            },
+            new ChartEntry(1663)
+            {
+                Label = "Styczeń",
+                ValueLabel = "1663",
+                ValueLabelColor = SKColor.Parse("#FFFFFF"),
+                Color = SKColor.Parse("#b455b6")
+            }
+        };
+
         User loggedUser;
         OverdueCash selectedRow;
         DateTime currentDate;
@@ -29,6 +56,7 @@ namespace ViaductMobile.View
             delivererRateLabel.Text = "Stawka dostawy: " + loggedUser.DeliverRate;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             BindingContext = new ViewModels.OverdueEmployeeVM(loggedUser);
+            chartView.Chart = new BarChart() { Entries = entries, ValueLabelOrientation = Orientation.Horizontal, LabelTextSize = 40, LabelColor = SKColor.Parse("#FFFFFF"), BackgroundColor = SKColor.Parse("#272727"), Margin = 40 };
         }
         private void BackClicked(object sender, EventArgs e)
         {

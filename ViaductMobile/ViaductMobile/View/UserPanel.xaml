@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="ViaductMobile.View.UserPanel"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms" 
              xmlns:dg="clr-namespace:Xamarin.Forms.DataGrid;assembly=Xamarin.Forms.DataGrid">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Wróć" Clicked="BackClicked" IconImageSource="back.png"></ToolbarItem>
@@ -22,6 +23,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Label Style="{StaticResource typicalLabel}" FontSize="40" HorizontalOptions="CenterAndExpand"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" x:Name="welcomeLabel" Margin="10"></Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Row="1" Grid.Column="0" x:Name="permissionLabel" Margin="10"></Label>
@@ -50,6 +52,7 @@
                 </Grid>
             </ScrollView>
             <Button Style="{StaticResource typicalButton}" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="Odbierz" Margin="10" Clicked="GetDailyWage_Clicked"></Button>
+            <microcharts:ChartView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" x:Name="chartView" HeightRequest="150" />
         </Grid>
     </ScrollView>
 </ContentPage>
