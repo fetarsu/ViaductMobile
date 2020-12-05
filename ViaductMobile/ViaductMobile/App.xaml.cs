@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Net.NetworkInformation;
 using ViaductMobile.Algorithms;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -34,10 +36,12 @@ namespace ViaductMobile
 
         protected override void OnSleep()
         {
+
         }
 
         protected override void OnResume()
         {
+
         }
     }
 }

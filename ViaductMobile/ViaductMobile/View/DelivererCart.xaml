@@ -22,7 +22,7 @@
                 <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" >Data: </Label>
-        <DatePicker Grid.Column="1" Grid.Row="0" x:Name="chooseDayPicker" TextColor="White" HorizontalOptions="Center" DateSelected="chooseDay_PropertyChanged" Focused="usersPicker_Focused">
+        <DatePicker Grid.Column="1" Grid.Row="0" x:Name="chooseDayPicker" TextColor="White" HorizontalOptions="Center" DateSelected="chooseDay_PropertyChanged">
                 <DatePicker.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
                         <On Platform="Android" Value="0 0 0 0"></On>
@@ -30,7 +30,7 @@
                     </OnPlatform>
                 </DatePicker.Margin>
             </DatePicker >
-        <Picker Style="{StaticResource typicalPicker}" Grid.Column="2" Grid.Row="0" x:Name="usersPicker" SelectedIndexChanged="usersPicker_SelectedIndexChanged" Focused="usersPicker_Focused"></Picker>
+        <Picker Style="{StaticResource typicalPicker}" Grid.Column="2" Grid.Row="0" x:Name="usersPicker" SelectedIndexChanged="usersPicker_SelectedIndexChanged"></Picker>
             <ScrollView VerticalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
                 <Grid Padding="10">
                     <dg:DataGrid x:Name="delivererCartDataGrid" ItemsSource="{Binding Supplies}" SelectedItem="{Binding SelectedSupply}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True">

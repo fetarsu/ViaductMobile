@@ -80,6 +80,8 @@ namespace ViaductMobile.View
                 bool result = await operation.SaveOperations();
                 bool result2 = await selectedRow.DeleteOverdueCash(selectedRow);
             }
+            else
+                await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, odbierz dniówkę następnego dnia", "OK");
             overdueDataGrid.ItemsSource = new ViewModels.OverdueEmployeeVM(loggedUser).Overdues;
 
         }

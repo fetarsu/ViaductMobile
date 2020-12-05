@@ -48,6 +48,7 @@ namespace ViaductMobile
             BindingContext = bindingReport;
             listEmployee = Methods.reportEmployeeList;
             listOperation = Methods.reportOperationList;
+            BlockButtons();
             if (readReport.Closed == true)
                 ClosedDay();
         }
@@ -70,6 +71,7 @@ namespace ViaductMobile
             BindingContext = bindingReport;
             listEmployee = Methods.reportEmployeeList;
             listOperation = Methods.reportOperationList;
+            BlockButtons();
             if (readReport.Closed == true)
                 ClosedDay();
         }
@@ -125,6 +127,37 @@ namespace ViaductMobile
             }
             shouldBe = shouldBe + readReport.Start + readReport.ReportAmount - readReport.Terminal;
             return shouldBe;
+        }
+        public void BlockButtons()
+        {
+            DateTime currentDate = DateTime.Now;
+            DateTime nextDay = currentDate.AddDays(1);
+            DateTime prevDay = currentDate.AddDays(-1);
+            if (readReport.Date != prevDay || readReport.Date != nextDay || readReport.Date != currentDate)
+            {
+                if(loggedUser == null)
+                {
+                    addEmployeeButton.IsVisible = editEmployeeButton.IsVisible = deleteEmployeeButton.IsVisible =
+                    addOperationButton.IsVisible = editOperationButton.IsVisible = deleteOperationButton.IsVisible =
+                    editReportButton.IsVisible = sendReportButton.IsVisible = false;
+                }
+                else
+                {
+                    if (loggedUser.Permission.Equals("Admin"))
+                    {
+                        addEmployeeButton.IsVisible = editEmployeeButton.IsVisible = deleteEmployeeButton.IsVisible =
+                        addOperationButton.IsVisible = editOperationButton.IsVisible = deleteOperationButton.IsVisible =
+                        editReportButton.IsVisible = sendReportButton.IsVisible = true;
+                    }
+                    else
+                    {
+                        addEmployeeButton.IsVisible = editEmployeeButton.IsVisible = deleteEmployeeButton.IsVisible =
+                        addOperationButton.IsVisible = editOperationButton.IsVisible = deleteOperationButton.IsVisible =
+                       editReportButton.IsVisible = sendReportButton.IsVisible = false;
+                    }
+                }
+                
+            } 
         }
 
         protected override bool OnBackButtonPressed()

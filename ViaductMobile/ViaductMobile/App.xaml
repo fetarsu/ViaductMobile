@@ -54,7 +54,6 @@
             <Setter Property="TextColor" Value="#ffffff"/>
             <Setter Property="FontSize" Value="12"/>
         </Style>
-
         <!--<Style x:Key="CenterGridHeaderStyle" TargetType="dg:DataGrid">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>-->
