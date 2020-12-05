@@ -98,7 +98,7 @@ namespace ViaductMobile.View.Popups
                 {
                     Operation newOperation = new Operation()
                     {
-                        Name = operationName,
+                        Name = operationNameEntry.Text,
                         Authorizing = nicknamePicker.SelectedItem.ToString(),
                         DocumentNumber = number,
                         Amount = amount,
@@ -119,7 +119,7 @@ namespace ViaductMobile.View.Popups
                 else
                 {
                     operationList.Remove(operation);
-                    operation.Name = operationName;
+                    operation.Name = operationNameEntry.Text;
                     operation.Authorizing = nicknamePicker.SelectedItem.ToString();
                     operation.DocumentNumber = number;
                     operation.Amount = amount;

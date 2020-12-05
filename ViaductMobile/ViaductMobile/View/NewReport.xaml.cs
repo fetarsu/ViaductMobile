@@ -180,21 +180,26 @@ namespace ViaductMobile
         }
         private async void Delete_Operation_Clicked(object sender, EventArgs e)
         {
-            operationExpander.IsExpanded = false;
             Operation x = (Operation)operationDataGrid.SelectedItem;
             listOperation.Remove(x);
             await x.DeleteOperations(x);
-            operationDataGrid.ItemsSource = new ViewModels.OperationTableVM(listOperation).Operations;
-            operationExpander.IsExpanded = true;
+            App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
         }
+
         private async void Delete_Employee_Clicked(object sender, EventArgs e)
         {
-            employeeExpander.IsExpanded = false;
             Employee x = (Employee)employeesDataGrid.SelectedItem;
             await x.DeleteEmployee(x);
             listEmployee.Remove(x);
-            employeesDataGrid.ItemsSource = new ViewModels.EmployeeTableVM(listEmployee).Employees;
-            employeeExpander.IsExpanded = true;
+            App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
         }
         [Obsolete]
         private async void Add_Employee_Clicked(object sender, EventArgs e)
