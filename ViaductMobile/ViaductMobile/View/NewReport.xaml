@@ -73,7 +73,14 @@
                         </dg:DataGrid>
                     </ScrollView>
                     <StackLayout Orientation="Horizontal">
-                        <Button x:Name="addEmployeeButton" Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125" Clicked="Add_Employee_Clicked"></Button>
+                            <Button x:Name="addEmployeeButton" Style="{StaticResource typicalButton}" Text="Dodaj" HorizontalOptions="StartAndExpand" WidthRequest="125" Clicked="Add_Employee_Clicked">
+                                <!--<Button.WidthRequest>
+                                    <OnPlatform x:TypeArguments="x:Double" >
+                                        <On Platform="Android" Value="125" />
+                                        <On Platform="iOS" Value="300" />
+                                    </OnPlatform>
+                                </Button.WidthRequest>-->
+                        </Button>
                         <Button x:Name="editEmployeeButton" Style="{StaticResource typicalButton}" Text="Edytuj" HorizontalOptions="CenterAndExpand" WidthRequest="125" Clicked="Edit_Employee_Clicked"></Button>
                         <Button x:Name="deleteEmployeeButton" Style="{StaticResource typicalButton}" Text="Usuń" HorizontalOptions="EndAndExpand" WidthRequest="125" Clicked="Delete_Employee_Clicked"></Button>
                     </StackLayout>

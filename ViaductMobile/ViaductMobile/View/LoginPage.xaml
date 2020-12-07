@@ -26,8 +26,8 @@
             <Entry.Margin>
                 <OnIdiom x:TypeArguments="Thickness">
                     <OnIdiom.Phone>10,10,10,10</OnIdiom.Phone>
-                    <OnIdiom.Desktop>100,100,100,100</OnIdiom.Desktop>
-                    <OnIdiom.Tablet>50,50,50,50</OnIdiom.Tablet>
+                    <OnIdiom.Desktop>10,10,10,10</OnIdiom.Desktop>
+                    <OnIdiom.Tablet>10,10,10,10</OnIdiom.Tablet>
                 </OnIdiom>
             </Entry.Margin>
         </Entry>
