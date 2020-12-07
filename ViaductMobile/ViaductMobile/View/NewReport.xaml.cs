@@ -123,7 +123,7 @@ namespace ViaductMobile
             }
             foreach (var item in delivererList)
             {
-                shouldBe = shouldBe + item.AmountToCash;
+                shouldBe = shouldBe + item.AmountToShouldBe;
             }
             shouldBe = shouldBe + readReport.Start + readReport.ReportAmount - readReport.Terminal;
             return shouldBe;

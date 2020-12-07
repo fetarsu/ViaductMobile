@@ -27,6 +27,7 @@ namespace ViaductMobile.Models
         public decimal Kik { get; set; }
         public bool Closed { get; set; }
         public decimal AmountToCash { get; set; }
+        public decimal AmountToShouldBe { get; set; }
         public int DeliveriesNumber { get; set; }
         public string ReportId { get; set; }
 

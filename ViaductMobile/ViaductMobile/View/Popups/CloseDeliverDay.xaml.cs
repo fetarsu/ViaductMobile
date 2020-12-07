@@ -16,7 +16,7 @@ namespace ViaductMobile.View.Popups
     public partial class CloseDeliverDay : PopupPage
     {
         User loggedUser;
-        decimal v_k, v_g, p_o, p_g, g_o, g_g, uber_o, uber_g, s_o, s_g, kik, amountToCash, courses, bonus, tips;
+        decimal v_k, v_g, p_o, p_g, g_o, g_g, uber_o, uber_g, s_o, s_g, kik, amountToCash, courses, bonus, tips, amountToShouldBe;
         bool add;
         int deliverNumbers, v_count, p_count, g_count, uber_count, s_count, kik_count, deliverNumbers2;
         string reportId, selectedUser;
@@ -145,6 +145,7 @@ namespace ViaductMobile.View.Popups
                 decimal roznica2 = (decimal)(roznica);
                 var cash = loggedUser.DeliverRate * roznica2;
                 amountToCash = -courses + v_g + p_g + g_g + uber_g + s_g - tips;
+                amountToShouldBe = -courses - p_o - g_o - uber_o - s_o - kik;
                 var tee = courses;
                 cart.Courses = courses;
                 cart.V_k = v_k;
@@ -160,6 +161,7 @@ namespace ViaductMobile.View.Popups
                 cart.Kik = kik;
                 cart.DeliveriesNumber = deliverNumbers2;
                 cart.AmountToCash = amountToCash;
+                cart.AmountToShouldBe = amountToShouldBe;
                 cart.ReportId = reportId;
                 Employee newEmpoloyee = new Employee()
                 {

@@ -87,7 +87,7 @@ namespace ViaductMobile.View.Popups
                     bar = 0;
                 else { add = false; notification += "stawka bar "; }
             }
-            try { bar = int.Parse(barRateEntry.Text); }
+            try { kitchen = int.Parse(kitchenRateEntry.Text); }
             catch
             {
                 if (kitchenRateEntry.Text == null || kitchenRateEntry.Text == "")
