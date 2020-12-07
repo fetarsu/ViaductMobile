@@ -23,6 +23,7 @@ namespace ViaductMobile
         User loggedUser;
         bool employeetable;
         decimal shouldBe;
+        string nickname;
         List<Employee> listEmployee = new List<Employee>();
         List<Operation> listOperation = new List<Operation>();
         ViewModels.ReportTableVM bindingReport;
@@ -32,6 +33,7 @@ namespace ViaductMobile
         Xamarin.Forms.DataGrid.DataGrid employeeDataGridd, operationDataGridd;
         public NewReport(Report readReport)
         {
+            nickname = "viaduct";
             this.readReport = readReport;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             InitializeComponent();
@@ -55,6 +57,7 @@ namespace ViaductMobile
         public NewReport(Report readReport, User loggedUser)
         {
             this.loggedUser = loggedUser;
+            nickname = loggedUser.Nickname;
             this.readReport = readReport;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             InitializeComponent();
@@ -75,8 +78,10 @@ namespace ViaductMobile
             if (readReport.Closed == true)
                 ClosedDay();
         }
-        public NewReport(Report readReport, List<Employee> listEmployeee, List<Operation> listOperationn, bool employeetable)
+        public NewReport(Report readReport, List<Employee> listEmployeee, List<Operation> listOperationn, bool employeetable, User loggedUser)
         {
+            this.loggedUser = loggedUser;
+            nickname = loggedUser.Nickname;
             this.employeetable = employeetable;
             this.listEmployee = listEmployeee;
             this.listOperation = listOperationn;
@@ -133,7 +138,9 @@ namespace ViaductMobile
             DateTime currentDate = DateTime.Now;
             DateTime nextDay = currentDate.AddDays(1);
             DateTime prevDay = currentDate.AddDays(-1);
-            if (readReport.Date != prevDay || readReport.Date != nextDay || readReport.Date != currentDate)
+            if ((readReport.Date.Day != prevDay.Day && readReport.Date.Month != prevDay.Month && readReport.Date.Year != prevDay.Year) ||
+                (readReport.Date.Day != nextDay.Day && readReport.Date.Month != nextDay.Month && readReport.Date.Year != nextDay.Year) ||
+                (readReport.Date.Day != currentDate.Day && readReport.Date.Month != currentDate.Month && readReport.Date.Year != currentDate.Year))
             {
                 if(loggedUser == null)
                 {
@@ -203,20 +210,27 @@ namespace ViaductMobile
         [Obsolete]
         private async void Add_Operation_Clicked(object sender, EventArgs e)
         {
-            await PopupNavigation.PushAsync(new AddReportOperation(listEmployee, listOperation, readReport));
+            await PopupNavigation.PushAsync(new AddReportOperation(listEmployee, listOperation, readReport, loggedUser));
         }
         [Obsolete]
         private async void Edit_Operation_Clicked(object sender, EventArgs e)
         {
             Operation selectedRow = (Operation)operationDataGrid.SelectedItem;
-            await PopupNavigation.PushAsync(new AddReportOperation(listEmployee, listOperation, selectedRow, readReport));
+            await PopupNavigation.PushAsync(new AddReportOperation(listEmployee, listOperation, selectedRow, readReport, loggedUser));
         }
         private async void Delete_Operation_Clicked(object sender, EventArgs e)
         {
             Operation x = (Operation)operationDataGrid.SelectedItem;
             listOperation.Remove(x);
             await x.DeleteOperations(x);
-            App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable))
+            Logs newLog = new Logs()
+            {
+                UserId = nickname,
+                DeletedTable = "Operation",
+                Date = DateTime.Now
+            };
+            bool r = await newLog.SaveLogs();
+            App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable, loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
@@ -228,7 +242,14 @@ namespace ViaductMobile
             Employee x = (Employee)employeesDataGrid.SelectedItem;
             await x.DeleteEmployee(x);
             listEmployee.Remove(x);
-            App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable))
+            Logs newLog = new Logs()
+            {
+                UserId = nickname,
+                DeletedTable = "Employee",
+                Date = DateTime.Now
+            };
+            bool r = await newLog.SaveLogs();
+            App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable, loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
@@ -237,7 +258,7 @@ namespace ViaductMobile
         [Obsolete]
         private async void Add_Employee_Clicked(object sender, EventArgs e)
         {
-            await PopupNavigation.PushAsync(new AddReportEmployee(listEmployee, listOperation, readReport));
+            await PopupNavigation.PushAsync(new AddReportEmployee(listEmployee, listOperation, readReport, loggedUser));
         }
 
         [Obsolete]
@@ -250,7 +271,7 @@ namespace ViaductMobile
         private async void Edit_Employee_Clicked(object sender, EventArgs e)
         {
             Employee selectedRow = (Employee)employeesDataGrid.SelectedItem;
-            await PopupNavigation.PushAsync(new AddReportEmployee(listEmployee, listOperation, selectedRow, readReport));
+            await PopupNavigation.PushAsync(new AddReportEmployee(listEmployee, listOperation, selectedRow, readReport, loggedUser));
         }
         private async void SendReportClicked(object sender, EventArgs e)
         {

@@ -174,6 +174,13 @@ namespace ViaductMobile.View
                 {
                     await x.DeleteSupply(x);
                     delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererId).Supplies;
+                    Logs newLog = new Logs()
+                    {
+                        UserId = loggedUser.Nickname,
+                        DeletedTable = "Supply",
+                        Date = DateTime.Now
+                    };
+                    bool r = await newLog.SaveLogs();
                 }
                 else
                     await DisplayAlert("Uwaga", "Proszę zaznaczyć wiersz", "OK");

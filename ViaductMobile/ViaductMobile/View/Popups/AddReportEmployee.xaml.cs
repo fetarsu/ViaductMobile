@@ -19,15 +19,16 @@ namespace ViaductMobile.View.Popups
         Employee employee;
         Report readReport;
         bool edit, employeetable = true, answer, add;
-        User selectedUser = new User();
+        User selectedUser = new User(), loggedUser;
         List<Employee> employeeList = new List<Employee>();
         List<Operation> operationList = new List<Operation>();
         decimal cash, partOfCash, bonus;
         int rate;
         string nickname, position, notification;
-        public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Report readReport)
+        public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Report readReport, User loggedUser)
         {
             InitializeComponent();
+            this.loggedUser = loggedUser;
             nicknamePicker.ItemsSource = Methods.userList;
             positionPicker.ItemsSource = Methods.positionList;
             this.readReport = readReport;
@@ -35,8 +36,9 @@ namespace ViaductMobile.View.Popups
             this.operationList = operationListt;
             edit = false;
         }
-        public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Employee employee, Report readReport)
+        public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Employee employee, Report readReport, User loggedUser)
         {
+            this.loggedUser = loggedUser;
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
             positionPicker.ItemsSource = Methods.positionList;
@@ -209,7 +211,7 @@ namespace ViaductMobile.View.Popups
             await DisplayAlert("", "Pomyślnie dodano pracownika", "OK");
             Methods.reportEmployeeList = employeeList;
             await PopupNavigation.PopAsync(true);
-            App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
+            App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable, loggedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

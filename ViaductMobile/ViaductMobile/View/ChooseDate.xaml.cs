@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -69,58 +70,69 @@ namespace ViaductMobile
         private async void MoveToNewReportClicked(object sender, EventArgs e)
         {
             UserDialogs.Instance.ShowLoading("Proszę czekać...");
-            reportt = await readReportt.ReadTodayReport(chooseDay.Date);
-            readReportt = reportt.SingleOrDefault(); 
-            if (readReportt == null)
+            Configuration c = new Configuration();
+            var configList = await c.ReadConfigurationParameter("version");
+            var config = configList.SingleOrDefault();
+            if (!config.Parameter.Equals(Methods.version))
             {
-                Report readReport = new Report();
-                readReport.Start = 0;
-                readReport.ReportAmount = 0;
-                readReport.Terminal = 0;
-                readReport.Date = chooseDay.Date.AddDays(1);
-                readReport.ShouldBe = 0;
-                readReport.AmountIn = 0;
-                readReport.Difference = 0;
-                readReport.Pizzas = 0;
-                await readReport.SaveReport();
-                if(loggedUser != null)
-                {
-                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, loggedUser))
-                    {
-                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                        BarTextColor = Color.White
-                    };
-                }
-                else
-                {
-                    App.Current.MainPage = new NavigationPage(new NewReport(readReport))
-                    {
-                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                        BarTextColor = Color.White
-                    };
-                }
+                UserDialogs.Instance.HideLoading();
+                await DisplayAlert("Uwaga", "Twoja wersja jest nieaktualna, aby przejść dalej musisz zaktualizować aplikacje", "OK");
             }
             else
             {
-                if (loggedUser != null)
+                reportt = await readReportt.ReadTodayReport(chooseDay.Date);
+                readReportt = reportt.SingleOrDefault();
+                if (readReportt == null)
                 {
-                    App.Current.MainPage = new NavigationPage(new NewReport(readReportt, loggedUser))
+                    Report readReport = new Report();
+                    readReport.Start = 0;
+                    readReport.ReportAmount = 0;
+                    readReport.Terminal = 0;
+                    readReport.Date = chooseDay.Date.AddDays(1);
+                    readReport.ShouldBe = 0;
+                    readReport.AmountIn = 0;
+                    readReport.Difference = 0;
+                    readReport.Pizzas = 0;
+                    await readReport.SaveReport();
+                    if (loggedUser != null)
                     {
-                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                        BarTextColor = Color.White
-                    };
+                        App.Current.MainPage = new NavigationPage(new NewReport(readReport, loggedUser))
+                        {
+                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                            BarTextColor = Color.White
+                        };
+                    }
+                    else
+                    {
+                        App.Current.MainPage = new NavigationPage(new NewReport(readReport))
+                        {
+                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                            BarTextColor = Color.White
+                        };
+                    }
                 }
                 else
                 {
-                    App.Current.MainPage = new NavigationPage(new NewReport(readReportt))
+                    if (loggedUser != null)
                     {
-                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                        BarTextColor = Color.White
-                    };
+                        App.Current.MainPage = new NavigationPage(new NewReport(readReportt, loggedUser))
+                        {
+                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                            BarTextColor = Color.White
+                        };
+                    }
+                    else
+                    {
+                        App.Current.MainPage = new NavigationPage(new NewReport(readReportt))
+                        {
+                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                            BarTextColor = Color.White
+                        };
+                    }
+
                 }
-                
+                UserDialogs.Instance.HideLoading();
             }
-            UserDialogs.Instance.HideLoading();
         }
     }
 }

@@ -107,6 +107,13 @@ namespace ViaductMobile.View
                 };
                 bool result = await operation.SaveOperations();
                 bool result2 = await selectedRow.DeleteOverdueCash(selectedRow);
+                Logs newLog = new Logs()
+                {
+                    UserId = loggedUser.Nickname,
+                    DeletedTable = "OverdueCash",
+                    Date = DateTime.Now
+                };
+                bool r = await newLog.SaveLogs();
             }
             else
                 await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, odbierz dniówkę następnego dnia", "OK");

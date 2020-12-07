@@ -18,12 +18,14 @@ namespace ViaductMobile.View.Popups
         string type, notification, operationName, number;
         decimal amount;
         Operation operation;
+        User loggedUser;
         Report readReport;
         List<Employee> employeeList = new List<Employee>();
         List<Operation> operationList = new List<Operation>();
         bool edit, employeetable = false, add;
-        public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Report readReport)
+        public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Report readReport, User loggedUser)
         {
+            this.loggedUser = loggedUser;
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
             this.readReport = readReport;
@@ -31,8 +33,9 @@ namespace ViaductMobile.View.Popups
             this.operationList = operationListt;
             edit = false;
         }
-        public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Operation operation, Report readReport)
+        public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Operation operation, Report readReport, User loggedUser)
         {
+            this.loggedUser = loggedUser;
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
             this.operation = operation;
@@ -110,7 +113,7 @@ namespace ViaductMobile.View.Popups
                     await PopupNavigation.PopAsync(true);
                     operationList.Add(newOperation);
                     Methods.reportOperationList = operationList;
-                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable, loggedUser))
                     {
                         BarBackgroundColor = Color.FromHex("#3B3B3B"),
                         BarTextColor = Color.White
@@ -130,7 +133,7 @@ namespace ViaductMobile.View.Popups
                     operationList.Add(operation);
                     await PopupNavigation.PopAsync(true);
                     Methods.reportOperationList = operationList;
-                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable))
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable, loggedUser))
                     {
                         BarBackgroundColor = Color.FromHex("#3B3B3B"),
                         BarTextColor = Color.White

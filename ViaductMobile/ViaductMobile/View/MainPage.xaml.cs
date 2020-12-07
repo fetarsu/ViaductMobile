@@ -104,11 +104,23 @@ namespace ViaductMobile
         {
             UserDialogs.Instance.ShowLoading("Proszę czekać...");
             await Task.Delay(100);
-            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+            UserDialogs.Instance.ShowLoading("Proszę czekać...");
+            Configuration c = new Configuration();
+            var configList = await c.ReadConfigurationParameter("version");
+            var config = configList.SingleOrDefault();
+            if (!config.Parameter.Equals(Methods.version))
             {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
+                UserDialogs.Instance.HideLoading();
+                await DisplayAlert("Uwaga", "Twoja wersja jest nieaktualna, aby przejść dalej musisz zaktualizować aplikacje", "OK");
+            }
+            else
+            {
+                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
             UserDialogs.Instance.HideLoading();
         }
         private async void MoveToUserPanelClicked(object sender, EventArgs e)

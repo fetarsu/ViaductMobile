@@ -32,12 +32,5 @@ namespace ViaductMobile.Algorithms
             userListt = await user.ReadAllUsers();
             userList = userListt;
         }
-        public static async void CheckVersion()
-        {
-            User user = new User();
-            List<string> userListt = new List<string>();
-            userListt = await user.ReadAllUsers();
-            userList = userListt;
-        }
     }
 }
