@@ -22,7 +22,7 @@
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="Center" Padding="20, 0" HorizontalOptions="FillAndExpand">
         <ScrollView HeightRequest="3000">
-            <Frame Style="{StaticResource popupFrame}">
+            <Frame Style="{StaticResource popupFrame}" HeightRequest="500">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />

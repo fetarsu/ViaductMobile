@@ -94,41 +94,47 @@ namespace ViaductMobile
                     readReport.Difference = 0;
                     readReport.Pizzas = 0;
                     await readReport.SaveReport();
-                    if (loggedUser != null)
+                    if (loggedUser == null)
                     {
-                        App.Current.MainPage = new NavigationPage(new NewReport(readReport, loggedUser))
+                        User user = new User()
                         {
-                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                            BarTextColor = Color.White
+                            Id = "25841b9f-beb4-4b99-9f0e-4727c2d9642d",
+                            Nickname = "Viaduct",
+                            Password = null,
+                            BarRate = 0,
+                            KitchenRate = 0,
+                            DeliverRate = 0,
+                            Permission = "Pracownik"
                         };
+                        loggedUser = user;
                     }
-                    else
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, loggedUser))
                     {
-                        App.Current.MainPage = new NavigationPage(new NewReport(readReport))
-                        {
-                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                            BarTextColor = Color.White
-                        };
-                    }
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
                 }
                 else
                 {
-                    if (loggedUser != null)
+                    if (loggedUser == null)
                     {
-                        App.Current.MainPage = new NavigationPage(new NewReport(readReportt, loggedUser))
+                        User user = new User()
                         {
-                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                            BarTextColor = Color.White
+                            Id = "25841b9f-beb4-4b99-9f0e-4727c2d9642d",
+                            Nickname = "Viaduct",
+                            Password = null,
+                            BarRate = 0,
+                            KitchenRate = 0,
+                            DeliverRate = 0,
+                            Permission = "Pracownik"
                         };
+                        loggedUser = user;
                     }
-                    else
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReportt, loggedUser))
                     {
-                        App.Current.MainPage = new NavigationPage(new NewReport(readReportt))
-                        {
-                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                            BarTextColor = Color.White
-                        };
-                    }
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
 
                 }
                 UserDialogs.Instance.HideLoading();

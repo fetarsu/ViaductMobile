@@ -33,10 +33,11 @@ namespace ViaductMobile
                 where nic.OperationalStatus == OperationalStatus.Up
                 select nic.GetPhysicalAddress().ToString()
             ).FirstOrDefault();
-            if (mac.Equals("D0B128D587E9"))
-            {
-                createReportButton.IsVisible = true;
-            }
+            //if (mac.Equals("A89CEDC7483E")) //"D0B128D587E9"
+            //{
+            //    createReportButton.IsVisible = true;
+            //}
+            createReportButton.IsVisible = true;
         }
 
         public MainPage(User loggedUser)
