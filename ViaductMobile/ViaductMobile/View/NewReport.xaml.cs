@@ -216,44 +216,57 @@ namespace ViaductMobile
         private async void Edit_Operation_Clicked(object sender, EventArgs e)
         {
             Operation selectedRow = (Operation)operationDataGrid.SelectedItem;
-            await PopupNavigation.PushAsync(new AddReportOperation(listEmployee, listOperation, selectedRow, readReport, loggedUser));
+            if (selectedRow == null)
+                await DisplayAlert("Uwaga", "Żaden wiersz nie jest zaznaczony", "OK");
+            else
+                await PopupNavigation.PushAsync(new AddReportOperation(listEmployee, listOperation, selectedRow, readReport, loggedUser));
         }
         private async void Delete_Operation_Clicked(object sender, EventArgs e)
         {
             Operation x = (Operation)operationDataGrid.SelectedItem;
-            listOperation.Remove(x);
-            await x.DeleteOperations(x);
-            Logs newLog = new Logs()
+            if(x == null)
+                await DisplayAlert("Uwaga", "Żaden wiersz nie jest zaznaczony", "OK");
+            else
             {
-                UserId = nickname,
-                DeletedTable = "Operation",
-                Date = DateTime.Now
-            };
-            bool r = await newLog.SaveLogs();
-            App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable, loggedUser))
-            {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
+                listOperation.Remove(x);
+                await x.DeleteOperations(x);
+                Logs newLog = new Logs()
+                {
+                    UserId = nickname,
+                    DeletedTable = "Operation",
+                    Date = DateTime.Now
+                };
+                bool r = await newLog.SaveLogs();
+                App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable, loggedUser))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }
         }
 
         private async void Delete_Employee_Clicked(object sender, EventArgs e)
         {
             Employee x = (Employee)employeesDataGrid.SelectedItem;
-            await x.DeleteEmployee(x);
-            listEmployee.Remove(x);
-            Logs newLog = new Logs()
+            if (x == null)
+                await DisplayAlert("Uwaga", "Żaden wiersz nie jest zaznaczony", "OK");
+            else
             {
-                UserId = nickname,
-                DeletedTable = "Employee",
-                Date = DateTime.Now
-            };
-            bool r = await newLog.SaveLogs();
-            App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable, loggedUser))
-            {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
+                await x.DeleteEmployee(x);
+                listEmployee.Remove(x);
+                Logs newLog = new Logs()
+                {
+                    UserId = nickname,
+                    DeletedTable = "Employee",
+                    Date = DateTime.Now
+                };
+                bool r = await newLog.SaveLogs();
+                App.Current.MainPage = new NavigationPage(new NewReport(readReport, listEmployee, listOperation, employeetable, loggedUser))
+                {
+                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    BarTextColor = Color.White
+                };
+            }   
         }
         [Obsolete]
         private async void Add_Employee_Clicked(object sender, EventArgs e)
@@ -271,7 +284,10 @@ namespace ViaductMobile
         private async void Edit_Employee_Clicked(object sender, EventArgs e)
         {
             Employee selectedRow = (Employee)employeesDataGrid.SelectedItem;
-            await PopupNavigation.PushAsync(new AddReportEmployee(listEmployee, listOperation, selectedRow, readReport, loggedUser));
+            if (selectedRow == null)
+                await DisplayAlert("Uwaga", "Żaden wiersz nie jest zaznaczony", "OK");
+            else
+                await PopupNavigation.PushAsync(new AddReportEmployee(listEmployee, listOperation, selectedRow, readReport, loggedUser));
         }
         private async void SendReportClicked(object sender, EventArgs e)
         {

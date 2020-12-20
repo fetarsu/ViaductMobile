@@ -206,7 +206,7 @@ namespace ViaductMobile.View.Popups
             }
             else if (answer == false && edit == true)
             {
-                await DisplayAlert("Uwaga", "Wybrałeś edycję dniówki, która w teorii została odebrana i zmieniłeś ją na nieodebraną, lepiej ją usuń niż tak zmieniać bo robisz zamieszanie typie", "OK");
+                await DisplayAlert("Uwaga", "Wybrałeś edycję dniówki, która w teorii została odebrana i zmieniłeś ją na nieodebraną, usuń ją i powtórz operacje", "OK");
             }
             await DisplayAlert("", "Pomyślnie dodano pracownika", "OK");
             Methods.reportEmployeeList = employeeList;
