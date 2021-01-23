@@ -54,7 +54,7 @@ namespace ViaductMobile
             }
             if(userPermission.Equals("Admin") || loggedUser.DeliverRate > 0)
             {
-                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png", Order = ToolbarItemOrder.Primary, Priority = 0 };
+                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png", Order = ToolbarItemOrder.Primary, Priority = 0};
                 ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = "house.png", Order = ToolbarItemOrder.Primary, Priority = 1 };
                 ToolbarItem pizzasPanel = new ToolbarItem() { Text = "Produkty", IconImageSource = "pizza.png", Order = ToolbarItemOrder.Primary, Priority = 2 };
                 this.ToolbarItems.Add(pizzasPanel);
