@@ -48,28 +48,28 @@ namespace ViaductMobile
             string userPermission = loggedUser.Permission;
             if (userPermission.Equals("Admin"))
             {
-                ToolbarItem employeesPanel = new ToolbarItem() { Text = "Pracownicy", IconImageSource = "employees.png", Priority = 0, Order = ToolbarItemOrder.Primary };
+                ToolbarItem employeesPanel = new ToolbarItem() { Text = "Pracownicy", IconImageSource = "employees.png" };
                 employeesPanel.Clicked += MoveToEmployeePanelClicked;
-                ToolbarItems.Add(employeesPanel);
+                this.ToolbarItems.Add(employeesPanel);
             }
             if(userPermission.Equals("Admin") || loggedUser.DeliverRate > 0)
             {
-                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png", Priority = 1, Order = ToolbarItemOrder.Primary };
-                ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = "house.png", Priority = 2, Order = ToolbarItemOrder.Primary };
-                ToolbarItem pizzasPanel = new ToolbarItem() { Text = "Produkty", IconImageSource = "pizza.png", Priority = 3 };
-                ToolbarItems.Add(pizzasPanel);
-                ToolbarItems.Add(adressesPanel);
-                ToolbarItems.Add(deliveryCart);
+                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png" };
+                ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = "house.png" };
+                ToolbarItem pizzasPanel = new ToolbarItem() { Text = "Produkty", IconImageSource = "pizza.png" };
+                this.ToolbarItems.Add(pizzasPanel);
+                this.ToolbarItems.Add(adressesPanel);
+                this.ToolbarItems.Add(deliveryCart);
                 deliveryCart.Clicked += MoveToDelivererCartClicked;
                 adressesPanel.Clicked += MoveToAdressesPanelClicked;
                 pizzasPanel.Clicked += MoveToPizzasPanelClicked;
             }
             ToolbarItem userPanel = new ToolbarItem() { Text = "Panel użytkownika", IconImageSource = "user.png" };
             userPanel.Clicked += MoveToUserPanelClicked;
-            ToolbarItems.Add(userPanel);
+            this.ToolbarItems.Add(userPanel);
             ToolbarItem logout = new ToolbarItem() { Text = "Wyloguj", IconImageSource = "logout.png" };
             logout.Clicked += MoveToLogout;
-            ToolbarItems.Add(logout);
+            this.ToolbarItems.Add(logout);
         }
         private async void MoveToAdressesPanelClicked(object sender, EventArgs e)
         {

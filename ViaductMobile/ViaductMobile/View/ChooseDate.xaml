@@ -24,7 +24,6 @@
                 <DatePicker.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
                         <On Platform="Android" Value="90 0 0 0"></On>
-                        <On Platform="iOS" Value="90 0 0 0"></On>
                         <On Platform="UWP" Value="0, 0, 0, -150"></On>
                     </OnPlatform>
                 </DatePicker.Margin>
@@ -33,7 +32,6 @@
                 <Button.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
                         <On Platform="Android" Value="10, 80, 10, 30"></On>
-                        <On Platform="iOS" Value="10, 80, 10, 30"></On>
                         <On Platform="UWP" Value="100, 100, 100, 100"></On>
                     </OnPlatform>
                 </Button.Margin>
