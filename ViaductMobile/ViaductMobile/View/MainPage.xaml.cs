@@ -48,15 +48,15 @@ namespace ViaductMobile
             string userPermission = loggedUser.Permission;
             if (userPermission.Equals("Admin"))
             {
-                ToolbarItem employeesPanel = new ToolbarItem() { Text = "Pracownicy", IconImageSource = "employees.png" };
+                ToolbarItem employeesPanel = new ToolbarItem() { Text = "Pracownicy", IconImageSource = "employees.png", Order = ToolbarItemOrder.Primary, Priority = 0 };
                 employeesPanel.Clicked += MoveToEmployeePanelClicked;
                 this.ToolbarItems.Add(employeesPanel);
             }
             if(userPermission.Equals("Admin") || loggedUser.DeliverRate > 0)
             {
-                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png" };
-                ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = "house.png" };
-                ToolbarItem pizzasPanel = new ToolbarItem() { Text = "Produkty", IconImageSource = "pizza.png" };
+                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = "delivery.png", Order = ToolbarItemOrder.Primary, Priority = 0 };
+                ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = "house.png", Order = ToolbarItemOrder.Primary, Priority = 0 };
+                ToolbarItem pizzasPanel = new ToolbarItem() { Text = "Produkty", IconImageSource = "pizza.png", Order = ToolbarItemOrder.Primary, Priority = 0 };
                 this.ToolbarItems.Add(pizzasPanel);
                 this.ToolbarItems.Add(adressesPanel);
                 this.ToolbarItems.Add(deliveryCart);
@@ -64,10 +64,10 @@ namespace ViaductMobile
                 adressesPanel.Clicked += MoveToAdressesPanelClicked;
                 pizzasPanel.Clicked += MoveToPizzasPanelClicked;
             }
-            ToolbarItem userPanel = new ToolbarItem() { Text = "Panel użytkownika", IconImageSource = "user.png" };
+            ToolbarItem userPanel = new ToolbarItem() { Text = "Panel użytkownika", IconImageSource = "user.png", Order = ToolbarItemOrder.Primary, Priority = 0 };
             userPanel.Clicked += MoveToUserPanelClicked;
             this.ToolbarItems.Add(userPanel);
-            ToolbarItem logout = new ToolbarItem() { Text = "Wyloguj", IconImageSource = "logout.png" };
+            ToolbarItem logout = new ToolbarItem() { Text = "Wyloguj", IconImageSource = "logout.png", Order = ToolbarItemOrder.Primary, Priority = 0 };
             logout.Clicked += MoveToLogout;
             this.ToolbarItems.Add(logout);
         }
