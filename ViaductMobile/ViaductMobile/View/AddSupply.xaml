@@ -75,7 +75,7 @@
                        HorizontalOptions="Fill"
                        VerticalOptions="CenterAndExpand"  ItemSelected="changeSearchBar2">
                 </ListView>
-                <dg:DataGrid x:Name="componentsDataGrid" Grid.Row="10" Grid.ColumnSpan="4" ItemsSource="{Binding Components}" SelectedItem="{Binding SelectedComponent}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="25" HeaderHeight="25" SelectionEnabled="True" HeightRequest="250">
+                <dg:DataGrid HeaderTextColor="Black" x:Name="componentsDataGrid" Grid.Row="10" Grid.ColumnSpan="4" ItemsSource="{Binding Components}" SelectedItem="{Binding SelectedComponent}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="25" HeaderHeight="25" SelectionEnabled="True" HeightRequest="250">
                     <x:Arguments>
                         <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
                     </x:Arguments>

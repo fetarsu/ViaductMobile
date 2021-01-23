@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <ScrollView VerticalOptions="FillAndExpand"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" >
             <Grid Padding="10">
-                <dg:DataGrid x:Name="employeesDataGrid" ItemsSource="{Binding Pizzas}" SelectedItem="{Binding SelectedPizza}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True">
+                <dg:DataGrid HeaderTextColor="Black" x:Name="employeesDataGrid" ItemsSource="{Binding Pizzas}" SelectedItem="{Binding SelectedPizza}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True">
                     <x:Arguments>
                         <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
                     </x:Arguments>
