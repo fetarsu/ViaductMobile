@@ -33,7 +33,7 @@
         <Picker Style="{StaticResource typicalPicker}" Grid.Column="2" Grid.Row="0" x:Name="usersPicker" SelectedIndexChanged="usersPicker_SelectedIndexChanged"></Picker>
             <ScrollView VerticalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
                 <Grid Padding="10">
-                <dg:DataGrid HeaderTextColor="Black" x:Name="delivererCartDataGrid" ItemsSource="{Binding Supplies}" SelectedItem="{Binding SelectedSupply}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True">
+                <dg:DataGrid HeaderTextColor="Black" HeaderBackground="White" HeaderFontSize="12" x:Name="delivererCartDataGrid" ItemsSource="{Binding Supplies}" SelectedItem="{Binding SelectedSupply}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="70" HeaderHeight="50" SelectionEnabled="True">
                         <x:Arguments>
                             <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>
                         </x:Arguments>
