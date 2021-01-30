@@ -68,6 +68,10 @@
             <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="11" x:Name="SoLabel"></Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="12">Strona G</Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="12" x:Name="SgLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="12">Volt</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="12" x:Name="voltLabel"></Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="12">Bolt</Label>
+            <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="12" x:Name="boltLabel"></Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="13">KiK</Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.Row="13" x:Name="KikLabel"></Label>
             <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.Row="14">Liczba Dostaw</Label>

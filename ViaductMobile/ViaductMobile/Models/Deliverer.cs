@@ -24,6 +24,8 @@ namespace ViaductMobile.Models
         public decimal Uber_g { get; set; }
         public decimal S_o { get; set; }
         public decimal S_g { get; set; }
+        public decimal Volt { get; set; }
+        public decimal Bolt { get; set; }
         public decimal Kik { get; set; }
         public bool Closed { get; set; }
         public decimal AmountToCash { get; set; }

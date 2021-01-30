@@ -60,7 +60,7 @@ namespace ViaductMobile.View
             string[] co = clickedRow.Components.Split(',');
             foreach (var item in co)
             {
-                if(item.Length > 1)
+                if (item.Length > 1)
                 {
                     var x = item.Split(' ');
                     var y = x[1].Split('x');
@@ -76,7 +76,7 @@ namespace ViaductMobile.View
             platformPicker.ItemsSource = Methods.platformList.Keys.ToList();
             platformPicker.SelectedItem = clickedRow.Platform;
             string[] tokens = clickedRow.Adress.Split(' ');
-            
+
             if (tokens.Length == 4)
             {
                 string[] tokens2 = tokens[3].Split('.');
@@ -182,7 +182,7 @@ namespace ViaductMobile.View
                 }
                 components = " ";
                 IEnumerable<Components> componentsIEnumerable = (IEnumerable<Components>)componentsDataGrid.ItemsSource;
-                if(componentsIEnumerable != null)
+                if (componentsIEnumerable != null)
                 {
                     foreach (var item in componentsIEnumerable)
                     {
@@ -191,15 +191,27 @@ namespace ViaductMobile.View
                 }
 
                 var newAdress = adressList.Where(x => x.Street.Equals(streetName) && x.Number.Equals(buildingEntry.Text)).FirstOrDefault();
-                if (newAdress == null && (platformPicker.SelectedItem.ToString().Equals("Vk") || platformPicker.SelectedItem.ToString().Equals("Vg") || platformPicker.SelectedItem.ToString().Equals("So") || platformPicker.SelectedItem.ToString().Equals("Sg")))
+                if (newAdress == null)
                 {
-                    Adress item = new Adress()
+                    if (platformPicker.SelectedItem.ToString().Equals("Vk") || platformPicker.SelectedItem.ToString().Equals("Vg") || platformPicker.SelectedItem.ToString().Equals("So")
+                        || platformPicker.SelectedItem.ToString().Equals("Sg") || platformPicker.SelectedItem.ToString().Equals("Bolt") || platformPicker.SelectedItem.ToString().Equals("Volt"))
                     {
-                        Street = streetName,
-                        Number = buildingEntry.Text,
-                        Amount = decimal.Parse(courseEntry.Text)
-                    };
-                    bool result = await item.SaveAdress();
+                        Adress item = new Adress()
+                        {
+                            Street = streetName,
+                            Number = buildingEntry.Text,
+                            Amount = 0
+                        };
+                        bool result = await item.SaveAdress();
+                    }
+                }
+                else
+                {
+                    if (newAdress.Amount == 0)
+                    {
+                        newAdress.Amount = decimal.Parse(courseEntry.Text);
+                        bool result = await newAdress.UpdateAdress(newAdress);
+                    }
                 }
 
                 if (edit == false)
@@ -232,7 +244,7 @@ namespace ViaductMobile.View
                     BarBackgroundColor = Color.FromHex("#3B3B3B"),
                     BarTextColor = Color.White
                 };
-            }            
+            }
         }
 
         private void changeSearchBar(object sender, SelectedItemChangedEventArgs e)
@@ -304,8 +316,10 @@ namespace ViaductMobile.View
 
         private void platformPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(platformPicker.SelectedItem.ToString().Equals("Ug") || platformPicker.SelectedItem.ToString().Equals("Uo")
-                || platformPicker.SelectedItem.ToString().Equals("Go") || platformPicker.SelectedItem.ToString().Equals("Gg")){
+            if (platformPicker.SelectedItem.ToString().Equals("Ug") || platformPicker.SelectedItem.ToString().Equals("Uo")
+                || platformPicker.SelectedItem.ToString().Equals("Go") || platformPicker.SelectedItem.ToString().Equals("Gg")
+                || platformPicker.SelectedItem.ToString().Equals("Volt") || platformPicker.SelectedItem.ToString().Equals("Bolt"))
+            {
                 courseEntry.Text = "7";
             }
             else if (platformPicker.SelectedItem.ToString().Equals("Po") || platformPicker.SelectedItem.ToString().Equals("Pg"))

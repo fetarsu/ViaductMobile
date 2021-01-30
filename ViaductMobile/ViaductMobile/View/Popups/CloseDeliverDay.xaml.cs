@@ -16,9 +16,9 @@ namespace ViaductMobile.View.Popups
     public partial class CloseDeliverDay : PopupPage
     {
         User loggedUser;
-        decimal v_k, v_g, p_o, p_g, g_o, g_g, uber_o, uber_g, s_o, s_g, kik, amountToCash, courses, bonus, tips, amountToShouldBe;
+        decimal v_k, v_g, p_o, p_g, g_o, g_g, uber_o, uber_g, s_o, s_g, kik, amountToCash, courses, bonus, tips, amountToShouldBe, volt, bolt;
         bool add;
-        int deliverNumbers, v_count, p_count, g_count, uber_count, s_count, kik_count, deliverNumbers2;
+        int deliverNumbers, v_count, p_count, g_count, uber_count, s_count, kik_count, volt_count, bolt_count, deliverNumbers2;
         string reportId, selectedUser;
         Deliverer cart = new Deliverer();
         List<Supply> listOfSupplys = new List<Supply>();
@@ -112,6 +112,16 @@ namespace ViaductMobile.View.Popups
                         s_g += item.Amount;
                         s_count++;
                     }
+                    else if (item.Platform.Equals("Volt"))
+                    {
+                        volt += item.Amount;
+                        volt_count++;
+                    }
+                    else if (item.Platform.Equals("Bolt"))
+                    {
+                        bolt += item.Amount;
+                        bolt_count++;
+                    }
                     else if (item.Platform.Equals("Kik"))
                     {
                         kik += item.Amount;
@@ -145,7 +155,7 @@ namespace ViaductMobile.View.Popups
                 decimal roznica2 = (decimal)(roznica);
                 var cash = loggedUser.DeliverRate * roznica2;
                 amountToCash = -courses + v_g + p_g + g_g + uber_g + s_g - tips;
-                amountToShouldBe = -courses - p_o - g_o - uber_o - s_o - kik;
+                amountToShouldBe = -courses - p_o - g_o - uber_o - s_o - kik - volt - bolt;
                 var tee = courses;
                 cart.Courses = courses;
                 cart.V_k = v_k;
@@ -159,6 +169,8 @@ namespace ViaductMobile.View.Popups
                 cart.S_o = s_o;
                 cart.S_g = s_g;
                 cart.Kik = kik;
+                cart.Volt = volt;
+                cart.Bolt = bolt;
                 cart.DeliveriesNumber = deliverNumbers2;
                 cart.AmountToCash = amountToCash;
                 cart.AmountToShouldBe = amountToShouldBe;
