@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Java.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,16 +25,13 @@ namespace ViaductMobile
         public MainPage()
         {
             InitializeComponent();
-            ToolbarItem moveToLogin = new ToolbarItem() { Text = "Zaloguj się", IconImageSource = "login.png"};
+            string mac = "";
+            ToolbarItem moveToLogin = new ToolbarItem() { Text = "Zaloguj się", IconImageSource = "login.png" };
             moveToLogin.Clicked += MoveToLoginClicked;
             this.ToolbarItems.Add(moveToLogin);
-            var mac =
-            (
-                from nic in NetworkInterface.GetAllNetworkInterfaces()
-                where nic.OperationalStatus == OperationalStatus.Up
-                select nic.GetPhysicalAddress().ToString()
-            ).FirstOrDefault();
-            if (mac.Equals("A89CEDC7483E")) //"D0B128D587E9"
+
+            mac = Methods.getMacAddress();
+            if (mac.Equals("D0:B1:28:D5:87:E9")) //"A8:9C:ED:C7:48:3E"
             {
                 createReportButton.IsVisible = true;
             }
@@ -51,9 +49,9 @@ namespace ViaductMobile
                 employeesPanel.Clicked += MoveToEmployeePanelClicked;
                 this.ToolbarItems.Add(employeesPanel);
             }
-            if(userPermission.Equals("Admin") || loggedUser.DeliverRate > 0)
+            if (userPermission.Equals("Admin") || loggedUser.DeliverRate > 0)
             {
-                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = ImageSource.FromFile("delivery.png"), Order = ToolbarItemOrder.Primary, Priority = 0};
+                ToolbarItem deliveryCart = new ToolbarItem() { Text = "Karta dostaw", IconImageSource = ImageSource.FromFile("delivery.png"), Order = ToolbarItemOrder.Primary, Priority = 0 };
                 ToolbarItem adressesPanel = new ToolbarItem() { Text = "Adresy", IconImageSource = ImageSource.FromFile("house.png"), Order = ToolbarItemOrder.Primary, Priority = 1 };
                 ToolbarItem pizzasPanel = new ToolbarItem() { Text = "Produkty", IconImageSource = ImageSource.FromFile("pizza.png"), Order = ToolbarItemOrder.Primary, Priority = 2 };
                 this.ToolbarItems.Add(pizzasPanel);

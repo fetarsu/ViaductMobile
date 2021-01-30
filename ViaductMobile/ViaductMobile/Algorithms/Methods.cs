@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Java.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace ViaductMobile.Algorithms
         public static List<Employee> reportEmployeeList;
         public static List<Operation> reportOperationList;
         public static List<string> userList;
-        private static Random random = new Random();
+        private static System.Random random = new System.Random();
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -31,6 +32,40 @@ namespace ViaductMobile.Algorithms
             List<string> userListt = new List<string>();
             userListt = await user.ReadAllUsers();
             userList = userListt;
+        }
+
+        public static string getMacAddress()
+        {
+            string macAddress = string.Empty;
+
+            var all = Collections.List(Java.Net.NetworkInterface.NetworkInterfaces);
+
+            foreach (var interfaces in all)
+            {
+                if (!(interfaces as Java.Net.NetworkInterface).Name.Contains("wlan0")) continue;
+
+                var macBytes = (interfaces as
+                Java.Net.NetworkInterface).GetHardwareAddress();
+                if (macBytes == null) continue;
+
+                var sb = new System.Text.StringBuilder();
+                foreach (var b in macBytes)
+                {
+                    string convertedByte = string.Empty;
+                    convertedByte = (b & 0xFF).ToString("X2") + ":";
+
+                    if (convertedByte.Length == 1)
+                    {
+                        convertedByte.Insert(0, "0");
+                    }
+                    sb.Append(convertedByte);
+                }
+
+                macAddress = sb.ToString().Remove(sb.Length - 1);
+
+                return macAddress;
+            }
+            return "02:00:00:00:00:00";
         }
     }
 }
