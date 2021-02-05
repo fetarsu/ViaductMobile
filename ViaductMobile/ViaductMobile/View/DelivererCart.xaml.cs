@@ -23,6 +23,7 @@ namespace ViaductMobile.View
         Deliverer cart;
         public string userr;
         List<Deliverer> cartList = new List<Deliverer>();
+        List<String> oneUserList = new List<string>();
         string delivererId, selectedUser, reportId;
         DateTime deliverDate, chosedDate, dateee;
         public DelivererCart(User loggedUser)
@@ -30,7 +31,8 @@ namespace ViaductMobile.View
             this.loggedUser = loggedUser;
             InitializeComponent();
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            usersPicker.ItemsSource = loggedUser.Nickname.ToList();
+            oneUserList.Add(loggedUser.Nickname);
+            usersPicker.ItemsSource = oneUserList;
             usersPicker.SelectedItem = loggedUser.Nickname;
             ReloadData();
         }
@@ -40,7 +42,8 @@ namespace ViaductMobile.View
             this.loggedUser = loggedUser;
             InitializeComponent();
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            usersPicker.ItemsSource = loggedUser.Nickname.ToList();
+            oneUserList.Add(loggedUser.Nickname);
+            usersPicker.ItemsSource = oneUserList;
             usersPicker.SelectedItem = loggedUser.Nickname;
             chooseDayPicker.Date = chosedDate.Date;
             ReloadData();
@@ -50,7 +53,8 @@ namespace ViaductMobile.View
             this.loggedUser = loggedUser;
             InitializeComponent();
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            usersPicker.ItemsSource = loggedUser.Nickname.ToList();
+            oneUserList.Add(loggedUser.Nickname);
+            usersPicker.ItemsSource = oneUserList;
             usersPicker.SelectedItem = selectedUser;
             delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(listOfSupply).Supplies;
             ReloadData();
