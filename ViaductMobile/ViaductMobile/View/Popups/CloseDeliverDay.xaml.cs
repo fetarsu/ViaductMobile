@@ -117,11 +117,6 @@ namespace ViaductMobile.View.Popups
                         volt += item.Amount;
                         volt_count++;
                     }
-                    else if (item.Platform.Equals("Bolt"))
-                    {
-                        bolt += item.Amount;
-                        bolt_count++;
-                    }
                     else if (item.Platform.Equals("Kik"))
                     {
                         kik += item.Amount;
@@ -130,6 +125,7 @@ namespace ViaductMobile.View.Popups
                     deliverNumbers++;
                     courses += item.Course;
                 }
+                deliverNumbers = deliverNumbers + int.Parse(extraDeliveries.Text);
                 deliverNumbers2 = deliverNumbers;
                 if (deliverNumbers > 19)
                 {
@@ -155,7 +151,7 @@ namespace ViaductMobile.View.Popups
                 decimal roznica2 = (decimal)(roznica);
                 var cash = loggedUser.DeliverRate * roznica2;
                 amountToCash = -courses + v_g + p_g + g_g + uber_g + s_g - tips;
-                amountToShouldBe = -courses - p_o - g_o - uber_o - s_o - kik - volt - bolt;
+                amountToShouldBe = -courses - p_o - g_o - uber_o - s_o - kik - volt;
                 var tee = courses;
                 cart.Courses = courses;
                 cart.V_k = v_k;
@@ -170,7 +166,6 @@ namespace ViaductMobile.View.Popups
                 cart.S_g = s_g;
                 cart.Kik = kik;
                 cart.Volt = volt;
-                cart.Bolt = bolt;
                 cart.DeliveriesNumber = deliverNumbers2;
                 cart.AmountToCash = amountToCash;
                 cart.AmountToShouldBe = amountToShouldBe;

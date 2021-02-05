@@ -48,6 +48,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Podsumowanie</Label>
                     <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="1">Pseudonim</Label>
@@ -74,18 +75,20 @@
                     <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="11" x:Name="SoLabel"></Label>
                     <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="12">Strona G</Label>
                     <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="12" x:Name="SgLabel"></Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="13">KiK</Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="13" x:Name="KikLabel"></Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="14">Liczba Dostaw</Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="14" x:Name="delivererNumberLabel"></Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="15">Dniówka</Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="15" x:Name="cashForDayLabel"></Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="16">Premia</Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="16" x:Name="bonusLabel"></Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="17">Kwota do kasy</Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="17" x:Name="AmountToCashLabel"></Label>
-                    <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="18" Text="Wróć" Clicked="Back_Clicked" ></Button>
-                    <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="18" Text="Zatwierdź" Clicked="End_Clicked" ></Button>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="13">Volt</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="13" x:Name="VoLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="14">KiK</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="14" x:Name="KikLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="15">Liczba Dostaw</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="15" x:Name="delivererNumberLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="16">Dniówka</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="16" x:Name="cashForDayLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="17">Premia</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="17" x:Name="bonusLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="18">Kwota do kasy</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="18" x:Name="AmountToCashLabel"></Label>
+                    <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="19" Text="Wróć" Clicked="Back_Clicked" ></Button>
+                    <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="19" Text="Zatwierdź" Clicked="End_Clicked" ></Button>
                 </Grid>
             </Frame>
         </ScrollView>

@@ -318,7 +318,7 @@ namespace ViaductMobile.View
         {
             if (platformPicker.SelectedItem.ToString().Equals("Ug") || platformPicker.SelectedItem.ToString().Equals("Uo")
                 || platformPicker.SelectedItem.ToString().Equals("Go") || platformPicker.SelectedItem.ToString().Equals("Gg")
-                || platformPicker.SelectedItem.ToString().Equals("Volt") || platformPicker.SelectedItem.ToString().Equals("Bolt"))
+                || platformPicker.SelectedItem.ToString().Equals("Volt"))
             {
                 courseEntry.Text = "7";
             }

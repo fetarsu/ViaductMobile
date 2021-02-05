@@ -49,7 +49,6 @@ namespace ViaductMobile.View
             SgLabel.Text = newDeliverer.S_g.ToString();
             KikLabel.Text = newDeliverer.Kik.ToString();
             voltLabel.Text = newDeliverer.Volt.ToString();
-            boltLabel.Text = newDeliverer.Bolt.ToString();
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
             bonusLabel.Text = bonus.ToString();
             cashForDayLabel.Text = cash.ToString();

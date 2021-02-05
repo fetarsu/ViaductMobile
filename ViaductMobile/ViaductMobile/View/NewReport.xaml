@@ -143,7 +143,6 @@
                                 <dg:DataGridColumn Title="So" PropertyName="S_o" Width="*"/>
                                 <dg:DataGridColumn Title="Sg" PropertyName="S_g" Width="*"/>
                                 <dg:DataGridColumn Title="Vo" PropertyName="Volt" Width="*"/>
-                                <dg:DataGridColumn Title="Bo" PropertyName="Bolt" Width="*"/>
                                 <dg:DataGridColumn Title="KiK" PropertyName="KiK" Width="*"/>
                                 <dg:DataGridColumn Title="Dostawy" PropertyName="DeliveriesNumber" Width="*"/>
                                 <dg:DataGridColumn Title="Do kasy" PropertyName="AmountToCash" Width="*"/>

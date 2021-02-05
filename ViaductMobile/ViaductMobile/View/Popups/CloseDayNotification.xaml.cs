@@ -41,10 +41,11 @@ namespace ViaductMobile.View.Popups
             UberOLabel.Text = newDeliverer.Uber_o.ToString();
             SoLabel.Text = newDeliverer.S_o.ToString();
             SgLabel.Text = newDeliverer.S_g.ToString();
+            VoLabel.Text = newDeliverer.Volt.ToString();
             KikLabel.Text = newDeliverer.Kik.ToString();
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
             bonusLabel.Text = newEmployee.Bonus.ToString();
-            cashForDayLabel.Text = newEmployee.DayWage.ToString();
+            cashForDayLabel.Text = Math.Round(newEmployee.DayWage, 2).ToString();
             AmountToCashLabel.Text = (newDeliverer.AmountToCash - newEmployee.DayWage - newEmployee.Bonus).ToString();
         }
 
