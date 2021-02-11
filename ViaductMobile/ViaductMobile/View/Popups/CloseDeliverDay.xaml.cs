@@ -47,6 +47,7 @@ namespace ViaductMobile.View.Popups
         private async void End_Clicked(object sender, EventArgs e)
         {
             add = true;
+            deliverNumbers = 0;
             var x = Methods.test;
             godzinaRozpoczecia = workFromEntry.Time;
             godzinaSkonczenia = workToEntry.Time;
@@ -58,132 +59,147 @@ namespace ViaductMobile.View.Popups
                 await DisplayAlert("Uwaga", "Wartość w polu tipy nie jest liczbą", "OK");
                 add = false;
             }
-            if(add == true)
+            if (add == true)
             {
                 foreach (var item in listOfSupplys)
                 {
                     if (item.Platform.Equals("Vk"))
                     {
                         v_k += item.Amount;
+                        v_k += item.Amount + item.Course;
                         v_count++;
                     }
                     else if (item.Platform.Equals("Vg"))
                     {
                         v_g += item.Amount;
+                        v_g += item.Amount + item.Course;
                         v_count++;
                     }
                     else if (item.Platform.Equals("Po"))
                     {
                         p_o += item.Amount;
+                        p_o += item.Amount + item.Course;
                         p_count++;
                     }
                     else if (item.Platform.Equals("Pg"))
                     {
                         p_g += item.Amount;
+                        p_g += item.Amount + item.Course;
                         p_count++;
                     }
                     else if (item.Platform.Equals("Gg"))
                     {
                         g_g += item.Amount;
+                        g_g += item.Amount + item.Course;
                         g_count++;
                     }
                     else if (item.Platform.Equals("Go"))
                     {
                         g_o += item.Amount;
+                        g_o += item.Amount + item.Course;
                         g_count++;
                     }
                     else if (item.Platform.Equals("Uo"))
                     {
                         uber_o += item.Amount;
+                        uber_o += item.Amount + item.Course;
                         uber_count++;
                     }
                     else if (item.Platform.Equals("Ug"))
                     {
                         uber_g += item.Amount;
+                        uber_g += item.Amount + item.Course;
                         uber_count++;
                     }
                     else if (item.Platform.Equals("So"))
                     {
                         s_o += item.Amount;
+                        s_o += item.Amount + item.Course;
                         s_count++;
                     }
                     else if (item.Platform.Equals("Sg"))
                     {
                         s_g += item.Amount;
+                        s_g += item.Amount + item.Course;
                         s_count++;
                     }
                     else if (item.Platform.Equals("Volt"))
                     {
                         volt += item.Amount;
+                        volt += item.Amount + item.Course;
                         volt_count++;
                     }
                     else if (item.Platform.Equals("Kik"))
                     {
                         kik += item.Amount;
+                        kik += item.Amount + item.Course;
                         kik_count++;
                     }
                     deliverNumbers++;
                     courses += item.Course;
                 }
-                deliverNumbers = deliverNumbers + int.Parse(extraDeliveries.Text);
-                deliverNumbers2 = deliverNumbers;
-                if (deliverNumbers > 19)
-                {
-                    bonus = 30;
-                    deliverNumbers = -20;
-                    int y = deliverNumbers / 5;
-                    bonus = +(y * 10);
-                }
-                TimeSpan godzina24 = new TimeSpan(24, 00, 00);
-                double start_liczba = godzinaRozpoczecia.TotalHours;
-                double koniec_liczba = godzinaSkonczenia.TotalHours;
-                double roznica, minusRozpoczecie;
+            }
+            deliverNumbers = deliverNumbers + int.Parse(extraDeliveries.Text);
+            int exDel = int.Parse(extraDeliveries.Text);
+            deliverNumbers = deliverNumbers + exDel;
+            deliverNumbers2 = deliverNumbers;
+            if (deliverNumbers > 19)
+            {
+                bonus = 30;
+                deliverNumbers = deliverNumbers - 20;
+                int y = deliverNumbers / 5;
+                bonus = bonus + (y * 10);
+            }
+            TimeSpan godzina24 = new TimeSpan(24, 00, 00);
+            double start_liczba = godzinaRozpoczecia.TotalHours;
+            double koniec_liczba = godzinaSkonczenia.TotalHours;
+            double roznica, minusRozpoczecie;
 
-                if (koniec_liczba >= 0 && koniec_liczba < 8)
-                {
-                    minusRozpoczecie = (godzina24 - godzinaRozpoczecia).TotalHours;
-                    roznica = minusRozpoczecie + koniec_liczba;
-                }
-                else
-                {
-                    roznica = (godzinaSkonczenia - godzinaRozpoczecia).TotalHours;
-                }
-                decimal roznica2 = (decimal)(roznica);
-                var cash = loggedUser.DeliverRate * roznica2;
-                amountToCash = -courses + v_g + p_g + g_g + uber_g + s_g - tips;
-                amountToShouldBe = -courses - p_o - g_o - uber_o - s_o - kik - volt;
-                var tee = courses;
-                cart.Courses = courses;
-                cart.V_k = v_k;
-                cart.V_g = v_g;
-                cart.P_o = p_o;
-                cart.P_g = p_g;
-                cart.G_o = g_o;
-                cart.G_g = g_g;
-                cart.Uber_o = uber_o;
-                cart.Uber_g = uber_g;
-                cart.S_o = s_o;
-                cart.S_g = s_g;
-                cart.Kik = kik;
-                cart.Volt = volt;
-                cart.DeliveriesNumber = deliverNumbers2;
-                cart.AmountToCash = amountToCash;
-                cart.AmountToShouldBe = amountToShouldBe;
-                cart.ReportId = reportId;
-                Employee newEmpoloyee = new Employee()
-                {
-                    Nickname = cart.Nickname,
-                    Date = deliverDate.AddDays(1),
-                    Rate = loggedUser.DeliverRate.ToString(),
-                    WorkFrom = Convert.ToDateTime(workFromEntry.Time.ToString()),
-                    WorkTo = Convert.ToDateTime(workToEntry.Time.ToString()),
-                    Position = "Dostawy",
-                    DayWage = cash,
-                    ReportId = reportId,
-                    Bonus = bonus
-                };
-                await PopupNavigation.PushAsync(new CloseDayNotification(cart, newEmpoloyee, loggedUser, deliverDate, selectedUser));
-            } 
+            if (koniec_liczba >= 0 && koniec_liczba < 8)
+            {
+                minusRozpoczecie = (godzina24 - godzinaRozpoczecia).TotalHours;
+                roznica = minusRozpoczecie + koniec_liczba;
+            }
+            else
+            {
+                roznica = (godzinaSkonczenia - godzinaRozpoczecia).TotalHours;
+            }
+            decimal roznica2 = (decimal)(roznica);
+            var cash = loggedUser.DeliverRate * roznica2;
+            amountToCash = -courses + v_g + p_g + g_g + uber_g + s_g - tips;
+            amountToShouldBe = -courses - p_o - g_o - uber_o - s_o - kik - volt;
+            var tee = courses;
+            cart.Courses = courses;
+            cart.V_k = v_k;
+            cart.V_g = v_g;
+            cart.P_o = p_o;
+            cart.P_g = p_g;
+            cart.G_o = g_o;
+            cart.G_g = g_g;
+            cart.Uber_o = uber_o;
+            cart.Uber_g = uber_g;
+            cart.S_o = s_o;
+            cart.S_g = s_g;
+            cart.Kik = kik;
+            cart.Volt = volt;
+            cart.DeliveriesNumber = deliverNumbers2;
+            cart.AmountToCash = amountToCash;
+            cart.AmountToShouldBe = amountToShouldBe;
+            cart.ReportId = reportId;
+            Employee newEmpoloyee = new Employee()
+            {
+                Nickname = cart.Nickname,
+                Date = deliverDate.AddDays(1),
+                Rate = loggedUser.DeliverRate.ToString(),
+                WorkFrom = Convert.ToDateTime(workFromEntry.Time.ToString()),
+                WorkTo = Convert.ToDateTime(workToEntry.Time.ToString()),
+                Position = "Dostawy",
+                DayWage = cash,
+                ReportId = reportId,
+                Bonus = bonus
+            };
+            await PopupNavigation.PushAsync(new CloseDayNotification(cart, newEmpoloyee, loggedUser, deliverDate, selectedUser));
         }
     }
+}
 }

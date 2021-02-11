@@ -128,9 +128,13 @@ namespace ViaductMobile
             }
             foreach (var item in delivererList)
             {
-                shouldBe = shouldBe + item.AmountToShouldBe;
+                decimal x = item.AmountToShouldBe;
+                shouldBe = shouldBe + x;
             }
-            shouldBe = shouldBe + readReport.Start + readReport.ReportAmount - readReport.Terminal;
+            decimal q = readReport.Start;
+            decimal w = readReport.ReportAmount;
+            decimal e = readReport.Terminal;
+            shouldBe = shouldBe + q + w + e;
             return shouldBe;
         }
         public void BlockButtons()

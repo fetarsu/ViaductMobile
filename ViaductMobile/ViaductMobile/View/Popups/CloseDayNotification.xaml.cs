@@ -58,6 +58,7 @@ namespace ViaductMobile.View.Popups
         private async void End_Clicked(object sender, EventArgs e)
         {
             newDeliverer.Closed = true;
+            newEmployee.DayWage = Math.Round(newEmployee.DayWage, 2);
             await newEmployee.SaveEmployee();
             await newDeliverer.UpdateDeliverer(newDeliverer);
             await PopupNavigation.PopAsync(true);

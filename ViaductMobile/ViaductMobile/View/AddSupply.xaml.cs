@@ -193,8 +193,8 @@ namespace ViaductMobile.View
                 var newAdress = adressList.Where(x => x.Street.Equals(streetName) && x.Number.Equals(buildingEntry.Text)).FirstOrDefault();
                 if (newAdress == null)
                 {
-                    if (platformPicker.SelectedItem.ToString().Equals("Vk") || platformPicker.SelectedItem.ToString().Equals("Vg") || platformPicker.SelectedItem.ToString().Equals("So")
-                        || platformPicker.SelectedItem.ToString().Equals("Sg") || platformPicker.SelectedItem.ToString().Equals("Bolt") || platformPicker.SelectedItem.ToString().Equals("Volt"))
+                    if (platformPicker.SelectedItem.ToString().Equals("Po") || platformPicker.SelectedItem.ToString().Equals("Pg") || platformPicker.SelectedItem.ToString().Equals("Go")
+                        || platformPicker.SelectedItem.ToString().Equals("Uo") || platformPicker.SelectedItem.ToString().Equals("Gg") || platformPicker.SelectedItem.ToString().Equals("Volt") || platformPicker.SelectedItem.ToString().Equals("Ug"))
                     {
                         Adress item = new Adress()
                         {

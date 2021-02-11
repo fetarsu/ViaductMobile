@@ -50,10 +50,10 @@ namespace ViaductMobile.View
             KikLabel.Text = newDeliverer.Kik.ToString();
             voltLabel.Text = newDeliverer.Volt.ToString();
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
-            bonusLabel.Text = bonus.ToString();
-            cashForDayLabel.Text = cash.ToString();
+            bonusLabel.Text = newEmployee.Bonus.ToString();
+            cashForDayLabel.Text = newEmployee.DayWage.ToString();
             AmountToCashLabel.Text = newDeliverer.AmountToCash.ToString();
-            deliverDate = chooseDayPicker.Date = DateTime.Now;
+            deliverDate = chooseDayPicker.Date;
             ReadAllUsers();
         }
 
@@ -103,7 +103,10 @@ namespace ViaductMobile.View
                 await newDeliverer.UpdateDeliverer(newDeliverer);
                 var emp = await newEmployee.ReadEmployeeCart(usersPicker.SelectedItem.ToString(), chooseDayPicker.Date);
                 var employee = emp.SingleOrDefault();
-                var result = employee.DeleteEmployee(employee);
+                if (employee != null)
+                {
+                    var result = employee.DeleteEmployee(employee);
+                }
                 App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, listOfSupplys))
                 {
                     BarBackgroundColor = Color.FromHex("#3B3B3B"),
