@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             mc:Ignorable="d"
+             BackgroundColor="Transparent"
+             x:Class="ViaductMobile.View.Popups.AddAdresses">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut="0.8"
+            DurationIn="400"
+            DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <StackLayout VerticalOptions="Center" Padding="20, 0" HorizontalOptions="FillAndExpand">
+        <Frame Style="{StaticResource popupFrame}" HeightRequest="500">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Dodawanie/Edycja Adresu</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="1">Ulica</Label>
+                <Entry Grid.Column="1" Grid.Row="1" x:Name="streetNameEntry"></Entry>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="2">Numer</Label>
+                <Entry Grid.Column="1" Grid.Row="2" x:Name="streetNumberEntry"></Entry>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="3">Kwota</Label>
+                <Entry Keyboard="Numeric" Grid.Column="1" Grid.Row="3" x:Name="deliveryCostEntry"></Entry>
+                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="4" Text="Dodaj" Clicked="Add_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="4" Text="Wróć" Clicked="Back_Clicked"></Button>
+            </Grid>
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>

@@ -202,4 +202,3 @@ namespace ViaductMobile.View.Popups
         }
     }
 }
-}

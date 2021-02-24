@@ -101,30 +101,37 @@ namespace ViaductMobile.View.Popups
                     deliverer = 0;
                 else { add = false; notification += "stawka dostawy "; }
             }
-            if (edit == false)
+            if (add == false)
             {
-                var hash = SecurePasswordHasher.Hash(passwordEntry.Text);
-                User newUser = new User()
-                {
-                    Nickname = nicknameEntry.Text,
-                    Password = hash,
-                    Permission = permissionPicker.SelectedItem.ToString(),
-                    BarRate = bar,
-                    KitchenRate = kitchen,
-                    DeliverRate = deliverer
-                };
-                bool result = await newUser.SaveUser();
+                await DisplayAlert("Uwaga", "Pole" + notification + " zostało źle wypełnione", "OK");
             }
             else
             {
-                clickedRow.Nickname = nicknameEntry.Text;
-                clickedRow.Permission = permissionPicker.SelectedItem.ToString();
-                clickedRow.BarRate = bar;
-                clickedRow.KitchenRate = kitchen;
-                clickedRow.DeliverRate = deliverer;
-                bool result = await clickedRow.UpdateUser(clickedRow);
+                if (edit == false)
+                {
+                    var hash = SecurePasswordHasher.Hash(passwordEntry.Text);
+                    User newUser = new User()
+                    {
+                        Nickname = nicknameEntry.Text,
+                        Password = hash,
+                        Permission = permissionPicker.SelectedItem.ToString(),
+                        BarRate = bar,
+                        KitchenRate = kitchen,
+                        DeliverRate = deliverer
+                    };
+                    bool result = await newUser.SaveUser();
+                }
+                else
+                {
+                    clickedRow.Nickname = nicknameEntry.Text;
+                    clickedRow.Permission = permissionPicker.SelectedItem.ToString();
+                    clickedRow.BarRate = bar;
+                    clickedRow.KitchenRate = kitchen;
+                    clickedRow.DeliverRate = deliverer;
+                    bool result = await clickedRow.UpdateUser(clickedRow);
+                }
+                employeesDataGrid.ItemsSource = new ViewModels.EmployeePanelVM().Users;
             }
-            employeesDataGrid.ItemsSource = new ViewModels.EmployeePanelVM().Users;
         }
     }
 }

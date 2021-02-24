@@ -8,8 +8,9 @@
              x:Class="ViaductMobile.App">
     <Application.Resources>
         <Style TargetType="Button" x:Key="typicalButton" >
+            <Setter Property="BackgroundColor" Value="SlateBlue"/>
             <Setter Property="Padding" Value="10"/>
-            <Setter Property="BackgroundColor" Value="#486581"/>
+            <Setter Property="InputTransparent" Value="False"></Setter>
             <Setter Property="TextColor" Value="#ffffff"/>
             <Setter Property="CornerRadius" Value="5"/>
         </Style>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ViaductMobile.View.Popups;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -42,23 +42,23 @@ namespace ViaductMobile.View
         [Obsolete]
         private async void AddClicked(object sender, EventArgs e)
         {
-            //await PopupNavigation.PushAsync(new AddEmployee(employeesDataGrid));
+            await PopupNavigation.PushAsync(new AddPizzas(pizzasDataGrid));
         }
         [Obsolete]
         private async void EditClicked(object sender, EventArgs e)
         {
-            User clickedRow = (User)employeesDataGrid.SelectedItem;
+            PizzasAndOthers clickedRow = (PizzasAndOthers)pizzasDataGrid.SelectedItem;
             if (clickedRow != null)
             {
-                //await PopupNavigation.PushAsync(new AddEmployee(clickedRow, employeesDataGrid));
+                await PopupNavigation.PushAsync(new AddPizzas(clickedRow, pizzasDataGrid));
             }
         }
 
         async void DeleteClicked(object sender, EventArgs e)
         {
-            User x = (User)employeesDataGrid.SelectedItem;
-            await x.DeleteUser(x);
-            employeesDataGrid.ItemsSource = new ViewModels.EmployeePanelVM().Users;
+            PizzasAndOthers x = (PizzasAndOthers)pizzasDataGrid.SelectedItem;
+            await x.DeletePizzas(x);
+            pizzasDataGrid.ItemsSource = new ViewModels.PizzasPanelVM().Pizzas;
         }
     }
 }
