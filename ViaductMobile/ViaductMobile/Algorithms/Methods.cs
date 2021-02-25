@@ -14,6 +14,7 @@ namespace ViaductMobile.Algorithms
         public static string macAdress;
         public static readonly List<string> permissionList = new List<string>() { "Admin", "Manager", "Pracownik" };
         public static readonly List<string> positionList = new List<string>() { "Bar", "Kuchnia", "Dostawy", "Kierownictwo" };
+        public static readonly List<string> operationTypeList = new List<string>() { "Brak faktury", "Faktura" };
         public static Dictionary<String, Decimal> platformList = new Dictionary<String, Decimal>();
         public static List<Report> test;
         public static List<Employee> reportEmployeeList;

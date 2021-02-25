@@ -28,6 +28,7 @@ namespace ViaductMobile.View.Popups
             this.loggedUser = loggedUser;
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
+            typePicker.ItemsSource = Methods.operationTypeList;
             this.readReport = readReport;
             this.employeeList = employeeListt;
             this.operationList = operationListt;
@@ -38,6 +39,7 @@ namespace ViaductMobile.View.Popups
             this.loggedUser = loggedUser;
             InitializeComponent();
             nicknamePicker.ItemsSource = Methods.userList;
+            typePicker.ItemsSource = Methods.operationTypeList;
             this.operation = operation;
             this.readReport = readReport;
             operationNameEntry.Text = operation.Name;
@@ -46,10 +48,7 @@ namespace ViaductMobile.View.Popups
             amountEntry.Text = operation.Amount.ToString();
             this.employeeList = employeeListt;
             this.operationList = operationListt;
-            if (operation.Type.Equals("Faktura"))
-                yesInvoiceCheckBox.IsChecked = true;
-            else
-                noInvoiceCheckBox.IsChecked = true;
+            typePicker.SelectedItem = operation.Type;
             edit = true;
         }
         [Obsolete]
@@ -82,9 +81,9 @@ namespace ViaductMobile.View.Popups
                     amount = 0;
                 else { add = false; notification += "kwota "; }
             }
-            if ((yesInvoiceCheckBox.IsChecked == true && noInvoiceCheckBox.IsChecked == true) || (yesInvoiceCheckBox.IsChecked == false && noInvoiceCheckBox.IsChecked == false))
+            if (typePicker.SelectedItem == null)
             {
-                add = false; notification += "faktura ";
+                add = false; notification += "typ ";
             }
             if (add == false)
             {
@@ -92,13 +91,9 @@ namespace ViaductMobile.View.Popups
             }
             else
             {
-                if (yesInvoiceCheckBox.IsChecked == true && noInvoiceCheckBox.IsChecked == false)
-                    type = "faktura";
-                else if (yesInvoiceCheckBox.IsChecked == false && noInvoiceCheckBox.IsChecked == true)
-                    type = "brak";
-
-                if (edit == false)
+                if (edit == false && !addAndPayCheckBox.IsChecked)
                 {
+
                     Operation newOperation = new Operation()
                     {
                         Name = operationNameEntry.Text,
@@ -106,7 +101,7 @@ namespace ViaductMobile.View.Popups
                         DocumentNumber = number,
                         Amount = amount,
                         Date = readReport.Date,
-                        Type = type,
+                        Type = typePicker.SelectedItem.ToString(),
                         ReportId = readReport.Id
                     };
                     bool result = await newOperation.SaveOperations();
@@ -119,7 +114,41 @@ namespace ViaductMobile.View.Popups
                         BarTextColor = Color.White
                     };
                 }
-                else
+                else if (edit == false && addAndPayCheckBox.IsChecked && amount < 0)
+                {
+                    Operation newOperationFirst = new Operation()
+                    {
+                        Name = "Zasilenie",
+                        Authorizing = nicknamePicker.SelectedItem.ToString(),
+                        DocumentNumber = number,
+                        Amount = Math.Abs(amount),
+                        Date = readReport.Date,
+                        Type = typePicker.SelectedItem.ToString(),
+                        ReportId = readReport.Id
+                    };
+                    Operation newOperationSecond = new Operation()
+                    {
+                        Name = operationNameEntry.Text,
+                        Authorizing = nicknamePicker.SelectedItem.ToString(),
+                        DocumentNumber = number,
+                        Amount = amount,
+                        Date = readReport.Date,
+                        Type = typePicker.SelectedItem.ToString(),
+                        ReportId = readReport.Id
+                    };
+                    bool result = await newOperationFirst.SaveOperations();
+                    bool result2 = await newOperationSecond.SaveOperations();
+                    await PopupNavigation.PopAsync(true);
+                    operationList.Add(newOperationFirst);
+                    operationList.Add(newOperationSecond);
+                    Methods.reportOperationList = operationList;
+                    App.Current.MainPage = new NavigationPage(new NewReport(readReport, employeeList, operationList, employeetable, loggedUser))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
+                else if (edit == true && !addAndPayCheckBox.IsChecked)
                 {
                     operationList.Remove(operation);
                     operation.Name = operationNameEntry.Text;
@@ -127,7 +156,7 @@ namespace ViaductMobile.View.Popups
                     operation.DocumentNumber = number;
                     operation.Amount = amount;
                     operation.Date = readReport.Date;
-                    operation.Type = type;
+                    operation.Type = typePicker.SelectedItem.ToString();
                     operation.ReportId = readReport.Id;
                     bool result = await operation.UpdateOpetarions(operation);
                     operationList.Add(operation);
@@ -138,6 +167,10 @@ namespace ViaductMobile.View.Popups
                         BarBackgroundColor = Color.FromHex("#3B3B3B"),
                         BarTextColor = Color.White
                     };
+                }
+                else
+                {
+                    await DisplayAlert("Uwaga", "aby użyć opcji wpłać i wypłać operacja musi być nowa (nie można edytować) i kwota musi być na minusie", "OK");
                 }
             }
         }

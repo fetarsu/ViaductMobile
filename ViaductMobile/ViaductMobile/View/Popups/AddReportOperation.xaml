@@ -45,12 +45,12 @@
                 <Entry Grid.Column="1" Grid.Row="3" x:Name="numberEntry"></Entry>
                 <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="4">Kwota</Label>
                 <Entry Grid.Column="1" Grid.Row="4" x:Name="amountEntry"></Entry>
-                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="5" HorizontalOptions="StartAndExpand">Faktura</Label>
-                <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="5" HorizontalOptions="StartAndExpand">Brak faktury</Label>
-                <CheckBox Grid.Column="0" Grid.Row="5" HorizontalOptions="End" VerticalOptions="Start" x:Name="yesInvoiceCheckBox"></CheckBox>
-                <CheckBox Grid.Column="1" Grid.Row="5" HorizontalOptions="End" VerticalOptions="Start" x:Name="noInvoiceCheckBox"></CheckBox>
-                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="6" Text="Dodaj" Clicked="Add_Clicked"></Button>
-                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="6" Text="Wróć" Clicked="Back_Clicked"></Button>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="5" HorizontalOptions="StartAndExpand">Rodzaj</Label>
+                <Picker Style="{StaticResource typicalPicker}" Grid.Column="1" Grid.Row="5" x:Name="typePicker"></Picker>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="6" HorizontalOptions="StartAndExpand">Wpłata i wypłata</Label>
+                <CheckBox Grid.Column="1" Grid.Row="6" x:Name="addAndPayCheckBox"></CheckBox>
+                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="7" Text="Dodaj" Clicked="Add_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="7" Text="Wróć" Clicked="Back_Clicked"></Button>
             </Grid>
         </Frame>
     </StackLayout>
