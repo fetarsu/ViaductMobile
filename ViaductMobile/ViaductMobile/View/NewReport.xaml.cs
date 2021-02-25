@@ -134,7 +134,7 @@ namespace ViaductMobile
             decimal q = readReport.Start;
             decimal w = readReport.ReportAmount;
             decimal e = readReport.Terminal;
-            shouldBe = shouldBe + q + w + e;
+            shouldBe = shouldBe + q + w - e;
             return shouldBe;
         }
         public void BlockButtons()

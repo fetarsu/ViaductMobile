@@ -66,73 +66,61 @@ namespace ViaductMobile.View.Popups
                     if (item.Platform.Equals("Vk"))
                     {
                         v_k += item.Amount;
-                        v_k += item.Amount + item.Course;
                         v_count++;
                     }
                     else if (item.Platform.Equals("Vg"))
                     {
                         v_g += item.Amount;
-                        v_g += item.Amount + item.Course;
                         v_count++;
                     }
                     else if (item.Platform.Equals("Po"))
                     {
                         p_o += item.Amount;
-                        p_o += item.Amount + item.Course;
                         p_count++;
                     }
                     else if (item.Platform.Equals("Pg"))
                     {
                         p_g += item.Amount;
-                        p_g += item.Amount + item.Course;
                         p_count++;
                     }
                     else if (item.Platform.Equals("Gg"))
                     {
                         g_g += item.Amount;
-                        g_g += item.Amount + item.Course;
                         g_count++;
                     }
                     else if (item.Platform.Equals("Go"))
                     {
                         g_o += item.Amount;
-                        g_o += item.Amount + item.Course;
                         g_count++;
                     }
                     else if (item.Platform.Equals("Uo"))
                     {
                         uber_o += item.Amount;
-                        uber_o += item.Amount + item.Course;
                         uber_count++;
                     }
                     else if (item.Platform.Equals("Ug"))
                     {
                         uber_g += item.Amount;
-                        uber_g += item.Amount + item.Course;
                         uber_count++;
                     }
                     else if (item.Platform.Equals("So"))
                     {
                         s_o += item.Amount;
-                        s_o += item.Amount + item.Course;
                         s_count++;
                     }
                     else if (item.Platform.Equals("Sg"))
                     {
                         s_g += item.Amount;
-                        s_g += item.Amount + item.Course;
                         s_count++;
                     }
                     else if (item.Platform.Equals("Volt"))
                     {
                         volt += item.Amount;
-                        volt += item.Amount + item.Course;
                         volt_count++;
                     }
                     else if (item.Platform.Equals("Kik"))
                     {
                         kik += item.Amount;
-                        kik += item.Amount + item.Course;
                         kik_count++;
                     }
                     deliverNumbers++;
@@ -140,8 +128,6 @@ namespace ViaductMobile.View.Popups
                 }
             }
             deliverNumbers = deliverNumbers + int.Parse(extraDeliveries.Text);
-            int exDel = int.Parse(extraDeliveries.Text);
-            deliverNumbers = deliverNumbers + exDel;
             deliverNumbers2 = deliverNumbers;
             if (deliverNumbers > 19)
             {
