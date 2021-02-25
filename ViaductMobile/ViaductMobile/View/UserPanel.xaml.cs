@@ -17,32 +17,9 @@ namespace ViaductMobile.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UserPanel : ContentPage
     {
-        ChartEntry[] entries = new[]
-        {
-            new ChartEntry(2553)
-            {
-                Label = "Listopad",
-                ValueLabel = "2553",
-                ValueLabelColor = SKColor.Parse("#FFFFFF"),
-                Color = SKColor.Parse("#2c3e50")
-            },
-            new ChartEntry(3592)
-            {
-                Label = "Grudzień",
-                ValueLabel = "3592",
-                ValueLabelColor = SKColor.Parse("#FFFFFF"),
-                Color = SKColor.Parse("#77d065")
-            },
-            new ChartEntry(1663)
-            {
-                Label = "Styczeń",
-                ValueLabel = "1663",
-                ValueLabelColor = SKColor.Parse("#FFFFFF"),
-                Color = SKColor.Parse("#b455b6")
-            }
-        };
-
         User loggedUser;
+        decimal firstSalary, secondSalary;
+        Employee emp = new Employee();
         OverdueCash selectedRow;
         DateTime currentDate;
         public UserPanel(User loggedUser)
@@ -56,6 +33,24 @@ namespace ViaductMobile.View
             delivererRateLabel.Text = "Stawka dostawy: " + loggedUser.DeliverRate;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             BindingContext = new ViewModels.OverdueEmployeeVM(loggedUser);
+            GetMonthlySalary();
+            ChartEntry[] entries = new[]
+            {
+                new ChartEntry((float)firstSalary)
+                {
+                    Label = "Poprzedni",
+                    ValueLabel = firstSalary.ToString(),
+                    ValueLabelColor = SKColor.Parse("#FFFFFF"),
+                    Color = SKColor.Parse("#2c3e50")
+                },
+                new ChartEntry((float)secondSalary)
+                {
+                    Label = "Ten miesiac",
+                    ValueLabel = secondSalary.ToString(),
+                    ValueLabelColor = SKColor.Parse("#FFFFFF"),
+                    Color = SKColor.Parse("#77d065")
+                },
+            };
             chartView.Chart = new BarChart() { Entries = entries, ValueLabelOrientation = Orientation.Horizontal, LabelTextSize = 40, LabelColor = SKColor.Parse("#FFFFFF"), BackgroundColor = SKColor.Parse("#272727"), Margin = 40 };
         }
         private void BackClicked(object sender, EventArgs e)
@@ -75,7 +70,13 @@ namespace ViaductMobile.View
             };
             return true;
         }
-
+        public async void GetMonthlySalary()
+        {
+            var firstMonth = await emp.GetMonthlySalary(loggedUser.Nickname, DateTime.Now.Month - 1, DateTime.Now.Year);
+            firstSalary = firstMonth.Select(x => x.DayWage + x.Bonus).Sum();
+            var secondMonth = await emp.GetMonthlySalary(loggedUser.Nickname, DateTime.Now.Month, DateTime.Now.Year);
+            secondSalary = secondMonth.Select(x => x.DayWage + x.Bonus).Sum();
+        }
         [Obsolete]
         private async void ChangePasswordClicked(object sender, EventArgs e)
         {

@@ -86,7 +86,6 @@ namespace ViaductMobile
             var table = client.GetTable<User>();
             return await table.Where(x => x.Nickname == nickname).ToListAsync();
         }
-
     }
 }
 

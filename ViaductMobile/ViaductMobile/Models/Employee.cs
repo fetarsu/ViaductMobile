@@ -86,7 +86,10 @@ namespace ViaductMobile
             var a = client.GetTable<Employee>().Where(x => x.Nickname == user && x.Date.Day == date.Day && x.Date.Month == date.Month && x.Date.Year == date.Year && x.Position == "Dostawy").ToListAsync();
             return await a;
         }
-
+        public async Task<List<Employee>> GetMonthlySalary(string nickname, int month, int year)
+        {
+            return await client.GetTable<Employee>().Where(x => x.Nickname == nickname && x.Date.Year == year && x.Date.Month == month).ToListAsync();
+        }
     }
 }
 
