@@ -18,14 +18,16 @@ namespace ViaductMobile.View
     public partial class UserPanel : ContentPage
     {
         User loggedUser;
-        decimal firstSalary, secondSalary;
+        decimal firstMonthSalary, secondMonthSalary;
         Employee emp = new Employee();
         OverdueCash selectedRow;
         DateTime currentDate;
-        public UserPanel(User loggedUser)
+        public UserPanel(User loggedUser, decimal firstMonthSalary, decimal secondMonthSalary)
         {
             InitializeComponent();
             this.loggedUser = loggedUser;
+            this.firstMonthSalary = firstMonthSalary;
+            this.secondMonthSalary = secondMonthSalary;
             welcomeLabel.Text = "Witaj " + loggedUser.Nickname + "!";
             permissionLabel.Text = "Uprawnienia: " + loggedUser.Permission;
             barRateLabel.Text = "Stawka bar: " + loggedUser.BarRate;
@@ -33,20 +35,19 @@ namespace ViaductMobile.View
             delivererRateLabel.Text = "Stawka dostawy: " + loggedUser.DeliverRate;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             BindingContext = new ViewModels.OverdueEmployeeVM(loggedUser);
-            GetMonthlySalary();
             ChartEntry[] entries = new[]
             {
-                new ChartEntry((float)firstSalary)
+                new ChartEntry((float)firstMonthSalary)
                 {
                     Label = "Poprzedni",
-                    ValueLabel = firstSalary.ToString(),
+                    ValueLabel = firstMonthSalary.ToString(),
                     ValueLabelColor = SKColor.Parse("#FFFFFF"),
                     Color = SKColor.Parse("#2c3e50")
                 },
-                new ChartEntry((float)secondSalary)
+                new ChartEntry((float)secondMonthSalary)
                 {
                     Label = "Ten miesiac",
-                    ValueLabel = secondSalary.ToString(),
+                    ValueLabel = secondMonthSalary.ToString(),
                     ValueLabelColor = SKColor.Parse("#FFFFFF"),
                     Color = SKColor.Parse("#77d065")
                 },
@@ -69,13 +70,6 @@ namespace ViaductMobile.View
                 BarTextColor = Color.White
             };
             return true;
-        }
-        public async void GetMonthlySalary()
-        {
-            var firstMonth = await emp.GetMonthlySalary(loggedUser.Nickname, DateTime.Now.Month - 1, DateTime.Now.Year);
-            firstSalary = firstMonth.Select(x => x.DayWage + x.Bonus).Sum();
-            var secondMonth = await emp.GetMonthlySalary(loggedUser.Nickname, DateTime.Now.Month, DateTime.Now.Year);
-            secondSalary = secondMonth.Select(x => x.DayWage + x.Bonus).Sum();
         }
         [Obsolete]
         private async void ChangePasswordClicked(object sender, EventArgs e)

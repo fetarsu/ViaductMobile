@@ -125,7 +125,12 @@ namespace ViaductMobile
         {
             UserDialogs.Instance.ShowLoading("Proszę czekać...");
             await Task.Delay(100);
-            App.Current.MainPage = new NavigationPage(new UserPanel(loggedUser))
+            Employee emp = new Employee();
+            var firstMonth = await emp.GetMonthlySalary(loggedUser.Nickname, DateTime.Now.Month - 1, DateTime.Now.Year);
+            decimal firstSalary = firstMonth.Select(x => x.DayWage + x.Bonus).Sum();
+            var secondMonth = await emp.GetMonthlySalary(loggedUser.Nickname, DateTime.Now.Month, DateTime.Now.Year);
+            decimal secondSalary = secondMonth.Select(x => x.DayWage + x.Bonus).Sum();
+            App.Current.MainPage = new NavigationPage(new UserPanel(loggedUser, firstSalary, secondSalary))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
