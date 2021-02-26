@@ -204,6 +204,16 @@ namespace ViaductMobile.View
                         };
                         bool result = await item.SaveAdress();
                     }
+                    else
+                    {
+                        Adress item = new Adress()
+                        {
+                            Street = streetName,
+                            Number = buildingEntry.Text,
+                            Amount = decimal.Parse(amountEntry.Text)
+                        };
+                        bool result = await item.SaveAdress();
+                    }
                 }
                 else
                 {
