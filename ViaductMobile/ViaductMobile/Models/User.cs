@@ -41,6 +41,11 @@ namespace ViaductMobile
         {
             return await client.GetTable<User>().ToListAsync();
         }
+        public async Task<List<User>> ReadUser(string nickname)
+        {
+            return await client.GetTable<User>().Where(x => x.Nickname == nickname).ToListAsync();
+        }
+
 
         public async Task<bool> UpdateUser(User item)
         {
