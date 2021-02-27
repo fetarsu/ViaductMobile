@@ -19,8 +19,12 @@ namespace ViaductMobile
         async void LoginButton_Clicked(object sender, EventArgs e)
         {
             UserDialogs.Instance.ShowLoading("Proszę czekać...");
-            user = (await user.ReadUser(loginEntry.Text)).FirstOrDefault();
-            if(user != null)
+            if(!(loginEntry.Text == null || loginEntry.Text.Length == 0) && !(passwordEntry.Text == null || passwordEntry.Text.Length == 0))
+            {
+                var userList = await user.ReadUser(loginEntry.Text);
+                user = userList.FirstOrDefault();
+            }
+            if(user.Nickname != null)
             {
                 bool result = SecurePasswordHasher.Verify(passwordEntry.Text, user.Password);
                 if (result)
