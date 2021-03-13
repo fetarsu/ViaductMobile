@@ -23,31 +23,34 @@
     <StackLayout VerticalOptions="Center" Padding="20, 0" HorizontalOptions="FillAndExpand">
         <ScrollView HeightRequest="3000">
             <Frame Style="{StaticResource popupFrame}" HeightRequest="500">
+                <ScrollView HeightRequest="3000">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Podsumowanie</Label>
@@ -81,15 +84,20 @@
                     <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="14" x:Name="KikLabel"></Label>
                     <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="15">Liczba Dostaw</Label>
                     <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="15" x:Name="delivererNumberLabel"></Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="16">Dniówka</Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="16" x:Name="cashForDayLabel"></Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="17">Premia</Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="17" x:Name="bonusLabel"></Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="18">Kwota do kasy</Label>
-                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="18" x:Name="AmountToCashLabel"></Label>
-                    <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="19" Text="Wróć" Clicked="Back_Clicked" ></Button>
-                    <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="19" Text="Zatwierdź" Clicked="End_Clicked" ></Button>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="16">Elki</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="16" x:Name="elkiLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="17">Elki kursy</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="17" x:Name="delivererElkiLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="18">Dniówka</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="18" x:Name="cashForDayLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="19">Premia</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="19" x:Name="bonusLabel"></Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="20">Kwota do kasy</Label>
+                    <Label Style="{StaticResource popupLabel}" Grid.Column="1" Grid.Row="20" x:Name="AmountToCashLabel"></Label>
+                    <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="21" Text="Wróć" Clicked="Back_Clicked" ></Button>
+                    <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="21" Text="Zatwierdź" Clicked="End_Clicked" ></Button>
                 </Grid>
+                </ScrollView>
             </Frame>
         </ScrollView>
     </StackLayout>

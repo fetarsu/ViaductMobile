@@ -17,11 +17,12 @@ namespace ViaductMobile.View.Popups
     {
         Deliverer newDeliverer;
         Employee newEmployee;
+        Operation newOperation, newOperation2;
         User loggedUser;
         string chosedUser;
         DateTime deliverDate;
         bool closed = true;
-        public CloseDayNotification(Deliverer newDeliverer, Employee newEmployee, User loggedUser, DateTime deliverDate, string chosedUser)
+        public CloseDayNotification(Deliverer newDeliverer, Employee newEmployee, User loggedUser, DateTime deliverDate, string chosedUser, Operation newOperation, Operation newOperation2)
         {
             InitializeComponent();
             this.loggedUser = loggedUser;
@@ -29,6 +30,8 @@ namespace ViaductMobile.View.Popups
             this.chosedUser = chosedUser;
             this.newDeliverer = newDeliverer;
             this.newEmployee = newEmployee;
+            this.newOperation = newOperation;
+            this.newOperation2 = newOperation2;
             nicknameLabel.Text = newDeliverer.Nickname;
             coursesLabel.Text = newDeliverer.Courses.ToString();
             VkLabel.Text = newDeliverer.V_k.ToString();
@@ -43,6 +46,8 @@ namespace ViaductMobile.View.Popups
             SgLabel.Text = newDeliverer.S_g.ToString();
             VoLabel.Text = newDeliverer.Volt.ToString();
             KikLabel.Text = newDeliverer.Kik.ToString();
+            elkiLabel.Text = newOperation.Amount.ToString();
+            delivererElkiLabel.Text = Math.Abs(newOperation2.Amount).ToString();
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
             bonusLabel.Text = newEmployee.Bonus.ToString();
             cashForDayLabel.Text = Math.Round(newEmployee.DayWage, 2).ToString();
@@ -60,6 +65,8 @@ namespace ViaductMobile.View.Popups
             newDeliverer.Closed = true;
             newEmployee.DayWage = Math.Round(newEmployee.DayWage, 2);
             await newEmployee.SaveEmployee();
+            await newOperation.SaveOperations();
+            await newOperation2.SaveOperations();
             await newDeliverer.UpdateDeliverer(newDeliverer);
             await PopupNavigation.PopAsync(true);
             await PopupNavigation.PopAsync(true);

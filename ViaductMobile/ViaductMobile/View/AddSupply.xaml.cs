@@ -25,7 +25,7 @@ namespace ViaductMobile.View
         int cartListCount;
         Supply clickedRow;
         User loggedUser;
-        bool edit, add;
+        bool edit, add, elka;
         string components, streetName, delivererId, selectedUser, notification;
         DateTime chosedDate;
         Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid;
@@ -234,6 +234,7 @@ namespace ViaductMobile.View
                         Platform = platformPicker.SelectedItem.ToString(),
                         Components = components,
                         SumAmount = deliveryAmount + courseAmount,
+                        Elka = elka,
                         DelivererId = delivererId
                     };
                     bool result = await newSupply.SaveSupply();
@@ -324,7 +325,7 @@ namespace ViaductMobile.View
             componentsDataGrid.IsVisible = true;
         }
 
-        private void platformPicker_SelectedIndexChanged(object sender, EventArgs e)
+        private async void platformPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (platformPicker.SelectedItem.ToString().Equals("Ug") || platformPicker.SelectedItem.ToString().Equals("Uo")
                 || platformPicker.SelectedItem.ToString().Equals("Go") || platformPicker.SelectedItem.ToString().Equals("Gg")
@@ -343,6 +344,7 @@ namespace ViaductMobile.View
             else
             {
                 courseEntry.Text = adressList.Where(x => x.Street.Equals(streetName) && x.Number.Equals(buildingEntry.Text)).Select(k => k.Amount).FirstOrDefault().ToString();
+                elka = await DisplayAlert("Pytanie", "Czy to elka?", "Tak", "Nie");
             }
         }
 

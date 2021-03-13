@@ -17,6 +17,7 @@ namespace ViaductMobile.Models
         public string Platform { get; set; }
         public string Components { get; set; }
         public decimal SumAmount { get; set; }
+        public bool Elka { get; set; }
         public string DelivererId { get; set; }
         public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
         public async Task<bool> SaveSupply()

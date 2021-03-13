@@ -16,9 +16,9 @@ namespace ViaductMobile.View.Popups
     public partial class CloseDeliverDay : PopupPage
     {
         User loggedUser;
-        decimal v_k, v_g, p_o, p_g, g_o, g_g, uber_o, uber_g, s_o, s_g, kik, amountToCash, courses, bonus, tips, amountToShouldBe, volt, bolt;
+        decimal v_k, v_g, p_o, p_g, g_o, g_g, uber_o, uber_g, s_o, s_g, kik, amountToCash, courses, bonus, tips, amountToShouldBe, volt, bolt, elka, elkaCourses;
         bool add;
-        int deliverNumbers, v_count, p_count, g_count, uber_count, s_count, kik_count, volt_count, bolt_count, deliverNumbers2;
+        int deliverNumbers, v_count, p_count, g_count, uber_count, s_count, kik_count, volt_count, bolt_count, deliverNumbers2, elka_count;
         string reportId, selectedUser;
         Deliverer cart = new Deliverer();
         List<Supply> listOfSupplys = new List<Supply>();
@@ -63,68 +63,77 @@ namespace ViaductMobile.View.Popups
             {
                 foreach (var item in listOfSupplys)
                 {
-                    if (item.Platform.Equals("Vk"))
+                    if (!item.Elka)
                     {
-                        v_k += item.Amount;
-                        v_count++;
+                        if (item.Platform.Equals("Vk"))
+                        {
+                            v_k += item.Amount;
+                            v_count++;
+                        }
+                        else if (item.Platform.Equals("Vg"))
+                        {
+                            v_g += item.Amount;
+                            v_count++;
+                        }
+                        else if (item.Platform.Equals("Po"))
+                        {
+                            p_o += item.Amount;
+                            p_count++;
+                        }
+                        else if (item.Platform.Equals("Pg"))
+                        {
+                            p_g += item.Amount;
+                            p_count++;
+                        }
+                        else if (item.Platform.Equals("Gg"))
+                        {
+                            g_g += item.Amount;
+                            g_count++;
+                        }
+                        else if (item.Platform.Equals("Go"))
+                        {
+                            g_o += item.Amount;
+                            g_count++;
+                        }
+                        else if (item.Platform.Equals("Uo"))
+                        {
+                            uber_o += item.Amount;
+                            uber_count++;
+                        }
+                        else if (item.Platform.Equals("Ug"))
+                        {
+                            uber_g += item.Amount;
+                            uber_count++;
+                        }
+                        else if (item.Platform.Equals("So"))
+                        {
+                            s_o += item.Amount;
+                            s_count++;
+                        }
+                        else if (item.Platform.Equals("Sg"))
+                        {
+                            s_g += item.Amount;
+                            s_count++;
+                        }
+                        else if (item.Platform.Equals("Volt"))
+                        {
+                            volt += item.Amount;
+                            volt_count++;
+                        }
+                        else if (item.Platform.Equals("Kik"))
+                        {
+                            kik += item.Amount;
+                            kik_count++;
+                        }
+                        courses += item.Course;
                     }
-                    else if (item.Platform.Equals("Vg"))
+                    else
                     {
-                        v_g += item.Amount;
-                        v_count++;
-                    }
-                    else if (item.Platform.Equals("Po"))
-                    {
-                        p_o += item.Amount;
-                        p_count++;
-                    }
-                    else if (item.Platform.Equals("Pg"))
-                    {
-                        p_g += item.Amount;
-                        p_count++;
-                    }
-                    else if (item.Platform.Equals("Gg"))
-                    {
-                        g_g += item.Amount;
-                        g_count++;
-                    }
-                    else if (item.Platform.Equals("Go"))
-                    {
-                        g_o += item.Amount;
-                        g_count++;
-                    }
-                    else if (item.Platform.Equals("Uo"))
-                    {
-                        uber_o += item.Amount;
-                        uber_count++;
-                    }
-                    else if (item.Platform.Equals("Ug"))
-                    {
-                        uber_g += item.Amount;
-                        uber_count++;
-                    }
-                    else if (item.Platform.Equals("So"))
-                    {
-                        s_o += item.Amount;
-                        s_count++;
-                    }
-                    else if (item.Platform.Equals("Sg"))
-                    {
-                        s_g += item.Amount;
-                        s_count++;
-                    }
-                    else if (item.Platform.Equals("Volt"))
-                    {
-                        volt += item.Amount;
-                        volt_count++;
-                    }
-                    else if (item.Platform.Equals("Kik"))
-                    {
-                        kik += item.Amount;
-                        kik_count++;
+                        elkaCourses += item.Course;
+                        elka += item.SumAmount;
+                        elka_count++;
                     }
                     deliverNumbers++;
-                    courses += item.Course;
                 }
             }
             deliverNumbers = deliverNumbers + int.Parse(extraDeliveries.Text);
@@ -184,7 +193,25 @@ namespace ViaductMobile.View.Popups
                 ReportId = reportId,
                 Bonus = bonus
             };
-            await PopupNavigation.PushAsync(new CloseDayNotification(cart, newEmpoloyee, loggedUser, deliverDate, selectedUser));
+            Operation newOperation = new Operation()
+            {
+                Name = "Zasilenie",
+                Authorizing = "Dostawca",
+                Date = DateTime.Now,
+                ReportId = reportId,
+                Type = "Brak faktury",
+                Amount = elka
+            };
+            Operation newOperation2 = new Operation()
+            {
+                Name = "Kursy",
+                Authorizing = "Dostawca",
+                Date = DateTime.Now,
+                ReportId = reportId,
+                Type = "Brak faktury",
+                Amount = -elkaCourses
+            };
+            await PopupNavigation.PushAsync(new CloseDayNotification(cart, newEmpoloyee, loggedUser, deliverDate, selectedUser, newOperation, newOperation2));
         }
     }
 }
