@@ -136,7 +136,6 @@ namespace ViaductMobile.View.Popups
                     deliverNumbers++;
                 }
             }
-            deliverNumbers = deliverNumbers + int.Parse(extraDeliveries.Text);
             deliverNumbers2 = deliverNumbers;
             if (deliverNumbers > 19)
             {

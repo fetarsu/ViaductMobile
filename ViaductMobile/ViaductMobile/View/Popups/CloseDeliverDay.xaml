@@ -42,8 +42,6 @@
                 <TimePicker Grid.Column="1" Grid.Row="2" x:Name="workToEntry"></TimePicker>
                 <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="3"> Tipy na karte</Label>
                 <Entry Grid.Column="1" Grid.Row="3" Keyboard="Numeric" x:Name="TipsEntry"></Entry>
-                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="4">Dodatkowe dostawy</Label>
-                <Entry Grid.Column="1" Grid.Row="4" Keyboard="Numeric" x:Name="extraDeliveries"></Entry>
                 <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="5" Text="Zakończ" Clicked="End_Clicked"></Button>
                 <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="5" Text="Wróć" Clicked="Back_Clicked"></Button>
             </Grid>
