@@ -71,10 +71,10 @@ namespace ViaductMobile.View
                 }
             }
             componentsDataGrid.ItemsSource = new ViewModels.ComponentsTableVM().Components;
-            courseEntry.Text = clickedRow.Course.ToString();
-            amountEntry.Text = clickedRow.Amount.ToString();
             platformPicker.ItemsSource = Methods.platformList.Keys.ToList();
             platformPicker.SelectedItem = clickedRow.Platform;
+            courseEntry.Text = clickedRow.Course.ToString();
+            amountEntry.Text = clickedRow.Amount.ToString();
             string[] tokens = clickedRow.Adress.Split(' ');
 
             if (tokens.Length == 4)
@@ -167,6 +167,10 @@ namespace ViaductMobile.View
             if (add == false)
             {
                 await DisplayAlert("Uwaga", "Pole " + notification + " zostało źle wypełnione", "OK");
+            }
+            if (platformPicker.SelectedItem.Equals("Vg"))
+            {
+                elka = await DisplayAlert("Pytanie", "Czy ta dostawa to elka?", "Tak", "Nie");
             }
             else
             {
@@ -344,7 +348,6 @@ namespace ViaductMobile.View
             else
             {
                 courseEntry.Text = adressList.Where(x => x.Street.Equals(streetName) && x.Number.Equals(buildingEntry.Text)).Select(k => k.Amount).FirstOrDefault().ToString();
-                elka = await DisplayAlert("Pytanie", "Czy to elka?", "Tak", "Nie");
             }
         }
 

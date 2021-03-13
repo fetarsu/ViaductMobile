@@ -123,7 +123,7 @@ namespace ViaductMobile.View.Popups
                         DocumentNumber = number,
                         Amount = Math.Abs(amount),
                         Date = readReport.Date,
-                        Type = typePicker.SelectedItem.ToString(),
+                        Type = "Brak faktury",
                         ReportId = readReport.Id
                     };
                     Operation newOperationSecond = new Operation()

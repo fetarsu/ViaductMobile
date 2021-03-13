@@ -18,7 +18,7 @@ namespace ViaductMobile.View
     {
         User loggedUser;
         Report report = new Report();
-        bool closed, emptyDevliererId, reload = false, start;
+        bool closed, emptyDevliererId, reload = false, start, anyDeliverCartSupply;
         Deliverer newDeliverer = new Deliverer();
         Deliverer cart;
         public string userr;
