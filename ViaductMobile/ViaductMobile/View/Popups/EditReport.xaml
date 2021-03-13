@@ -35,6 +35,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Edycja Raportu</Label>
                 <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="1">Start</Label>
@@ -47,8 +48,10 @@
                 <Entry Grid.Column="1" Grid.Row="4" x:Name="isEntry"></Entry>
                 <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="5">Pizze</Label>
                 <Entry Grid.Column="1" Grid.Row="5" x:Name="pizzasEntry"></Entry>
-                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="6" Text="Dodaj" Clicked="Add_Clicked"></Button>
-                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="6" Text="Wróć" Clicked="Back_Clicked"></Button>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="6">Pizze Pracownicze</Label>
+                <Entry Grid.Column="1" Grid.Row="6" x:Name="empPizzasEntry"></Entry>
+                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="7" Text="Dodaj" Clicked="Add_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="7" Text="Wróć" Clicked="Back_Clicked"></Button>
             </Grid>
         </Frame>
     </StackLayout>

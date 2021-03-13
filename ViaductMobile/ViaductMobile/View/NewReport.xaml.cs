@@ -296,83 +296,91 @@ namespace ViaductMobile
         private async void SendReportClicked(object sender, EventArgs e)
         {
             UserDialogs.Instance.ShowLoading("Proszę czekać...");
-            if (readReport.Closed == false)
+            if(readReport.Pizzas <= 0 || readReport.EmployeePizzas <= 0)
             {
-                readReport.Closed = true;
-                var result = await readReport.UpdateReport();
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-                mail.From = new MailAddress("viaduct.email.sender@gmail.com");
-                mail.IsBodyHtml = true;
-                mail.To.Add("r.switucha@gmail.com");
-                mail.Subject = "Raport z dnia " + readReport.Date.Day + "." + readReport.Date.Month;
-                mail.Body =
-                    "<h3>Rozliczenie</h3>" +
-                    "Start: " + readReport.Start.ToString() + "<br>" +
-                    "Raport: " + readReport.ReportAmount.ToString() + "<br>" +
-                    "Terminal: " + readReport.Terminal.ToString() + "<br>" +
-                    "Powinno być: " + readReport.ShouldBe.ToString() + "<br>" +
-                    "Jest: " + readReport.AmountIn.ToString() + "<br>" +
-                    "Różnica: " + readReport.Difference.ToString() + "<br>" +
-                    "Ilość pizz: " + readReport.Pizzas.ToString() + "<br><hr>" +
-                    "<h3>Dostawy</h3>";
-                foreach (var item in bindingDeliverer.Deliverers)
-                {
-                    mail.Body += "<h4>" + item.Nickname + "</h4>" +
-                    "Kwota z kursów: " + item.Courses.ToString() + "<br>" +
-                    "Liczba dostaw: " + item.DeliveriesNumber.ToString() + "<br>" +
-                    "Viaduct Karta: " + item.V_k.ToString() + "<br>" +
-                    "Viaduct Gotówka: " + item.V_g.ToString() + "<br>" +
-                    "Pyszne online: " + item.P_o.ToString() + "<br>" +
-                    "Pyszne gotówka: " + item.P_g.ToString() + "<br>" +
-                    "Uber online: " + item.Uber_o.ToString() + "<br>" +
-                    "Uber gotówka: " + item.Uber_g.ToString() + "<br>" +
-                    "Strona online: " + item.S_o.ToString() + "<br>" +
-                    "Strona gotówka: " + item.S_g.ToString() + "<br>" +
-                    "Glovo online: " + item.G_o.ToString() + "<br>" +
-                    "Glovo gotówka: " + item.G_g.ToString() + "<br>" +
-                    "KiK: " + item.Kik.ToString() + "<br>" +
-                    "Kwota do kasy: " + item.AmountToCash.ToString() + "<br><hr>";
-                }
-                mail.Body += "<h3>Pracownicy</h3>";
-                foreach (var item in bindingEmployee.Employees)
-                {
-                    mail.Body += "<h4>" + item.Nickname + "</h4>" +
-                    "Stanowisko: " + item.Position.ToString() + "<br>" +
-                    "Praca od: " + item.WorkFrom.ToString() + "<br>" +
-                    "Praca do: " + item.WorkTo.ToString() + "<br>" +
-                    "Dniówka: " + item.DayWage.ToString() + "<br>" +
-                    "Premia: " + item.Bonus.ToString() + "<br><hr>";
-                }
-                mail.Body += "<h3>Operacje</h3>";
-                foreach (var item in bindingOperation.Operations)
-                {
-                    mail.Body +=
-                    "Nazwa: " + item.Name.ToString() + "<br>" +
-                    "Autoryzujący: " + item.Authorizing.ToString() + "<br>";
-                    if(item.DocumentNumber != null)
-                    {
-                        mail.Body += "Nr dokumentu: " + item.DocumentNumber.ToString() + "<br>";
-                    }
-                    mail.Body += "Kwota: " + item.Amount.ToString() + "<br><hr>";
-                }
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("viaduct.email.sender@gmail.com", "Viadukcik4221");
-                SmtpServer.EnableSsl = true;
-                SmtpServer.Send(mail);
-                ClosedDay();
+                await DisplayAlert("Uwaga", "Pizze lub pizze pracownicze nie są wypełnione", "OK");
             }
             else
             {
-                readReport.Closed = false;
-                var result = await readReport.UpdateReport();
-                sendReportButton.Text = "Zakończ dzień";
-                sendReportButton.BackgroundColor = Color.DarkRed;
-                addEmployeeButton.IsVisible = editEmployeeButton.IsVisible = deleteEmployeeButton.IsVisible =
-                addOperationButton.IsVisible = editOperationButton.IsVisible = deleteOperationButton.IsVisible =
-                editReportButton.IsVisible = true;
-            }
-            UserDialogs.Instance.HideLoading();
+                if (readReport.Closed == false)
+                {
+                    readReport.Closed = true;
+                    var result = await readReport.UpdateReport();
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                    mail.From = new MailAddress("viaduct.email.sender@gmail.com");
+                    mail.IsBodyHtml = true;
+                    mail.To.Add("r.switucha@gmail.com");
+                    mail.Subject = "Raport z dnia " + readReport.Date.Day + "." + readReport.Date.Month;
+                    mail.Body =
+                        "<h3>Rozliczenie</h3>" +
+                        "Start: " + readReport.Start.ToString() + "<br>" +
+                        "Raport: " + readReport.ReportAmount.ToString() + "<br>" +
+                        "Terminal: " + readReport.Terminal.ToString() + "<br>" +
+                        "Powinno być: " + readReport.ShouldBe.ToString() + "<br>" +
+                        "Jest: " + readReport.AmountIn.ToString() + "<br>" +
+                        "Różnica: " + readReport.Difference.ToString() + "<br>" +
+                        "Ilość pizz: " + readReport.Pizzas.ToString() + "<br><hr>" +
+                        "Pracownicze pizze: " + readReport.EmployeePizzas.ToString() + "<br><hr>" +
+                        "<h3>Dostawy</h3>";
+                    foreach (var item in bindingDeliverer.Deliverers)
+                    {
+                        mail.Body += "<h4>" + item.Nickname + "</h4>" +
+                        "Kwota z kursów: " + item.Courses.ToString() + "<br>" +
+                        "Liczba dostaw: " + item.DeliveriesNumber.ToString() + "<br>" +
+                        "Viaduct Karta: " + item.V_k.ToString() + "<br>" +
+                        "Viaduct Gotówka: " + item.V_g.ToString() + "<br>" +
+                        "Pyszne online: " + item.P_o.ToString() + "<br>" +
+                        "Pyszne gotówka: " + item.P_g.ToString() + "<br>" +
+                        "Uber online: " + item.Uber_o.ToString() + "<br>" +
+                        "Uber gotówka: " + item.Uber_g.ToString() + "<br>" +
+                        "Strona online: " + item.S_o.ToString() + "<br>" +
+                        "Strona gotówka: " + item.S_g.ToString() + "<br>" +
+                        "Glovo online: " + item.G_o.ToString() + "<br>" +
+                        "Glovo gotówka: " + item.G_g.ToString() + "<br>" +
+                        "KiK: " + item.Kik.ToString() + "<br>" +
+                        "Kwota do kasy: " + item.AmountToCash.ToString() + "<br><hr>";
+                    }
+                    mail.Body += "<h3>Pracownicy</h3>";
+                    foreach (var item in bindingEmployee.Employees)
+                    {
+                        mail.Body += "<h4>" + item.Nickname + "</h4>" +
+                        "Stanowisko: " + item.Position.ToString() + "<br>" +
+                        "Praca od: " + item.WorkFrom.ToString() + "<br>" +
+                        "Praca do: " + item.WorkTo.ToString() + "<br>" +
+                        "Dniówka: " + item.DayWage.ToString() + "<br>" +
+                        "Premia: " + item.Bonus.ToString() + "<br><hr>";
+                    }
+                    mail.Body += "<h3>Operacje</h3>";
+                    foreach (var item in bindingOperation.Operations)
+                    {
+                        mail.Body +=
+                        "Nazwa: " + item.Name.ToString() + "<br>" +
+                        "Autoryzujący: " + item.Authorizing.ToString() + "<br>";
+                        if (item.DocumentNumber != null)
+                        {
+                            mail.Body += "Nr dokumentu: " + item.DocumentNumber.ToString() + "<br>";
+                        }
+                        mail.Body += "Kwota: " + item.Amount.ToString() + "<br><hr>";
+                    }
+                    SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("viaduct.email.sender@gmail.com", "Viadukcik4221");
+                    SmtpServer.EnableSsl = true;
+                    SmtpServer.Send(mail);
+                    ClosedDay();
+                }
+                else
+                {
+                    readReport.Closed = false;
+                    var result = await readReport.UpdateReport();
+                    sendReportButton.Text = "Zakończ dzień";
+                    sendReportButton.BackgroundColor = Color.DarkRed;
+                    addEmployeeButton.IsVisible = editEmployeeButton.IsVisible = deleteEmployeeButton.IsVisible =
+                    addOperationButton.IsVisible = editOperationButton.IsVisible = deleteOperationButton.IsVisible =
+                    editReportButton.IsVisible = true;
+                }
+                UserDialogs.Instance.HideLoading();
+            }        
         }
     }
 }

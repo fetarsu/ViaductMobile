@@ -21,6 +21,7 @@ namespace ViaductMobile.Models
         public decimal Difference { get; set; }
         public bool Closed { get; set; }
         public int Pizzas { get; set; }
+        public int EmployeePizzas { get; set; }
 
         public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
         public async Task<bool> SaveReport()

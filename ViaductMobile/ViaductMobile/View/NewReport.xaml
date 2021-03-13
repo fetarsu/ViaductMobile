@@ -36,6 +36,7 @@
                     <dg:DataGridColumn Title="Jest" PropertyName="AmountIn" Width="*"/>
                     <dg:DataGridColumn Title="Rożnica" PropertyName="Difference" Width="*"/>
                     <dg:DataGridColumn Title="Pizze" PropertyName="Pizzas" Width="*"/>
+                    <dg:DataGridColumn Title="Praco" PropertyName="EmpPizzas" Width="*"/>
                 </dg:DataGrid.Columns>
                 <dg:DataGrid.RowsBackgroundColorPalette>
                     <dg:PaletteCollection>

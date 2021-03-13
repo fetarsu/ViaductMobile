@@ -31,6 +31,7 @@ namespace ViaductMobile.View.Popups
             terminalEntry.Text = readReport.Terminal.ToString();
             isEntry.Text = readReport.AmountIn.ToString();
             pizzasEntry.Text = readReport.Pizzas.ToString();
+            empPizzasEntry.Text = readReport.EmployeePizzas.ToString();
             shouldBe = readReport.ShouldBe;
             reportAmount = readReport.ReportAmount;
             terminal = readReport.Terminal;
@@ -83,7 +84,14 @@ namespace ViaductMobile.View.Popups
                     readReport.Pizzas = 0;
                 else { add = false; notification += " pizze"; }
             }
-            if(add == false)
+            try { readReport.EmployeePizzas = int.Parse(empPizzasEntry.Text); }
+            catch
+            {
+                if (empPizzasEntry.Text == null || empPizzasEntry.Text == "")
+                    readReport.EmployeePizzas = 0;
+                else { add = false; notification += " pizze pracownicze"; }
+            }
+            if (add == false)
             {
                 await DisplayAlert("Uwaga", "Pole"+notification+" zostało źle wypełnione", "OK");
             }
