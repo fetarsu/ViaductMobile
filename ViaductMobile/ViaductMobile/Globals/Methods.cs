@@ -5,10 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViaductMobile.Models;
+using ViaductMobile.Globals;
+using Acr.UserDialogs;
+using System;
+using System.Linq;
+using ViaductMobile.Algorithms;
+using ViaductMobile.Globals;
+using ViaductMobile.Interfaces;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace ViaductMobile.Algorithms
 {
-    class Methods
+    public class Methods
     {
         public static readonly string version = "1.0";
         public static string macAdress;

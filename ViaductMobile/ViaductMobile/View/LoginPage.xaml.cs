@@ -1,14 +1,17 @@
 ﻿using Acr.UserDialogs;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using ViaductMobile.Algorithms;
+using ViaductMobile.Globals;
+using ViaductMobile.Interfaces;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace ViaductMobile
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LoginPage : ContentPage
+    public partial class LoginPage : ContentPage, IBackToPreviousWindow
     {
         User user = new User();
         public LoginPage()
@@ -16,9 +19,9 @@ namespace ViaductMobile
             InitializeComponent();
         }
 
-        async void LoginButton_Clicked(object sender, EventArgs e)
+        async void TryToLogin(object sender, EventArgs e)
         {
-            UserDialogs.Instance.ShowLoading("Proszę czekać...");
+            UserDialogs.Instance.ShowLoading(Texts.loadingMessage);
             if(!(loginEntry.Text == null || loginEntry.Text.Length == 0) && !(passwordEntry.Text == null || passwordEntry.Text.Length == 0))
             {
                 var userList = await user.ReadUser(loginEntry.Text);
@@ -32,37 +35,56 @@ namespace ViaductMobile
                     UserDialogs.Instance.HideLoading();
                     App.Current.MainPage = new NavigationPage(new MainPage(user))
                     {
-                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
                         BarTextColor = Color.White
                     };
                 }
                 else
                 {
-                    await DisplayAlert("Błąd", "Zły login lub hasło", "OK");
+                    await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
                     UserDialogs.Instance.HideLoading();
                 }
             }
             else
             {
-                await DisplayAlert("Błąd", "Zły login lub hasło", "OK");
+                await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
                 UserDialogs.Instance.HideLoading();
             }
             
+        }   
+
+        public async Task BackViaSystemButton()
+        {
+            try
+            {
+                OnBackButtonPressed();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert(Texts.fatalErrorDisplayAlertHeader, "Szczegóły: "+ex.ToString(), Texts.okDisplayAlertMessage);
+            }
         }
 
-        private void BackClicked(object sender, EventArgs e)
+        public async Task BackViaAppButton()
         {
-            App.Current.MainPage = new NavigationPage(new MainPage())
+            try
             {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                BarTextColor = Color.White
-            };
+                App.Current.MainPage = new NavigationPage(new MainPage())
+                {
+                    BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
+                    BarTextColor = Color.White
+                };
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert(Texts.fatalErrorDisplayAlertHeader, "Szczegóły: " + ex.ToString(), Texts.okDisplayAlertMessage);
+            }
         }
         protected override bool OnBackButtonPressed()
         {
             App.Current.MainPage = new NavigationPage(new MainPage())
             {
-                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
                 BarTextColor = Color.White
             };
             return true;
