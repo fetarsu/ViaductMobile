@@ -19,66 +19,57 @@ namespace ViaductMobile
             InitializeComponent();
         }
 
-        async void TryToLogin(object sender, EventArgs e)
+        async void LoginButton_Clicked(object sender, EventArgs e)
         {
             UserDialogs.Instance.ShowLoading(Texts.loadingMessage);
-            if(!(loginEntry.Text == null || loginEntry.Text.Length == 0) && !(passwordEntry.Text == null || passwordEntry.Text.Length == 0))
+            var result = await TryToLogin(loginEntry.Text, passwordEntry.Text);
+            if (result)
             {
-                var userList = await user.ReadUser(loginEntry.Text);
-                user = userList.FirstOrDefault();
-            }
-            if(user.Nickname != null)
-            {
-                bool result = SecurePasswordHasher.Verify(passwordEntry.Text, user.Password);
-                if (result)
-                {
-                    UserDialogs.Instance.HideLoading();
-                    App.Current.MainPage = new NavigationPage(new MainPage(user))
-                    {
-                        BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
-                        BarTextColor = Color.White
-                    };
-                }
-                else
-                {
-                    await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
-                    UserDialogs.Instance.HideLoading();
-                }
-            }
-            else
-            {
-                await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
-                UserDialogs.Instance.HideLoading();
-            }
-            
-        }   
-
-        public async Task BackViaSystemButton()
-        {
-            try
-            {
-                OnBackButtonPressed();
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert(Texts.fatalErrorDisplayAlertHeader, "Szczegóły: "+ex.ToString(), Texts.okDisplayAlertMessage);
-            }
-        }
-
-        public async Task BackViaAppButton()
-        {
-            try
-            {
-                App.Current.MainPage = new NavigationPage(new MainPage())
+                App.Current.MainPage = new NavigationPage(new MainPage(user))
                 {
                     BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
                     BarTextColor = Color.White
                 };
             }
-            catch (Exception ex)
+            UserDialogs.Instance.HideLoading();
+        }
+        public async Task<bool> TryToLogin(string login, string password)
+        {   
+            if (!(login == null || login.Length == 0) && !(password == null || password.Length == 0))
             {
-                await DisplayAlert(Texts.fatalErrorDisplayAlertHeader, "Szczegóły: " + ex.ToString(), Texts.okDisplayAlertMessage);
+                var userList = await user.ReadUser(login);
+                user = userList.FirstOrDefault();
             }
+            if (user.Nickname != null)
+            {
+                bool result = SecurePasswordHasher.Verify(password, user.Password);
+                if (result)
+                {         
+                    return true;
+                }
+                else
+                {
+                    await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
+                    return false;
+                }
+            }
+            else
+            {
+                await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
+                return false;
+            }
+        }
+        public void BackViaSystemButton()
+        {
+            OnBackButtonPressed();
+        }
+        public void BackViaAppButton(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new MainPage())
+            {
+                BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
+                BarTextColor = Color.White
+            };
         }
         protected override bool OnBackButtonPressed()
         {

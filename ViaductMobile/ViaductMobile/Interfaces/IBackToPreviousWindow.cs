@@ -7,7 +7,7 @@ namespace ViaductMobile.Interfaces
 {
     public interface IBackToPreviousWindow
     {
-        Task BackViaAppButton();
-        Task BackViaSystemButton();
+        void BackViaAppButton(object sender, EventArgs e);
+        void BackViaSystemButton();
     }
 }
