@@ -139,6 +139,7 @@ namespace ViaductMobile
         }
         private void MoveToLoginClicked(object sender, EventArgs e)
         {
+            User user = new User();
             App.Current.MainPage = new NavigationPage(new LoginPage())
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),

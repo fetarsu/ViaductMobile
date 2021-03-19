@@ -13,7 +13,7 @@ namespace ViaductMobile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage, IBackToPreviousWindow
     {
-        User user = new User();
+        User user;
         public LoginPage()
         {
             InitializeComponent();
@@ -31,16 +31,21 @@ namespace ViaductMobile
                     BarTextColor = Color.White
                 };
             }
+            else
+            {
+                await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
+            }
             UserDialogs.Instance.HideLoading();
         }
         public async Task<bool> TryToLogin(string login, string password)
-        {   
+        {
             if (!(login == null || login.Length == 0) && !(password == null || password.Length == 0))
             {
-                var userList = await user.ReadUser(login);
+                User tmpUser = new User();
+                var userList = await tmpUser.ReadUser(login);
                 user = userList.FirstOrDefault();
             }
-            if (user.Nickname != null)
+            if (user != null)
             {
                 bool result = SecurePasswordHasher.Verify(password, user.Password);
                 if (result)
@@ -48,14 +53,12 @@ namespace ViaductMobile
                     return true;
                 }
                 else
-                {
-                    await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
+                { 
                     return false;
                 }
             }
             else
             {
-                await DisplayAlert(Texts.errorDisplayAlertHeader, Texts.wrongLoginDetailsDisplayAlertMessage, Texts.okDisplayAlertMessage);
                 return false;
             }
         }
