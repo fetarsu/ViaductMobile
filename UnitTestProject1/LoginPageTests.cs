@@ -4,10 +4,10 @@ using Xunit;
 using Acr.UserDialogs;
 using ViaductMobile;
 
-namespace UnitTestProject1
+namespace ViaductMobileTests
 {
     [TestClass]
-    public class LoginPage
+    public class LoginPageTests
     {
         [Theory]
         [InlineData("testLogin", "testPassword")]

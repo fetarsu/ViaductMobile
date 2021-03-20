@@ -44,7 +44,7 @@ namespace ViaductMobile.Algorithms
             userList = userListt;
         }
 
-        public static string getMacAddress()
+        public static bool getMacAddress()
         {
             string macAddress = string.Empty;
 
@@ -73,9 +73,16 @@ namespace ViaductMobile.Algorithms
 
                 macAddress = sb.ToString().Remove(sb.Length - 1);
 
-                return macAddress;
+                if (macAddress.Equals(Texts.tabletMacAddress))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            return "02:00:00:00:00:00";
+            return false;
         }
     }
 }

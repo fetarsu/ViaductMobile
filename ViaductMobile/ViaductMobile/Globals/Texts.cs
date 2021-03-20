@@ -6,6 +6,15 @@ namespace ViaductMobile.Globals
 {
     class Texts
     {
+        //Settings
+        public static readonly string tabletMacAddress = "D0:B1:28:D5:87:E9";
+        public static readonly string emailToSendReportAddress = "infernoviaduct@gmail.com";
+        public static readonly string userNicknameOnTablet = "Viaduct";
+
+        //Testing settings
+        public static readonly string tabletMacAddressTesting = "A8:9C:ED:C7:48:3E";
+        public static readonly string emailToSendReportAddressTesting = "r.switucha@gmail.com";
+
         //DisplayAlert
         public static readonly string attentionDisplayAlertHeader = "Uwaga";
         public static readonly string errorDisplayAlertHeader = "Błąd";
@@ -20,7 +29,7 @@ namespace ViaductMobile.Globals
         //Acr.UserDialogs
         public static readonly string loadingMessage = "Proszę czekać...";
 
-        //Xaml settings
+        //XAML
         public static readonly string appBackgroundColor = "#3B3B3B";
     }
 }
