@@ -70,7 +70,7 @@ namespace ViaductMobile.View.Popups
             await newDeliverer.UpdateDeliverer(newDeliverer);
             await PopupNavigation.PopAsync(true);
             await PopupNavigation.PopAsync(true);
-            App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, newDeliverer, newEmployee, deliverDate, chosedUser))
+            App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, newDeliverer, deliverDate, chosedUser))
             {
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White

@@ -48,14 +48,7 @@ namespace ViaductMobile
             if (user != null)
             {
                 bool result = SecurePasswordHasher.Verify(password, user.Password);
-                if (result)
-                {         
-                    return true;
-                }
-                else
-                { 
-                    return false;
-                }
+                return result ? true : false;
             }
             else
             {

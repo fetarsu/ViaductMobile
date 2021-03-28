@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,6 +95,12 @@ namespace ViaductMobile.Models
             string t = userr;
             var table = client.GetTable<Deliverer>();
             return await table.Where(x => x.Nickname == userr && x.Date.Day == datee.Day && x.Date.Month == datee.Month && x.Date.Year == datee.Year).ToListAsync();
+        }
+
+        public static async Task<Deliverer> ReadDelivererCartt(DateTime date, string user)
+        {
+            var delivererCartList = await client.GetTable<Deliverer>().Where(x => x.Nickname == user && x.Date.Day == date.Day && x.Date.Month == date.Month && x.Date.Year == date.Year).ToListAsync();
+            return delivererCartList.SingleOrDefault();
         }
     }
 }

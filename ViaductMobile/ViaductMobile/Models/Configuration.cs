@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,10 @@ namespace ViaductMobile
 
         public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
 
-        public async Task<List<Configuration>> ReadConfigurationParameter(string name)
+        public static async Task<string> ReadConfigurationParameter(string name)
         {
-            return await client.GetTable<Configuration>().Where(x => x.Name == name).ToListAsync();
+            var programVersionList = await client.GetTable<Configuration>().Where(x => x.Name == name).Select(x => x.Parameter).ToListAsync();
+            return programVersionList.FirstOrDefault();
         }
     }
 }

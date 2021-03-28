@@ -246,7 +246,7 @@ namespace ViaductMobile.View
                     Employee newEmployee = new Employee();
                     var employeeList = await newEmployee.ReadEmployeeCart(userr, datee);
                     newEmployee = employeeList.SingleOrDefault();
-                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, newEmployee, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
+                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
                     {
                         BarBackgroundColor = Color.FromHex("#3B3B3B"),
                         BarTextColor = Color.White

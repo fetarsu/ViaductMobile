@@ -44,6 +44,12 @@ namespace ViaductMobile.Algorithms
             userList = userListt;
         }
 
+        public static async Task<bool> CheckProgramVersion()
+        {
+            var version = await Configuration.ReadConfigurationParameter(TextResources.version);
+            return version.Equals(TextResources.programVersion) ? true : false;
+        }
+
         public static bool getMacAddress()
         {
             string macAddress = string.Empty;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ViaductMobile.Algorithms;
 using ViaductMobile.Globals;
 using ViaductMobile.Interfaces;
+using ViaductMobile.Models;
 using ViaductMobile.View;
 using Xamarin.Forms;
 
@@ -94,22 +95,39 @@ namespace ViaductMobile
         {
             UserDialogs.Instance.ShowLoading(Texts.loadingMessage);
             await Task.Delay(100);
-            UserDialogs.Instance.ShowLoading(Texts.loadingMessage);
-            Configuration c = new Configuration();
-            var configList = await c.ReadConfigurationParameter("version");
-            var config = configList.SingleOrDefault();
-            if (!config.Parameter.Equals(Methods.version))
+            bool correctVersion = await Methods.CheckProgramVersion();
+            if (!correctVersion)
             {
-                UserDialogs.Instance.HideLoading();
                 await DisplayAlert("Uwaga", "Twoja wersja jest nieaktualna, aby przejść dalej musisz zaktualizować aplikacje", "OK");
+                UserDialogs.Instance.HideLoading();
             }
             else
             {
-                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+                var delivererCartt = await Deliverer.ReadDelivererCartt(DateTime.Now, loggedUser.Nickname);
+                if(delivererCartt is null)
                 {
-                    BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
-                    BarTextColor = Color.White
-                };
+                    App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+                    {
+                        BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
+                        BarTextColor = Color.White
+                    };
+                }
+                else if (delivererCartt.Closed)
+                {
+                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, delivererCartt, DateTime.Now, loggedUser.Nickname))
+                    {
+                        BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
+                        BarTextColor = Color.White
+                    };
+                }
+                else
+                {
+                    App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser))
+                    {
+                        BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
+                        BarTextColor = Color.White
+                    };
+                }   
             }
             UserDialogs.Instance.HideLoading();
         }

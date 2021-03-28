@@ -70,13 +70,11 @@ namespace ViaductMobile
         private async void MoveToNewReportClicked(object sender, EventArgs e)
         {
             UserDialogs.Instance.ShowLoading("Proszę czekać...");
-            Configuration c = new Configuration();
-            var configList = await c.ReadConfigurationParameter("version");
-            var config = configList.SingleOrDefault();
-            if (!config.Parameter.Equals(Methods.version))
+            bool correctVersion = await Methods.CheckProgramVersion();
+            if (!correctVersion)
             {
-                UserDialogs.Instance.HideLoading();
                 await DisplayAlert("Uwaga", "Twoja wersja jest nieaktualna, aby przejść dalej musisz zaktualizować aplikacje", "OK");
+                UserDialogs.Instance.HideLoading();
             }
             else
             {

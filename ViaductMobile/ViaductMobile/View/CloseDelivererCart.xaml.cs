@@ -26,7 +26,7 @@ namespace ViaductMobile.View
         Deliverer newDeliverer;
         DateTime deliverDate, chosedDate;
         Employee newEmployee;
-        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, Employee newEmployee, DateTime chosedDate, string chosedUserr)
+        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, DateTime chosedDate, string chosedUserr)
         {
             InitializeComponent();
             this.chosedDate = chosedDate;
@@ -35,7 +35,6 @@ namespace ViaductMobile.View
             chooseDayPicker.Date = chosedDate.Date;
             usersPicker.SelectedItem = chosedUserr;
             this.newDeliverer = newDeliverer;
-            this.newEmployee = newEmployee;
             coursesLabel.Text = newDeliverer.Courses.ToString();
             VkLabel.Text = newDeliverer.V_k.ToString();
             VgLabel.Text = newDeliverer.V_g.ToString();
@@ -50,8 +49,6 @@ namespace ViaductMobile.View
             KikLabel.Text = newDeliverer.Kik.ToString();
             voltLabel.Text = newDeliverer.Volt.ToString();
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
-            bonusLabel.Text = newEmployee.Bonus.ToString();
-            cashForDayLabel.Text = newEmployee.DayWage.ToString();
             AmountToCashLabel.Text = newDeliverer.AmountToCash.ToString();
             deliverDate = chooseDayPicker.Date;
             ReadAllUsers();
@@ -181,7 +178,7 @@ namespace ViaductMobile.View
                     Employee newEmployee = new Employee();
                     var employeeList = await newEmployee.ReadEmployeeCart(userr, datee);
                     newEmployee = employeeList.SingleOrDefault();
-                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, newEmployee, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
+                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
                     {
                         BarBackgroundColor = Color.FromHex("#3B3B3B"),
                         BarTextColor = Color.White
