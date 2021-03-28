@@ -81,10 +81,9 @@ namespace ViaductMobile
                 return false;
             }
         }
-        public async Task<List<String>> ReadAllUsers()
+        public static async Task<List<String>> ReadAllUsers()
         {
-            var table = client.GetTable<User>();
-            return await table.Select(x => x.Nickname).ToListAsync();
+            return await client.GetTable<User>().Select(x => x.Nickname).ToListAsync();
         }
         public async Task<List<User>> FindSinleUser(string nickname)
         {

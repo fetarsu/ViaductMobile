@@ -9,10 +9,9 @@ namespace ViaductMobile.Models
         public enum enPermission : int
         {
             Admin = 1,
-            Kierownik = 2,
-            Kucharz = 3,
-            Barman = 4,
-            Dostawca = 5
+            Manager = 2,
+            SuperDostawca = 3,
+            Pracownik = 4,
         }
     }
 }

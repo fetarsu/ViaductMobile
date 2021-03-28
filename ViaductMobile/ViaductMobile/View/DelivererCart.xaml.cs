@@ -28,8 +28,8 @@ namespace ViaductMobile.View
         DateTime deliverDate, chosedDate, dateee;
         public DelivererCart(User loggedUser)
         {
-            this.loggedUser = loggedUser;
             InitializeComponent();
+            this.loggedUser = loggedUser;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             oneUserList.Add(loggedUser.Nickname);
             usersPicker.ItemsSource = oneUserList;
@@ -38,9 +38,9 @@ namespace ViaductMobile.View
         }
         public DelivererCart(User loggedUser, DateTime chosedDate)
         {
+            InitializeComponent();
             this.chosedDate = chosedDate;
             this.loggedUser = loggedUser;
-            InitializeComponent();
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             oneUserList.Add(loggedUser.Nickname);
             usersPicker.ItemsSource = oneUserList;
@@ -50,8 +50,8 @@ namespace ViaductMobile.View
         }
         public DelivererCart(User loggedUser, List<Supply> listOfSupply)
         {
-            this.loggedUser = loggedUser;
             InitializeComponent();
+            this.loggedUser = loggedUser;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             oneUserList.Add(loggedUser.Nickname);
             usersPicker.ItemsSource = oneUserList;
@@ -209,8 +209,7 @@ namespace ViaductMobile.View
 
         async void ReloadData()
         {
-            UserDialogs.Instance.ShowLoading("Proszę czekać...");
-            await Task.Delay(1);
+            var userList = Methods.ReadAllUsers();
             if (userr == null)
             {
                 var uList = Methods.userList;
@@ -240,17 +239,6 @@ namespace ViaductMobile.View
                     {
                         delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererId).Supplies;
                     }
-                }
-                else
-                {
-                    Employee newEmployee = new Employee();
-                    var employeeList = await newEmployee.ReadEmployeeCart(userr, datee);
-                    newEmployee = employeeList.SingleOrDefault();
-                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
-                    {
-                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                        BarTextColor = Color.White
-                    };
                 }
             }
             else
