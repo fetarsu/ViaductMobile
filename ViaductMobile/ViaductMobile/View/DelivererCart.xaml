@@ -53,9 +53,9 @@
                     </dg:DataGrid>
                 </Grid>
             </ScrollView>
-        <Button Style="{StaticResource typicalButton}" BackgroundColor="DarkRed" Grid.ColumnSpan="3" Grid.Row="2" Text="Zakończ dzień" Clicked="CloseDayClicked"></Button>
-        <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="3" Text="Dodaj" Clicked="AddSupply"></Button>
-        <Button Style="{StaticResource typicalButton}" Grid.Column="1" Grid.Row="3" Text="Edytuj" Clicked="EditSupply"></Button>
-        <Button Style="{StaticResource typicalButton}" Grid.Column="2" Grid.Row="3" Text="Usuń" Clicked="DeleteSupply"></Button>
+        <Button Style="{StaticResource typicalButton}" x:Name="closeDayButton" BackgroundColor="DarkRed" Grid.ColumnSpan="3" Grid.Row="2" Text="Zakończ dzień" Clicked="CloseDayClicked"></Button>
+        <Button Style="{StaticResource typicalButton}" x:Name="addButton" Grid.Column="0" Grid.Row="3" Text="Dodaj" Clicked="AddSupply"></Button>
+        <Button Style="{StaticResource typicalButton}" x:Name="editButton" Grid.Column="1" Grid.Row="3" Text="Edytuj" Clicked="EditSupply"></Button>
+        <Button Style="{StaticResource typicalButton}" x:Name="deleteButton" Grid.Column="2" Grid.Row="3" Text="Usuń" Clicked="DeleteSupply"></Button>
         </Grid>
 </ContentPage>

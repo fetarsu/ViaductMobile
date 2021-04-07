@@ -2,31 +2,34 @@
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
+using ViaductMobile.View.Popups;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xfx;
 
 namespace ViaductMobile.View
 {
-    public partial class AddSupply : ContentPage
+    public partial class AddSupply : ContentPage, INotifyPropertyChanged
     {
+        public static string supplyAddress;
         public static List<String> adressesList = new List<String>();
+        public static List<String> pizzasList = new List<String>();
         Adress adress = new Adress();
         public List<Adress> adressList = new List<Adress>();
-        public static List<String> pizzasList = new List<String>();
         public static List<Components> componentsList = new List<Components>();
         decimal deliveryAmount, courseAmount;
         int cartListCount;
         Supply clickedRow;
         User loggedUser;
         bool edit, add, elka;
-        string components, streetName, delivererId, selectedUser, notification;
+        string components, streetName, delivererId, selectedUser, notification, asd;
         DateTime chosedDate;
         Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid;
         public AddSupply(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate, string selectedUser)
@@ -39,12 +42,28 @@ namespace ViaductMobile.View
             componentsList.Clear();
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             InitializeComponent();
+            BindingContext = new ViewModels.SetTextFromListViewVM();
             Button resetPasswordButton = new Button();
             this.delivererCartDataGrid = delivererCartDataGrid;
             edit = false;
             platformPicker.ItemsSource = Methods.platformList.Keys.ToList();
             LoadAdressesAndPizzas();
         }
+
+        public AddSupply(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId,
+            DateTime chosedDate, string selectedUser, string property, string changedValue)
+        {
+            InitializeComponent();
+            if (property.Equals("address"))
+            {
+
+            }
+            else if (property.Equals("pizzas"))
+            {
+
+            }
+        }
+
         public AddSupply(Supply clickedRow, Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate)
         {
             this.delivererId = delivererId;
@@ -56,6 +75,7 @@ namespace ViaductMobile.View
             this.delivererCartDataGrid = delivererCartDataGrid;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             InitializeComponent();
+            BindingContext = new ViewModels.SetTextFromListViewVM();
 
             string[] co = clickedRow.Components.Split(',');
             foreach (var item in co)
@@ -95,7 +115,6 @@ namespace ViaductMobile.View
             }
             edit = true;
             addAdressButton.Text = "Usuń";
-            searchBar.IsVisible = false;
             adressLabel.IsVisible = true;
             searchResults.IsVisible = false;
             LoadAdressesAndPizzas();
@@ -262,10 +281,6 @@ namespace ViaductMobile.View
             }
         }
 
-        private void changeSearchBar(object sender, SelectedItemChangedEventArgs e)
-        {
-            searchBar.Text = searchResults.SelectedItem.ToString();
-        }
         private void changeSearchBar2(object sender, SelectedItemChangedEventArgs e)
         {
             changeSearchBarAsync();
@@ -283,32 +298,27 @@ namespace ViaductMobile.View
             HideListView2();
 
         }
-
-        private void addAdressButton_Clicked(object sender, EventArgs e)
+        [Obsolete]
+        async void addAdressButton_Clicked(object sender, EventArgs e)
         {
+            var xasd = loggedUser;
+            await PopupNavigation.PushAsync(new SetTextFromListView(delivererCartDataGrid, loggedUser, cartListCount,
+                delivererId, chosedDate, selectedUser, "address"));
             if (addAdressButton.Text.Equals("Dodaj"))
             {
                 streetName = null;
                 addAdressButton.Text = "Usuń";
-                searchBar.IsVisible = false;
-                adressLabel.Text = "Adres: " + searchBar.Text;
-                streetName = searchBar.Text;
                 adressLabel.IsVisible = true;
                 searchResults.IsVisible = false;
             }
             else
             {
                 addAdressButton.Text = "Dodaj";
-                searchBar.Text = null;
                 adressLabel.Text = null;
-                searchBar.IsVisible = true;
                 adressLabel.IsVisible = false;
             }
         }
-        private void ShowListView(object sender, EventArgs e)
-        {
-            searchResults.IsVisible = true;
-        }
+
         private void ShowListView2(object sender, EventArgs e)
         {
             searchResults2.IsVisible = true;

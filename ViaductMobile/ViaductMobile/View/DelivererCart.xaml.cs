@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViaductMobile.Algorithms;
+using ViaductMobile.Globals;
 using ViaductMobile.Models;
 using ViaductMobile.View.Popups;
 using Xamarin.Forms;
@@ -17,6 +18,8 @@ namespace ViaductMobile.View
     public partial class DelivererCart : ContentPage
     {
         User loggedUser;
+        Deliverer delivererCart = new Deliverer();
+        List<string> userNicknameList = new List<string>();
         Report report = new Report();
         bool closed, emptyDevliererId, reload = false, start, anyDeliverCartSupply;
         Deliverer newDeliverer = new Deliverer();
@@ -25,15 +28,14 @@ namespace ViaductMobile.View
         List<Deliverer> cartList = new List<Deliverer>();
         List<String> oneUserList = new List<string>();
         string delivererId, selectedUser, reportId;
-        DateTime deliverDate, chosedDate, dateee;
+        DateTime deliverDate, chosedDate, dateee, changedDate;
+        string changedUser;
         public DelivererCart(User loggedUser)
         {
             InitializeComponent();
             this.loggedUser = loggedUser;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            oneUserList.Add(loggedUser.Nickname);
-            usersPicker.ItemsSource = oneUserList;
-            usersPicker.SelectedItem = loggedUser.Nickname;
+            changedDate = DateTime.Now;
             ReloadData();
         }
         public DelivererCart(User loggedUser, DateTime chosedDate)
@@ -42,10 +44,6 @@ namespace ViaductMobile.View
             this.chosedDate = chosedDate;
             this.loggedUser = loggedUser;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            oneUserList.Add(loggedUser.Nickname);
-            usersPicker.ItemsSource = oneUserList;
-            usersPicker.SelectedItem = loggedUser.Nickname;
-            chooseDayPicker.Date = chosedDate.Date;
             ReloadData();
         }
         public DelivererCart(User loggedUser, List<Supply> listOfSupply)
@@ -53,10 +51,8 @@ namespace ViaductMobile.View
             InitializeComponent();
             this.loggedUser = loggedUser;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
-            oneUserList.Add(loggedUser.Nickname);
-            usersPicker.ItemsSource = oneUserList;
-            usersPicker.SelectedItem = selectedUser;
             delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(listOfSupply).Supplies;
+            chooseDayPicker.Date = DateTime.Now;
             ReloadData();
         }
 
@@ -135,10 +131,10 @@ namespace ViaductMobile.View
             {
                 if (report != null)
                 {
-                    var readedReport = await report.ReadTodayReport(chooseDayPicker.Date);
-                    if (readedReport[0] != null)
+                    var readedReport = await Report.ReadTodayReport(chooseDayPicker.Date);
+                    if (readedReport != null)
                     {
-                        reportId = readedReport[0].Id;
+                        reportId = readedReport.Id;
                     }
                     else
                     {
@@ -194,67 +190,102 @@ namespace ViaductMobile.View
         {
             if (reload == true)
             {
-                userr = usersPicker.SelectedItem.ToString();
-                ReloadData();
+                changedUser = usersPicker.SelectedItem.ToString();
+                SetCorrectUserPicker();
+                SetCorrectDelivererCart();
             }
         }
         private void chooseDay_PropertyChanged(object sender, EventArgs e)
         {
             if (reload == true)
             {
-                dateee = chooseDayPicker.Date;
-                ReloadData();
+                changedDate = chooseDayPicker.Date;
+                SetCorrectDatePicker();
+                SetCorrectDelivererCart();
+                CheckIfButtonsShouldBeVisible();
             }
         }
 
         async void ReloadData()
         {
-            var userList = Methods.ReadAllUsers();
-            if (userr == null)
+            User u = new User();
+            Deliverer d = new Deliverer();
+            userNicknameList = await u.ReadAllUsers();
+            SetCorrectUserPicker();
+            SetCorrectDatePicker();
+            delivererCart = await Deliverer.ReadDelivererCartt(chooseDayPicker.Date, usersPicker.SelectedItem.ToString());
+            SetCorrectDelivererCart();
+            CheckIfButtonsShouldBeVisible();
+        }
+        void SetCorrectUserPicker()
+        {
+            reload = false;
+            if (loggedUser.Permission.Equals("Admin") || loggedUser.Permission.Equals("Manager"))
             {
-                var uList = Methods.userList;
-                foreach (var item in uList)
-                {
-                    if (item.Equals(loggedUser.Nickname))
-                    {
-                        usersPicker.SelectedItem = userr = item;
-                    }
-                }
-            }
-            if (dateee.Year == 0001)
-            {
-                dateee = chooseDayPicker.Date;
-            }
-            DateTime datee = dateee;
-            chooseDayPicker.Date = datee;
-            cartList = await newDeliverer.ReadDelivererCart(datee, userr);
-            await Task.Delay(100);
-            if (cartList.Count != 0)
-            {
-                cart = cartList.SingleOrDefault();
-                delivererId = cart.Id;
-                if (cart.Closed == false)
-                {
-                    if (delivererId != null)
-                    {
-                        delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererId).Supplies;
-                    }
-                }
+                usersPicker.ItemsSource = userNicknameList;
             }
             else
             {
-                delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM().Supplies;
+                usersPicker.ItemsSource.Add(loggedUser.Nickname);
+            }
+            if (usersPicker.SelectedItem is null)
+            {
+                if(changedUser is null)
+                {
+                    foreach (var item in userNicknameList)
+                    {
+                        if (item.Equals(loggedUser.Nickname))
+                        {
+                            usersPicker.SelectedItem = item;
+                        }
+                    }
+                }
+                else
+                {
+                    usersPicker.SelectedItem = changedUser;
+                }
             }
             reload = true;
-            Report r = new Report();
-            var rList = await r.ReadTodayReport(datee);
-            if (rList == null)
-                report = null;
-            else
-                report = rList.SingleOrDefault();
+        }
+        void SetCorrectDatePicker()
+        {
+            reload = false;
+            if (changedDate != null)
+            {
+                chooseDayPicker.Date = changedDate.Date;
+            }
+            reload = true;
+        }
 
-            chooseDayPicker.Unfocus();
-            UserDialogs.Instance.HideLoading();
+        async void SetCorrectDelivererCart()
+        {
+            if (delivererCart != null)
+            {
+                if (delivererCart.Closed == false)
+                {
+                    delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererId).Supplies;
+                }
+                else
+                {
+                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, delivererCart, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
+                    {
+                        BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
+                        BarTextColor = Color.White
+                    };
+                }
+            }
+            report = await Report.ReadTodayReport(chooseDayPicker.Date);
+        }
+        void CheckIfButtonsShouldBeVisible()
+        {
+            if (!loggedUser.Nickname.Equals(usersPicker.SelectedItem))
+            {
+                closeDayButton.IsVisible = addButton.IsVisible = deleteButton.IsVisible = editButton.IsVisible = false;
+            }
+            else
+            {
+                closeDayButton.IsVisible = addButton.IsVisible = deleteButton.IsVisible = editButton.IsVisible = true;
+            }
         }
     }
 }

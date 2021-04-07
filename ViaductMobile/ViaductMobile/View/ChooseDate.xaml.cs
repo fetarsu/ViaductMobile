@@ -78,8 +78,7 @@ namespace ViaductMobile
             }
             else
             {
-                reportt = await readReportt.ReadTodayReport(chooseDay.Date);
-                readReportt = reportt.SingleOrDefault();
+                readReportt = await Report.ReadTodayReport(chooseDay.Date);
                 if (readReportt == null)
                 {
                     Report readReport = new Report();

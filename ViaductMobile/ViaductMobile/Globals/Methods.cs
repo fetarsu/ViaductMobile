@@ -36,11 +36,6 @@ namespace ViaductMobile.Algorithms
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        public static async Task<List<string>> ReadAllUsers()
-        {
-            List<string> userList = await User.ReadAllUsers();
-            return userList;
-        }
 
         public static async Task<bool> CheckProgramVersion()
         {

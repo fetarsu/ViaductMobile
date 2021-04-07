@@ -87,8 +87,8 @@ namespace ViaductMobile.View
                 currentDate = currentDate.AddDays(-1);
             }
             Report report = new Report();
-            var reportList = await report.ReadTodayReport(currentDate);
-            if (reportList[0].Closed == false)
+            var reportList = await Report.ReadTodayReport(currentDate);
+            if (reportList.Closed == false)
             {
                 Operation operation = new Operation()
                 {
@@ -98,7 +98,7 @@ namespace ViaductMobile.View
                     Amount = selectedRow.Amount,
                     Date = currentDate,
                     Type = "brak",
-                    ReportId = reportList[0].Id
+                    ReportId = reportList.Id
                 };
                 bool result = await operation.SaveOperations();
                 bool result2 = await selectedRow.DeleteOverdueCash(selectedRow);

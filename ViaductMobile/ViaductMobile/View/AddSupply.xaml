@@ -34,24 +34,13 @@
                 </Grid.RowDefinitions>
                 <!-- XfxEntry-->
                 <Label Style="{StaticResource headingLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" HorizontalOptions="Center">Dodawanie dostawy</Label>
-                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
-                    <SearchBar x:Name="searchBar" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                   HorizontalOptions="Fill"
-                   VerticalOptions="CenterAndExpand"
-                   Placeholder="Wyszukaj ulice..."
-                   CancelButtonColor="White"
-                   PlaceholderColor="White"
-                   TextColor="White"
-                   HorizontalTextAlignment="Start"
-                   TextChanged="OnTextChanged"
-                   Focused="ShowListView"/>
-                </StackLayout>
+                <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.RowSpan="3" Grid.Row="0" x:Name="testLabel" />
                 <Button Style="{StaticResource typicalButton}" Grid.Column="3" Grid.Row="1" Text="Dodaj" x:Name="addAdressButton" Clicked="addAdressButton_Clicked" Margin="0, 0, 10, 0"></Button>
                 <ListView x:Name="searchResults" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
                    HeightRequest="600"
                    IsVisible="false"
                    HorizontalOptions="Fill"
-                   VerticalOptions="CenterAndExpand"  ItemSelected="changeSearchBar">
+                   VerticalOptions="CenterAndExpand">
                 </ListView>
                 <Label Style="{StaticResource typicalLabel}" x:Name="adressLabel" Grid.Row="1" Grid.Column="0" IsVisible="false" Grid.ColumnSpan="3"></Label>
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="3" Grid.Column="0" Text="Blok/mieszkanie" Grid.ColumnSpan="2"></Label>

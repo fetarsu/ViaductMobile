@@ -51,7 +51,6 @@ namespace ViaductMobile.View
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
             AmountToCashLabel.Text = newDeliverer.AmountToCash.ToString();
             deliverDate = chooseDayPicker.Date;
-            ReadAllUsers();
         }
 
         private void BackClicked(object sender, EventArgs e)
@@ -87,8 +86,7 @@ namespace ViaductMobile.View
         {
             Supply s = new Supply();
             Report report = new Report();
-            var reportList = await report.ReadTodayReport(deliverDate);
-            var reportt = reportList.SingleOrDefault();
+            var reportt = await Report.ReadTodayReport(deliverDate);
             if(reportt.Closed == true)
             {
                 await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
@@ -109,21 +107,7 @@ namespace ViaductMobile.View
                     BarBackgroundColor = Color.FromHex("#3B3B3B"),
                     BarTextColor = Color.White
                 };
-            }
-            
-        }
-        async void ReadAllUsers()
-        {
-            var x = await loggedUser.ReadAllUsers();
-            usersPicker.ItemsSource = x;
-            foreach (var item in x)
-            {
-                if (item.Equals(loggedUser.Nickname))
-                {
-                    usersPicker.SelectedItem = item;
-                }
-            }
-
+            }     
         }
         private void usersPicker_Focused(object sender, FocusEventArgs e)
         {
@@ -145,7 +129,8 @@ namespace ViaductMobile.View
         {
             if (userr == null)
             {
-                var x = await loggedUser.ReadAllUsers();
+                User u = new User();
+                var x = await u.ReadAllUsers();
                 Methods.userList = x;
                 usersPicker.ItemsSource = x;
                 foreach (var item in x)

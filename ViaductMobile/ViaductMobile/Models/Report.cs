@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,15 +64,15 @@ namespace ViaductMobile.Models
             return await client.GetTable<Report>().ToListAsync();
         }
 
-        public async Task<List<Report>> ReadTodayReport(Report readReport)
+        public static async Task<List<Report>> ReadTodayReport(Report readReport)
         {
             return await client.GetTable<Report>().Where(x => x.Date.Day == readReport.Date.Day && x.Date.Month == readReport.Date.Month && x.Date.Year == readReport.Date.Year).ToListAsync();
         }
 
-        public async Task<List<Report>> ReadTodayReport(DateTime date)
+        public static async Task<Report> ReadTodayReport(DateTime date)
         {
-            var z = await client.GetTable<Report>().Where(x => x.Date.Month == date.Month && x.Date.Day == date.Day && x.Date.Year == date.Year).ToListAsync();
-            return z;
+            var reportList = await client.GetTable<Report>().Where(x => x.Date.Month == date.Month && x.Date.Day == date.Day && x.Date.Year == date.Year).ToListAsync();
+            return reportList.SingleOrDefault();
         }
     }
 }
