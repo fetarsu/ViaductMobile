@@ -38,6 +38,18 @@ namespace ViaductMobile.View.Popups
             LoadAdressesOrPizzas(property);
         }
 
+        private void searchBarTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (property.Equals("address"))
+            {
+                searchResults.ItemsSource = Adress.GetSearchResults(e.NewTextValue, adressesList);
+            }
+            else if (property.Equals("pizzas"))
+            {
+                searchResults.ItemsSource = PizzasAndOthers.GetSearchResults(e.NewTextValue, pizzasList);
+            }
+        }
+
         [Obsolete]
         private async void Back_Clicked(object sender, EventArgs e)
         {

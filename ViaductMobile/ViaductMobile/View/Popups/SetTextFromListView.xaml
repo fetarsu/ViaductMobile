@@ -37,6 +37,7 @@
                 <SearchBar x:Name="searchBar" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:FieldModifier="public"
                    HorizontalOptions="Fill"
                    VerticalOptions="CenterAndExpand"
+                   TextChanged="searchBarTextChanged"
                    Placeholder="Wyszukaj ulice..."
                    CancelButtonColor="White"
                    PlaceholderColor="White"
