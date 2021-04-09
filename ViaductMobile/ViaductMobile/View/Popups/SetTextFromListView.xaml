@@ -42,7 +42,7 @@
                    PlaceholderColor="White"
                    TextColor="White"
                    HorizontalTextAlignment="Start"/>
-                <ListView x:Name="searchResults" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+                <ListView x:Name="searchResults" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                    HeightRequest="600"
                    IsVisible="false"
                    HorizontalOptions="Fill"

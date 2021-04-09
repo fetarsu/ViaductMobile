@@ -34,7 +34,7 @@
                 </Grid.RowDefinitions>
                 <!-- XfxEntry-->
                 <Label Style="{StaticResource headingLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" HorizontalOptions="Center">Dodawanie dostawy</Label>
-                <Label Style="{StaticResource typicalLabel}" Grid.Column="1" Grid.RowSpan="3" Grid.Row="0" x:Name="testLabel" />
+                <Label Style="{StaticResource typicalLabel}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" x:Name="addressLabel" Text="Ulica: " />
                 <Button Style="{StaticResource typicalButton}" Grid.Column="3" Grid.Row="1" Text="Dodaj" x:Name="addAdressButton" Clicked="addAdressButton_Clicked" Margin="0, 0, 10, 0"></Button>
                 <ListView x:Name="searchResults" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
                    HeightRequest="600"
@@ -53,17 +53,7 @@
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="6" Grid.Column="0" Text="Kwota kursu" Grid.ColumnSpan="2"></Label>
                 <Entry Style="{StaticResource typicalEntry}" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" x:Name="courseEntry"></Entry>
                 <Label Style="{StaticResource typicalLabel}" Grid.Row="7" Grid.Column="0" Text="Składnik" Grid.ColumnSpan="2" x:Name="componentLabel"></Label>
-                <StackLayout Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2">
-                    <SearchBar x:Name="searchsomponentBar" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="3" Placeholder="Wyszukaj ulice..." 
-                           CancelButtonColor="White" PlaceholderColor="White" TextChanged="OnTextChanged2" Focused="ShowListView2"/>
-                </StackLayout>
-                <Button Style="{StaticResource typicalButton}" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"  Text="Schowaj liste" Clicked="HideListView2" Margin="10" IsVisible="false" x:Name="hideButton"></Button>
-                <ListView x:Name="searchResults2" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="4"
-                       HeightRequest="400"
-                       IsVisible="false"
-                       HorizontalOptions="Fill"
-                       VerticalOptions="CenterAndExpand"  ItemSelected="changeSearchBar2">
-                </ListView>
+                <Button Style="{StaticResource typicalButton}" x:Name="searchComponentButton" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" Text="Dodaj pizze" Clicked="ShowListView2"/>
                 <dg:DataGrid HeaderTextColor="Black" HeaderBackground="White" HeaderFontSize="12" x:Name="componentsDataGrid" Grid.Row="10" Grid.ColumnSpan="4" ItemsSource="{Binding Components}" SelectedItem="{Binding SelectedComponent}" PullToRefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" RowHeight="25" HeaderHeight="25" SelectionEnabled="True" HeightRequest="250">
                     <x:Arguments>
                         <ListViewCachingStrategy>RetainElement</ListViewCachingStrategy>

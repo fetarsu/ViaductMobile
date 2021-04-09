@@ -56,7 +56,7 @@ namespace ViaductMobile.View
             InitializeComponent();
             if (property.Equals("address"))
             {
-
+                addressLabel.Text = "Ulica: " + changedValue;
             }
             else if (property.Equals("pizzas"))
             {
@@ -114,7 +114,6 @@ namespace ViaductMobile.View
                 flatEntry.Text = tokens2[1];
             }
             edit = true;
-            addAdressButton.Text = "Usuń";
             adressLabel.IsVisible = true;
             searchResults.IsVisible = false;
             LoadAdressesAndPizzas();
@@ -123,10 +122,10 @@ namespace ViaductMobile.View
         {
             searchResults.ItemsSource = Adress.GetSearchResults(e.NewTextValue, adressesList);
         }
-        public void OnTextChanged2(object sender, TextChangedEventArgs e)
-        {
-            searchResults2.ItemsSource = PizzasAndOthers.GetSearchResults(e.NewTextValue, pizzasList);
-        }
+        //public void OnTextChanged2(object sender, TextChangedEventArgs e)
+        //{
+        //    searchResults2.ItemsSource = PizzasAndOthers.GetSearchResults(e.NewTextValue, pizzasList);
+        //}
 
         private async void LoadAdressesAndPizzas()
         {
@@ -281,63 +280,47 @@ namespace ViaductMobile.View
             }
         }
 
-        private void changeSearchBar2(object sender, SelectedItemChangedEventArgs e)
-        {
-            changeSearchBarAsync();
-        }
-        private async void changeSearchBarAsync()
-        {
-            string result = await DisplayPromptAsync("Podaj ilość", "", keyboard: Keyboard.Numeric);
-            var resultInt = int.Parse(result);
-            Components sth = new Components() { Name = searchResults2.SelectedItem.ToString(), Count = resultInt };
-            componentsList.Add(sth);
-            BindingContext = new ViewModels.ComponentsTableVM();
-            componentsDataGrid.ItemsSource = null;
-            componentsDataGrid.ItemsSource = new ViewModels.ComponentsTableVM().Components;
-            searchResults2.IsVisible = false;
-            HideListView2();
+        //private void changeSearchBar2(object sender, SelectedItemChangedEventArgs e)
+        //{
+        //    changeSearchBarAsync();
+        //}
+        //private async void changeSearchBarAsync()
+        //{
+        //    string result = await DisplayPromptAsync("Podaj ilość", "", keyboard: Keyboard.Numeric);
+        //    var resultInt = int.Parse(result);
+        //    Components sth = new Components() { Name = searchResults2.SelectedItem.ToString(), Count = resultInt };
+        //    componentsList.Add(sth);
+        //    BindingContext = new ViewModels.ComponentsTableVM();
+        //    componentsDataGrid.ItemsSource = null;
+        //    componentsDataGrid.ItemsSource = new ViewModels.ComponentsTableVM().Components;
+        //    searchResults2.IsVisible = false;
+        //    HideListView2();
 
-        }
+        //}
         [Obsolete]
         async void addAdressButton_Clicked(object sender, EventArgs e)
         {
-            var xasd = loggedUser;
             await PopupNavigation.PushAsync(new SetTextFromListView(delivererCartDataGrid, loggedUser, cartListCount,
                 delivererId, chosedDate, selectedUser, "address"));
-            if (addAdressButton.Text.Equals("Dodaj"))
-            {
-                streetName = null;
-                addAdressButton.Text = "Usuń";
-                adressLabel.IsVisible = true;
-                searchResults.IsVisible = false;
-            }
-            else
-            {
-                addAdressButton.Text = "Dodaj";
-                adressLabel.Text = null;
-                adressLabel.IsVisible = false;
-            }
+        }
+        [Obsolete]
+        async void ShowListView2(object sender, EventArgs e)
+        {
+            await PopupNavigation.PushAsync(new SetTextFromListView(delivererCartDataGrid, loggedUser, cartListCount,
+                delivererId, chosedDate, selectedUser, "pizzas"));
         }
 
-        private void ShowListView2(object sender, EventArgs e)
-        {
-            searchResults2.IsVisible = true;
-            hideButton.IsVisible = true;
-            componentLabel.IsVisible = false;
-            componentsDataGrid.IsVisible = false;
-        }
-
-        private void HideListView2(object sender, EventArgs e)
-        {
-            HideListView2();
-        }
-        private void HideListView2()
-        {
-            componentLabel.IsVisible = true;
-            searchResults2.IsVisible = false;
-            hideButton.IsVisible = false;
-            componentsDataGrid.IsVisible = true;
-        }
+        //private void HideListView2(object sender, EventArgs e)
+        //{
+        //    HideListView2();
+        //}
+        //private void HideListView2()
+        //{
+        //    componentLabel.IsVisible = true;
+        //    searchResults2.IsVisible = false;
+        //    hideButton.IsVisible = false;
+        //    componentsDataGrid.IsVisible = true;
+        //}
 
         private async void platformPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
