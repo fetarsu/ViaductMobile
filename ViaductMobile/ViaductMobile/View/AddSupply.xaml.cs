@@ -54,14 +54,18 @@ namespace ViaductMobile.View
             DateTime chosedDate, string selectedUser, string property, string changedValue)
         {
             InitializeComponent();
-            if (property.Equals("address"))
-            {
-                addressLabel.Text = "Ulica: " + changedValue;
-            }
-            else if (property.Equals("pizzas"))
-            {
+            addressLabel.Text = "Ulica: " + changedValue;
+        }
 
-            }
+        public AddSupply(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId,
+            DateTime chosedDate, string selectedUser, string property, Components sth)
+        {
+            InitializeComponent();
+            componentsList.Add(sth);
+            BindingContext = new ViewModels.ComponentsTableVM();
+            componentsDataGrid.ItemsSource = null;
+            componentsDataGrid.ItemsSource = new ViewModels.ComponentsTableVM().Components;
+
         }
 
         public AddSupply(Supply clickedRow, Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate)

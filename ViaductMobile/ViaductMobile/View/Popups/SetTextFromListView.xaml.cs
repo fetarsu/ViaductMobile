@@ -51,6 +51,23 @@ namespace ViaductMobile.View.Popups
         }
 
         [Obsolete]
+        private async void changeSearchBar(object sender, SelectedItemChangedEventArgs e)
+        {
+            searchBar.Text = searchResults.SelectedItem.ToString();
+            if (property.Equals("pizzas"))
+            {
+                string result = await DisplayPromptAsync("Podaj ilość", "", keyboard: Keyboard.Numeric);
+                if(result != null)
+                {
+                    var resultInt = int.Parse(result);
+                    Components sth = new Components() { Name = searchResults.SelectedItem.ToString(), Count = resultInt };
+                    await Navigation.PushAsync(new AddSupply(delivererCartDataGrid, loggedUser, cartListCount, delivererId, chosedDate, selectedUser, property, sth));
+                    await PopupNavigation.PopAsync(true);
+                }
+            }
+        }
+
+        [Obsolete]
         private async void Back_Clicked(object sender, EventArgs e)
         {
             await PopupNavigation.PopAsync(true);

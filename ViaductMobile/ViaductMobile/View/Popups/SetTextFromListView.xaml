@@ -45,9 +45,8 @@
                    HorizontalTextAlignment="Start"/>
                 <ListView x:Name="searchResults" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                    HeightRequest="600"
-                   IsVisible="false"
                    HorizontalOptions="Fill"
-                   VerticalOptions="CenterAndExpand">
+                   VerticalOptions="CenterAndExpand" ItemSelected="changeSearchBar">
                 </ListView>
                 <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="4" Text="Dodaj" Clicked="Change_Clicked"></Button>
                 <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="4" Text="Wróć" Clicked="Back_Clicked"></Button>
