@@ -50,24 +50,6 @@ namespace ViaductMobile.View
             LoadAdressesAndPizzas();
         }
 
-        public AddSupply(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId,
-            DateTime chosedDate, string selectedUser, string property, string changedValue)
-        {
-            InitializeComponent();
-            addressLabel.Text = "Ulica: " + changedValue;
-        }
-
-        public AddSupply(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId,
-            DateTime chosedDate, string selectedUser, string property, Components sth)
-        {
-            InitializeComponent();
-            componentsList.Add(sth);
-            BindingContext = new ViewModels.ComponentsTableVM();
-            componentsDataGrid.ItemsSource = null;
-            componentsDataGrid.ItemsSource = new ViewModels.ComponentsTableVM().Components;
-
-        }
-
         public AddSupply(Supply clickedRow, Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate)
         {
             this.delivererId = delivererId;
@@ -104,7 +86,7 @@ namespace ViaductMobile.View
             if (tokens.Length == 4)
             {
                 string[] tokens2 = tokens[3].Split('.');
-                adressLabel.Text = tokens[0] + " " + tokens[1];
+                adressLabel.Text = "Ulica: " + tokens[0] + " " + tokens[1];
                 streetName = tokens[0] + " " + tokens[1];
                 buildingEntry.Text = tokens[2];
                 flatEntry.Text = tokens2[1];
@@ -112,7 +94,7 @@ namespace ViaductMobile.View
             else
             {
                 string[] tokens2 = tokens[2].Split('.');
-                adressLabel.Text = tokens[0];
+                adressLabel.Text = "Ulica: " + tokens[0];
                 streetName = tokens[0];
                 buildingEntry.Text = tokens[1];
                 flatEntry.Text = tokens2[1];
@@ -196,15 +178,19 @@ namespace ViaductMobile.View
             }
             else
             {
-                if (cartListCount == 0)
+                var delivererCartt = await Deliverer.ReadDelivererCartt(chosedDate, loggedUser.Nickname);
+                if(delivererCartt is null)
                 {
                     Deliverer d = new Deliverer();
                     d.Nickname = selectedUser;
-                    chosedDate = chosedDate.AddDays(1);
-                    d.Date = chosedDate;
+                    d.Date = chosedDate.Date.AddDays(1);
                     d.Closed = false;
                     await d.SaveDeliverer();
                     delivererId = d.Id;
+                }
+                else
+                {
+                    delivererId = delivererCartt.Id;
                 }
                 components = " ";
                 IEnumerable<Components> componentsIEnumerable = (IEnumerable<Components>)componentsDataGrid.ItemsSource;
@@ -305,13 +291,18 @@ namespace ViaductMobile.View
         async void addAdressButton_Clicked(object sender, EventArgs e)
         {
             await PopupNavigation.PushAsync(new SetTextFromListView(delivererCartDataGrid, loggedUser, cartListCount,
-                delivererId, chosedDate, selectedUser, "address"));
+                delivererId, chosedDate, selectedUser, "address", (s) => {addressLabel.Text = "Ulica: " + s; streetName = s; }));
         }
         [Obsolete]
         async void ShowListView2(object sender, EventArgs e)
         {
             await PopupNavigation.PushAsync(new SetTextFromListView(delivererCartDataGrid, loggedUser, cartListCount,
-                delivererId, chosedDate, selectedUser, "pizzas"));
+                delivererId, chosedDate, selectedUser, (ds) => {
+                    componentsList.Add(ds);
+                    BindingContext = new ViewModels.ComponentsTableVM();
+                    componentsDataGrid.ItemsSource = null;
+                    componentsDataGrid.ItemsSource = new ViewModels.ComponentsTableVM().Components;
+                }, "pizzas"));
         }
 
         //private void HideListView2(object sender, EventArgs e)

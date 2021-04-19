@@ -24,7 +24,8 @@ namespace ViaductMobile.Algorithms
         public static readonly List<string> permissionList = new List<string>() { "Admin", "Manager", "Pracownik" };
         public static readonly List<string> positionList = new List<string>() { "Bar", "Kuchnia", "Dostawy", "Kierownictwo" };
         public static readonly List<string> operationTypeList = new List<string>() { "Brak faktury", "Faktura" };
-        public static Dictionary<String, Decimal> platformList = new Dictionary<String, Decimal>();
+        public static Dictionary<String, Decimal> platformList = new Dictionary<String, Decimal>() { { "Vg", 0}, { "Vk", 0 }, { "Po", 5 }, { "Pg", 5 }, { "Gg", 7 },
+        { "Go", 7},{ "Ug", 7},{ "Uo", 7},{ "Sg", 0},{ "So", 0},{ "KiK", 2},};
         public static List<Report> test;
         public static List<Employee> reportEmployeeList;
         public static List<Operation> reportOperationList;

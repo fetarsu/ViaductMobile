@@ -48,8 +48,8 @@
                    HorizontalOptions="Fill"
                    VerticalOptions="CenterAndExpand" ItemSelected="changeSearchBar">
                 </ListView>
-                <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="4" Text="Dodaj" Clicked="Change_Clicked"></Button>
-                <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="4" Text="Wróć" Clicked="Back_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" x:Name="addButton" Grid.Column="0" Grid.Row="4" Text="Dodaj" Clicked="Change_Clicked"></Button>
+                <Button Style="{StaticResource popupButton}" x:Name="backButton" Grid.Column="1" Grid.Row="4" Text="Wróć" Clicked="Back_Clicked"></Button>
             </Grid>
         </Frame>
     </StackLayout>

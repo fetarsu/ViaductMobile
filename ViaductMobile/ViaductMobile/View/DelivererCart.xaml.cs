@@ -41,7 +41,16 @@ namespace ViaductMobile.View
         public DelivererCart(User loggedUser, DateTime chosedDate)
         {
             InitializeComponent();
-            this.chosedDate = chosedDate;
+            changedDate = this.chosedDate = chosedDate;
+            this.loggedUser = loggedUser;
+            Xamarin.Forms.DataGrid.DataGridComponent.Init();
+            ReloadData();
+        }
+        public DelivererCart(User loggedUser, DateTime chosedDate, string chosedUser)
+        {
+            InitializeComponent();
+            changedUser = chosedUser;
+            changedDate = this.chosedDate = chosedDate;
             this.loggedUser = loggedUser;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             ReloadData();
@@ -77,7 +86,7 @@ namespace ViaductMobile.View
 
         private async void AddSupply(object sender, EventArgs e)
         {
-            if(report == null)
+            if (report == null)
             {
                 App.Current.MainPage = new NavigationPage(new AddSupply(delivererCartDataGrid, loggedUser, cartList.Count(), delivererId, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
                 {
@@ -101,7 +110,21 @@ namespace ViaductMobile.View
         [Obsolete]
         private async void EditSupply(object sender, EventArgs e)
         {
-            if (report.Closed == true)
+            if (report == null)
+            {
+                Supply clickedRow = (Supply)delivererCartDataGrid.SelectedItem;
+                if (clickedRow != null)
+                {
+                    App.Current.MainPage = new NavigationPage(new AddSupply(clickedRow, delivererCartDataGrid, loggedUser, cartList.Count(), delivererId, chooseDayPicker.Date))
+                    {
+                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                        BarTextColor = Color.White
+                    };
+                }
+                else
+                    await DisplayAlert("Uwaga", "Proszę zaznaczyć wiersz", "OK");
+            }
+            else if (report.Closed == true)
             {
                 await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
             }
@@ -129,34 +152,8 @@ namespace ViaductMobile.View
             }
             else
             {
-                if (report != null)
-                {
-                    var readedReport = await Report.ReadTodayReport(chooseDayPicker.Date);
-                    if (readedReport != null)
-                    {
-                        reportId = readedReport.Id;
-                    }
-                    else
-                    {
-                        Report readReport = new Report();
-                        readReport.Start = 0;
-                        readReport.ReportAmount = 0;
-                        readReport.Terminal = 0;
-                        readReport.Date = chooseDayPicker.Date;
-                        readReport.ShouldBe = 0;
-                        readReport.AmountIn = 0;
-                        readReport.Difference = 0;
-                        readReport.Pizzas = 0;
-                        await readReport.SaveReport();
-                        reportId = readReport.Id;
-                    }
-                }
-                else
-                {
-                    reportId = report.Id;
-                }
-                var listOfSupplys = new ViewModels.DelivererCartVM(delivererId).Supplies;
-                await PopupNavigation.PushAsync(new CloseDeliverDay(loggedUser, listOfSupplys, chooseDayPicker.Date, usersPicker.SelectedItem.ToString(), reportId, cart));
+                var listOfSupplys = new ViewModels.DelivererCartVM(delivererCart.Id).Supplies;
+                await PopupNavigation.PushAsync(new CloseDeliverDay(loggedUser, listOfSupplys, chooseDayPicker.Date, usersPicker.SelectedItem.ToString(), report.Id, delivererCart));
             }
 
         }
@@ -193,6 +190,7 @@ namespace ViaductMobile.View
                 changedUser = usersPicker.SelectedItem.ToString();
                 SetCorrectUserPicker();
                 SetCorrectDelivererCart();
+                CheckIfButtonsShouldBeVisible();
             }
         }
         private void chooseDay_PropertyChanged(object sender, EventArgs e)
@@ -213,7 +211,6 @@ namespace ViaductMobile.View
             userNicknameList = await u.ReadAllUsers();
             SetCorrectUserPicker();
             SetCorrectDatePicker();
-            delivererCart = await Deliverer.ReadDelivererCartt(chooseDayPicker.Date, usersPicker.SelectedItem.ToString());
             SetCorrectDelivererCart();
             CheckIfButtonsShouldBeVisible();
         }
@@ -230,7 +227,7 @@ namespace ViaductMobile.View
             }
             if (usersPicker.SelectedItem is null)
             {
-                if(changedUser is null)
+                if (changedUser is null)
                 {
                     foreach (var item in userNicknameList)
                     {
@@ -259,11 +256,12 @@ namespace ViaductMobile.View
 
         async void SetCorrectDelivererCart()
         {
+            delivererCart = await Deliverer.ReadDelivererCartt(chooseDayPicker.Date, usersPicker.SelectedItem.ToString());
             if (delivererCart != null)
             {
                 if (delivererCart.Closed == false)
                 {
-                    delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererId).Supplies;
+                    delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(delivererCart.Id).Supplies;
                 }
                 else
                 {
@@ -273,6 +271,11 @@ namespace ViaductMobile.View
                         BarTextColor = Color.White
                     };
                 }
+            }
+            else
+            {
+                string x = null;
+                delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(x).Supplies;
             }
             report = await Report.ReadTodayReport(chooseDayPicker.Date);
         }
@@ -285,6 +288,10 @@ namespace ViaductMobile.View
             else
             {
                 closeDayButton.IsVisible = addButton.IsVisible = deleteButton.IsVisible = editButton.IsVisible = true;
+            }
+            if (report is null)
+            {
+                closeDayButton.IsVisible = addButton.IsVisible = deleteButton.IsVisible = editButton.IsVisible = false;
             }
         }
     }

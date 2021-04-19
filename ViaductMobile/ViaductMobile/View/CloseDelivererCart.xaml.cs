@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViaductMobile.Algorithms;
+using ViaductMobile.Globals;
 using ViaductMobile.Models;
 using ViaductMobile.View.Popups;
 using Xamarin.Forms;
@@ -16,24 +17,25 @@ namespace ViaductMobile.View
     public partial class CloseDelivererCart : ContentPage
     {
         User loggedUser, chosedUser;
+        Deliverer delivererCart = new Deliverer();
         Report report;
-        bool closed, reload;
+        bool closed, reload = false, changeDay;
         Deliverer cart;
         public string userr;
         List<Deliverer> cartList = new List<Deliverer>();
-        string delivererId, selectedUser, reportId, chosedUserr;
+        List<string> userNicknameList = new List<string>();
+        string delivererId, selectedUser, reportId, chosedUserr, changedUser;
         Decimal cash, bonus;
         Deliverer newDeliverer;
-        DateTime deliverDate, chosedDate;
+        DateTime deliverDate, chosedDate, changedDate;
         Employee newEmployee;
         public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, DateTime chosedDate, string chosedUserr)
         {
+            changeDay = false;
             InitializeComponent();
-            this.chosedDate = chosedDate;
-            this.chosedUserr = chosedUserr;
+            changedDate = this.chosedDate = chosedDate;
+            changedUser = this.chosedUserr = chosedUserr;
             this.loggedUser = loggedUser;
-            chooseDayPicker.Date = chosedDate.Date;
-            usersPicker.SelectedItem = chosedUserr;
             this.newDeliverer = newDeliverer;
             coursesLabel.Text = newDeliverer.Courses.ToString();
             VkLabel.Text = newDeliverer.V_k.ToString();
@@ -51,6 +53,7 @@ namespace ViaductMobile.View
             delivererNumberLabel.Text = newDeliverer.DeliveriesNumber.ToString();
             AmountToCashLabel.Text = newDeliverer.AmountToCash.ToString();
             deliverDate = chooseDayPicker.Date;
+            ReloadData();
         }
 
         private void BackClicked(object sender, EventArgs e)
@@ -60,15 +63,6 @@ namespace ViaductMobile.View
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
             };
-        }
-
-        private void chooseDayPicker_DateSelected(object sender, DateChangedEventArgs e)
-        {
-            if (reload == true)
-            {
-                ReloadData();
-                reload = false;
-            }
         }
 
         protected override bool OnBackButtonPressed()
@@ -109,76 +103,109 @@ namespace ViaductMobile.View
                 };
             }     
         }
-        private void usersPicker_Focused(object sender, FocusEventArgs e)
-        {
-            reload = true;
-        }
 
         private void usersPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (reload == true)
             {
-                userr = usersPicker.SelectedItem.ToString();
-                ReloadData();
-                reload = false;
+                changedUser = usersPicker.SelectedItem.ToString();
+                SetCorrectUserPicker();
+                SetCorrectClosedDay();
+            }
+        }
+        private void chooseDay_PropertyChanged(object sender, EventArgs e)
+        {
+            if (reload == true)
+            {
+                changedDate = chooseDayPicker.Date;
+                SetCorrectDatePicker();
+                SetCorrectClosedDay();
             }
         }
 
-
         async void ReloadData()
         {
-            if (userr == null)
+            User u = new User();
+            Deliverer d = new Deliverer();
+            userNicknameList = await u.ReadAllUsers();
+            SetCorrectUserPicker();
+            SetCorrectDatePicker();
+            SetCorrectClosedDay();
+        }
+        void SetCorrectUserPicker()
+        {
+            reload = false;
+            if (loggedUser.Permission.Equals("Admin") || loggedUser.Permission.Equals("Manager"))
             {
-                User u = new User();
-                var x = await u.ReadAllUsers();
-                Methods.userList = x;
-                usersPicker.ItemsSource = x;
-                foreach (var item in x)
-                {
-                    if (item.Equals(loggedUser.Nickname))
-                    {
-                        usersPicker.SelectedItem = userr = item;
-                    }
-                }
+                usersPicker.ItemsSource = userNicknameList;
             }
-            DateTime datee = chooseDayPicker.Date;
-            cartList = await newDeliverer.ReadDelivererCart(datee, userr);
-            if (cartList.Count != 0)
+            else
             {
-                cart = cartList.SingleOrDefault();
-                delivererId = cart.Id;
-                if (cart.Closed == false)
+                usersPicker.ItemsSource.Add(loggedUser.Nickname);
+            }
+            if (usersPicker.SelectedItem is null)
+            {
+                if (changedUser is null)
                 {
-                    if (delivererId != null)
+                    foreach (var item in userNicknameList)
                     {
-                        App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, datee))
+                        if (item.Equals(loggedUser.Nickname))
                         {
-                            BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                            BarTextColor = Color.White
-                        };
+                            usersPicker.SelectedItem = item;
+                        }
                     }
                 }
                 else
                 {
-                    Employee newEmployee = new Employee();
-                    var employeeList = await newEmployee.ReadEmployeeCart(userr, datee);
-                    newEmployee = employeeList.SingleOrDefault();
-                    App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, cart, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
-                    {
-                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                        BarTextColor = Color.White
-                    };
+                    usersPicker.SelectedItem = changedUser;
                 }
             }
-            else
+            reload = true;
+        }
+        void SetCorrectDatePicker()
+        {
+            reload = false;
+            if (changedDate != null)
             {
-                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, datee))
+                chooseDayPicker.Date = changedDate.Date;
+            }
+            reload = true;
+        }
+
+        async void SetCorrectClosedDay()
+        {
+            if (changeDay)
+            {
+                delivererCart = await Deliverer.ReadDelivererCartt(chooseDayPicker.Date, usersPicker.SelectedItem.ToString());
+                if (delivererCart != null)
                 {
-                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                    if (delivererCart.Closed == false)
+                    {
+                        App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
+                        {
+                            BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
+                            BarTextColor = Color.White
+                        };
+                    }
+                    else
+                    {
+                        App.Current.MainPage = new NavigationPage(new CloseDelivererCart(loggedUser, delivererCart, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
+                        {
+                            BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
+                            BarTextColor = Color.White
+                        };
+                    }
+                }
+                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
+                {
+                    BarBackgroundColor = Color.FromHex(Texts.appBackgroundColor),
                     BarTextColor = Color.White
                 };
             }
+            else
+            {
+                changeDay = true;
+            }
         }
-
     }
 }

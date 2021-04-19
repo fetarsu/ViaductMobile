@@ -24,8 +24,10 @@ namespace ViaductMobile.View.Popups
         public event EventHandler<object> CallbackEvent;
         public static List<String> adressesList = new List<String>();
         public static List<String> pizzasList = new List<String>();
+        private Action<string> selectedItemCallback;
+        private Action<Components> componentCallback;
         Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid;
-        public SetTextFromListView(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate, string selectedUser, string property)
+        public SetTextFromListView(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate, string selectedUser, string property, Action<string> selectedItemCallback)
         {
             this.delivererCartDataGrid = delivererCartDataGrid;
             this.loggedUser = loggedUser;
@@ -33,9 +35,24 @@ namespace ViaductMobile.View.Popups
             this.delivererId = delivererId;
             this.chosedDate = chosedDate;
             this.property = property;
+            this.selectedItemCallback = selectedItemCallback;
             this.selectedUser = selectedUser;
             InitializeComponent();
-            LoadAdressesOrPizzas(property);
+            LoadAdresses(property);
+        }
+
+        public SetTextFromListView(Xamarin.Forms.DataGrid.DataGrid delivererCartDataGrid, User loggedUser, int cartListCount, string delivererId, DateTime chosedDate, string selectedUser, Action<Components> componentCallback, string property)
+        {
+            this.delivererCartDataGrid = delivererCartDataGrid;
+            this.loggedUser = loggedUser;
+            this.cartListCount = cartListCount;
+            this.delivererId = delivererId;
+            this.chosedDate = chosedDate;
+            this.property = property;
+            this.componentCallback = componentCallback;
+            this.selectedUser = selectedUser;
+            InitializeComponent();
+            LoadPizzas(property);
         }
 
         private void searchBarTextChanged(object sender, TextChangedEventArgs e)
@@ -57,11 +74,11 @@ namespace ViaductMobile.View.Popups
             if (property.Equals("pizzas"))
             {
                 string result = await DisplayPromptAsync("Podaj ilość", "", keyboard: Keyboard.Numeric);
-                if(result != null)
+                if (result != null)
                 {
                     var resultInt = int.Parse(result);
                     Components sth = new Components() { Name = searchResults.SelectedItem.ToString(), Count = resultInt };
-                    await Navigation.PushAsync(new AddSupply(delivererCartDataGrid, loggedUser, cartListCount, delivererId, chosedDate, selectedUser, property, sth));
+                    componentCallback(sth);
                     await PopupNavigation.PopAsync(true);
                 }
             }
@@ -76,34 +93,33 @@ namespace ViaductMobile.View.Popups
         [Obsolete]
         private async void Change_Clicked(object sender, EventArgs e)
         {
-            changedValue = searchBar.Text;
-            await Navigation.PushAsync(new AddSupply(delivererCartDataGrid, loggedUser, cartListCount, delivererId, chosedDate, selectedUser, property, changedValue));
+            selectedItemCallback(searchBar.Text);
+            await PopupNavigation.PopAsync(true);
         }
 
-        private async void LoadAdressesOrPizzas(string property)
+        private async void LoadPizzas(string property)
         {
-            if (property.Equals("address"))
-            {
-                Adress ad = new Adress();
-                var adressList = await ad.ReadAdress();
-                var adressListDistinct = adressList.GroupBy(x => x.Street).Select(k => k.First());
-                foreach (var item in adressListDistinct)
-                {
-                    adressesList.Add(item.Street);
-                }
-                searchResults.ItemsSource = adressesList.Distinct().ToList();
-            }
-            else if (property.Equals("pizzas"))
-            {
-                PizzasAndOthers pizzas = new PizzasAndOthers();
-                var y = await pizzas.ReadPizzas();
+            addButton.IsVisible = false;
+            PizzasAndOthers pizzas = new PizzasAndOthers();
+            var y = await pizzas.ReadPizzas();
 
-                foreach (var item in y)
-                {
-                    pizzasList.Add(item.Name);
-                }
-                searchResults.ItemsSource = pizzasList.Distinct().ToList();
+            foreach (var item in y)
+            {
+                pizzasList.Add(item.Name);
             }
+            searchResults.ItemsSource = pizzasList.Distinct().ToList();
+        }
+        private async void LoadAdresses(string property)
+        {
+
+            Adress ad = new Adress();
+            var adressList = await ad.ReadAdress();
+            var adressListDistinct = adressList.GroupBy(x => x.Street).Select(k => k.First());
+            foreach (var item in adressListDistinct)
+            {
+                adressesList.Add(item.Street);
+            }
+            searchResults.ItemsSource = adressesList.Distinct().ToList();
         }
     }
 }
