@@ -19,7 +19,7 @@ namespace ViaductMobile.Algorithms
 {
     public class Methods
     {
-        public static readonly string version = "1.0";
+        public static readonly string version = "1.4.2";
         public static string macAdress;
         public static readonly List<string> permissionList = new List<string>() { "Admin", "Manager", "Pracownik" };
         public static readonly List<string> positionList = new List<string>() { "Bar", "Kuchnia", "Dostawy", "Kierownictwo" };
