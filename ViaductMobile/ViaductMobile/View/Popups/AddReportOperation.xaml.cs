@@ -25,31 +25,38 @@ namespace ViaductMobile.View.Popups
         bool edit, employeetable = false, add;
         public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Report readReport, User loggedUser)
         {
+            edit = false;
             this.loggedUser = loggedUser;
             InitializeComponent();
-            nicknamePicker.ItemsSource = Methods.userList;
+            ReadUsers();
             typePicker.ItemsSource = Methods.operationTypeList;
             this.readReport = readReport;
             this.employeeList = employeeListt;
-            this.operationList = operationListt;
-            edit = false;
+            this.operationList = operationListt;    
         }
         public AddReportOperation(List<Employee> employeeListt, List<Operation> operationListt, Operation operation, Report readReport, User loggedUser)
         {
+            edit = true;
             this.loggedUser = loggedUser;
             InitializeComponent();
-            nicknamePicker.ItemsSource = Methods.userList;
+            ReadUsers();
             typePicker.ItemsSource = Methods.operationTypeList;
             this.operation = operation;
             this.readReport = readReport;
             operationNameEntry.Text = operation.Name;
-            nicknamePicker.SelectedItem = operation.Authorizing;
             numberEntry.Text = operation.DocumentNumber;
             amountEntry.Text = operation.Amount.ToString();
             this.employeeList = employeeListt;
             this.operationList = operationListt;
-            typePicker.SelectedItem = operation.Type;
-            edit = true;
+            typePicker.SelectedItem = operation.Type;     
+        }
+        public async void ReadUsers()
+        {
+            nicknamePicker.ItemsSource = await loggedUser.ReadAllUsers();
+            if (edit)
+            {
+                nicknamePicker.SelectedItem = operation.Authorizing;
+            }
         }
         [Obsolete]
         private async void Back_Clicked(object sender, EventArgs e)

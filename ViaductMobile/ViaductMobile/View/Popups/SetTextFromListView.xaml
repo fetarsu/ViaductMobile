@@ -30,15 +30,15 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="6*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Zmiana hasła</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Wybór z listy rozwijalnej</Label>
                 <SearchBar x:Name="searchBar" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:FieldModifier="public"
                    HorizontalOptions="Fill"
                    VerticalOptions="CenterAndExpand"
                    TextChanged="searchBarTextChanged"
-                   Placeholder="Wyszukaj ulice..."
+                   Placeholder="Wyszukaj..."
                    CancelButtonColor="White"
                    PlaceholderColor="White"
                    TextColor="White"

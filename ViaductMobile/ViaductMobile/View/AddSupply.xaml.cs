@@ -71,7 +71,11 @@ namespace ViaductMobile.View
                     var x = item.Split(' ');
                     var y = x[1].Split('x');
                     Components c = new Components();
-                    c.Name = x[2];
+                    for(int ij = 2; ij < x.Length; ij++)
+                    {
+                        c.Name += x[ij] + " ";
+                    }
+                    c.Name = c.Name.Remove(c.Name.Length - 1);
                     c.Count = int.Parse(y[0]);
                     componentsList.Add(c);
                 }
@@ -176,98 +180,97 @@ namespace ViaductMobile.View
             {
                 elka = await DisplayAlert("Pytanie", "Czy ta dostawa to elka?", "Tak", "Nie");
             }
+
+            var delivererCartt = await Deliverer.ReadDelivererCartt(chosedDate, loggedUser.Nickname);
+            if (delivererCartt is null)
+            {
+                Deliverer d = new Deliverer();
+                d.Nickname = selectedUser;
+                d.Date = chosedDate.Date.AddDays(1);
+                d.Closed = false;
+                await d.SaveDeliverer();
+                delivererId = d.Id;
+            }
             else
             {
-                var delivererCartt = await Deliverer.ReadDelivererCartt(chosedDate, loggedUser.Nickname);
-                if(delivererCartt is null)
-                {
-                    Deliverer d = new Deliverer();
-                    d.Nickname = selectedUser;
-                    d.Date = chosedDate.Date.AddDays(1);
-                    d.Closed = false;
-                    await d.SaveDeliverer();
-                    delivererId = d.Id;
-                }
-                else
-                {
-                    delivererId = delivererCartt.Id;
-                }
-                components = " ";
-                IEnumerable<Components> componentsIEnumerable = (IEnumerable<Components>)componentsDataGrid.ItemsSource;
-                if (componentsIEnumerable != null)
-                {
-                    foreach (var item in componentsIEnumerable)
-                    {
-                        components += item.Count + "x " + item.Name + ", ";
-                    }
-                }
-
-                var newAdress = adressList.Where(x => x.Street.Equals(streetName) && x.Number.Equals(buildingEntry.Text)).FirstOrDefault();
-                if (newAdress == null)
-                {
-                    if (platformPicker.SelectedItem.ToString().Equals("Po") || platformPicker.SelectedItem.ToString().Equals("Pg") || platformPicker.SelectedItem.ToString().Equals("Go")
-                        || platformPicker.SelectedItem.ToString().Equals("Uo") || platformPicker.SelectedItem.ToString().Equals("Gg") || platformPicker.SelectedItem.ToString().Equals("Volt") || platformPicker.SelectedItem.ToString().Equals("Ug"))
-                    {
-                        Adress item = new Adress()
-                        {
-                            Street = streetName,
-                            Number = buildingEntry.Text,
-                            Amount = 0
-                        };
-                        bool result = await item.SaveAdress();
-                    }
-                    else
-                    {
-                        Adress item = new Adress()
-                        {
-                            Street = streetName,
-                            Number = buildingEntry.Text,
-                            Amount = decimal.Parse(amountEntry.Text)
-                        };
-                        bool result = await item.SaveAdress();
-                    }
-                }
-                else
-                {
-                    if (newAdress.Amount == 0)
-                    {
-                        newAdress.Amount = decimal.Parse(courseEntry.Text);
-                        bool result = await newAdress.UpdateAdress(newAdress);
-                    }
-                }
-
-                if (edit == false)
-                {
-                    Supply newSupply = new Supply()
-                    {
-                        Adress = streetName + " " + buildingEntry.Text + " m." + flatEntry.Text,
-                        Amount = deliveryAmount,
-                        Course = courseAmount,
-                        Platform = platformPicker.SelectedItem.ToString(),
-                        Components = components,
-                        SumAmount = deliveryAmount + courseAmount,
-                        Elka = elka,
-                        DelivererId = delivererId
-                    };
-                    bool result = await newSupply.SaveSupply();
-                }
-                else
-                {
-                    clickedRow.Adress = streetName + " " + buildingEntry.Text + " m." + flatEntry.Text;
-                    clickedRow.Amount = deliveryAmount;
-                    clickedRow.Course = courseAmount;
-                    clickedRow.Platform = platformPicker.SelectedItem.ToString();
-                    clickedRow.Components = components;
-                    clickedRow.SumAmount = deliveryAmount + courseAmount;
-                    clickedRow.DelivererId = delivererId;
-                    bool result = await clickedRow.UpdateSupply(clickedRow);
-                }
-                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, chosedDate))
-                {
-                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                    BarTextColor = Color.White
-                };
+                delivererId = delivererCartt.Id;
             }
+            components = " ";
+            IEnumerable<Components> componentsIEnumerable = (IEnumerable<Components>)componentsDataGrid.ItemsSource;
+            if (componentsIEnumerable != null)
+            {
+                foreach (var item in componentsIEnumerable)
+                {
+                    components += item.Count + "x " + item.Name + ", ";
+                }
+            }
+
+            var newAdress = adressList.Where(x => x.Street.Equals(streetName.ToLower()) && x.Number.Equals(buildingEntry.Text)).FirstOrDefault();
+            if (newAdress == null)
+            {
+                if (platformPicker.SelectedItem.ToString().Equals("Po") || platformPicker.SelectedItem.ToString().Equals("Pg") || platformPicker.SelectedItem.ToString().Equals("Go")
+                    || platformPicker.SelectedItem.ToString().Equals("Uo") || platformPicker.SelectedItem.ToString().Equals("Gg") || platformPicker.SelectedItem.ToString().Equals("Volt") || platformPicker.SelectedItem.ToString().Equals("Ug"))
+                {
+                    Adress item = new Adress()
+                    {
+                        Street = streetName,
+                        Number = buildingEntry.Text,
+                        Amount = 0
+                    };
+                    bool result = await item.SaveAdress();
+                }
+                else
+                {
+                    Adress item = new Adress()
+                    {
+                        Street = streetName,
+                        Number = buildingEntry.Text,
+                        Amount = decimal.Parse(amountEntry.Text)
+                    };
+                    bool result = await item.SaveAdress();
+                }
+            }
+            else
+            {
+                if (newAdress.Amount == 0)
+                {
+                    newAdress.Amount = decimal.Parse(courseEntry.Text);
+                    bool result = await newAdress.UpdateAdress(newAdress);
+                }
+            }
+
+            if (edit == false)
+            {
+                Supply newSupply = new Supply()
+                {
+                    Adress = streetName + " " + buildingEntry.Text + " m." + flatEntry.Text,
+                    Amount = deliveryAmount,
+                    Course = courseAmount,
+                    Platform = platformPicker.SelectedItem.ToString(),
+                    Components = components,
+                    SumAmount = deliveryAmount + courseAmount,
+                    Elka = elka,
+                    DelivererId = delivererId
+                };
+                bool result = await newSupply.SaveSupply();
+            }
+            else
+            {
+                clickedRow.Adress = streetName + " " + buildingEntry.Text + " m." + flatEntry.Text;
+                clickedRow.Amount = deliveryAmount;
+                clickedRow.Course = courseAmount;
+                clickedRow.Platform = platformPicker.SelectedItem.ToString();
+                clickedRow.Components = components;
+                clickedRow.SumAmount = deliveryAmount + courseAmount;
+                clickedRow.DelivererId = delivererId;
+                bool result = await clickedRow.UpdateSupply(clickedRow);
+            }
+            App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, chosedDate))
+            {
+                BarBackgroundColor = Color.FromHex("#3B3B3B"),
+                BarTextColor = Color.White
+            };
+
         }
 
         //private void changeSearchBar2(object sender, SelectedItemChangedEventArgs e)
@@ -291,13 +294,14 @@ namespace ViaductMobile.View
         async void addAdressButton_Clicked(object sender, EventArgs e)
         {
             await PopupNavigation.PushAsync(new SetTextFromListView(delivererCartDataGrid, loggedUser, cartListCount,
-                delivererId, chosedDate, selectedUser, "address", (s) => {addressLabel.Text = "Ulica: " + s; streetName = s; }));
+                delivererId, chosedDate, selectedUser, "address", (s) => { addressLabel.Text = "Ulica: " + s; streetName = s; }));
         }
         [Obsolete]
         async void ShowListView2(object sender, EventArgs e)
         {
             await PopupNavigation.PushAsync(new SetTextFromListView(delivererCartDataGrid, loggedUser, cartListCount,
-                delivererId, chosedDate, selectedUser, (ds) => {
+                delivererId, chosedDate, selectedUser, (ds) =>
+                {
                     componentsList.Add(ds);
                     BindingContext = new ViewModels.ComponentsTableVM();
                     componentsDataGrid.ItemsSource = null;

@@ -16,25 +16,21 @@ namespace ViaductMobile.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CloseDelivererCart : ContentPage
     {
-        User loggedUser, chosedUser;
+        User loggedUser;
         Deliverer delivererCart = new Deliverer();
-        Report report;
-        bool closed, reload = false, changeDay;
-        Deliverer cart;
+        bool reload = false, changeDay;
         public string userr;
-        List<Deliverer> cartList = new List<Deliverer>();
         List<string> userNicknameList = new List<string>();
-        string delivererId, selectedUser, reportId, chosedUserr, changedUser;
-        Decimal cash, bonus;
+        string  changedUser;
         Deliverer newDeliverer;
-        DateTime deliverDate, chosedDate, changedDate;
+        DateTime deliverDate, changedDate;
         Employee newEmployee;
-        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, DateTime chosedDate, string chosedUserr)
+        public CloseDelivererCart(User loggedUser, Deliverer newDeliverer, DateTime chosedDate, string chosedUser)
         {
             changeDay = false;
             InitializeComponent();
-            changedDate = this.chosedDate = chosedDate;
-            changedUser = this.chosedUserr = chosedUserr;
+            changedDate = chosedDate;
+            changedUser = chosedUser;
             this.loggedUser = loggedUser;
             this.newDeliverer = newDeliverer;
             coursesLabel.Text = newDeliverer.Courses.ToString();
@@ -90,13 +86,14 @@ namespace ViaductMobile.View
                 var listOfSupplys = await s.ReadSupply(newDeliverer.Id);
                 newDeliverer.Closed = false;
                 await newDeliverer.UpdateDeliverer(newDeliverer);
-                var emp = await newEmployee.ReadEmployeeCart(usersPicker.SelectedItem.ToString(), chooseDayPicker.Date);
+                Employee em = new Employee();
+                var emp = await em.ReadEmployeeCart(usersPicker.SelectedItem.ToString(), chooseDayPicker.Date);
                 var employee = emp.SingleOrDefault();
                 if (employee != null)
                 {
                     var result = employee.DeleteEmployee(employee);
                 }
-                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, listOfSupplys))
+                App.Current.MainPage = new NavigationPage(new DelivererCart(loggedUser, chooseDayPicker.Date, listOfSupplys))
                 {
                     BarBackgroundColor = Color.FromHex("#3B3B3B"),
                     BarTextColor = Color.White

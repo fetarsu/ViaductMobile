@@ -130,7 +130,7 @@ namespace ViaductMobile
                     };
                 }   
             }
-            UserDialogs.Instance.HideLoading();
+            //UserDialogs.Instance.HideLoading();
         }
         private async void MoveToUserPanelClicked(object sender, EventArgs e)
         {

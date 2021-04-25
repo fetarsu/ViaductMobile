@@ -18,8 +18,6 @@ namespace ViaductMobile.Models
         public decimal Amount { get; set; }
         public string Type { get; set; }
         public string ReportId { get; set; }
-        public virtual Report Report { get; set; }
-
 
         public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
         public async Task<bool> SaveOperations()
@@ -45,7 +43,7 @@ namespace ViaductMobile.Models
 
             try
             {
-                await client.GetTable<Operation>().InsertAsync(operation);
+                await client.GetTable<Operation>().UpdateAsync(operation);
                 return true;
             }
             catch (MobileServiceInvalidOperationException msioe)

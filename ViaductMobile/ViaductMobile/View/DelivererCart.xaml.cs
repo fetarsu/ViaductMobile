@@ -21,15 +21,10 @@ namespace ViaductMobile.View
         Deliverer delivererCart = new Deliverer();
         List<string> userNicknameList = new List<string>();
         Report report = new Report();
-        bool closed, emptyDevliererId, reload = false, start, anyDeliverCartSupply;
-        Deliverer newDeliverer = new Deliverer();
-        Deliverer cart;
-        public string userr;
+        bool reload = false;
         List<Deliverer> cartList = new List<Deliverer>();
-        List<String> oneUserList = new List<string>();
-        string delivererId, selectedUser, reportId;
-        DateTime deliverDate, chosedDate, dateee, changedDate;
-        string changedUser;
+        string delivererId, changedUser;
+        DateTime changedDate;
         public DelivererCart(User loggedUser)
         {
             InitializeComponent();
@@ -41,7 +36,7 @@ namespace ViaductMobile.View
         public DelivererCart(User loggedUser, DateTime chosedDate)
         {
             InitializeComponent();
-            changedDate = this.chosedDate = chosedDate;
+            changedDate = chosedDate;
             this.loggedUser = loggedUser;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             ReloadData();
@@ -50,7 +45,7 @@ namespace ViaductMobile.View
         {
             InitializeComponent();
             changedUser = chosedUser;
-            changedDate = this.chosedDate = chosedDate;
+            changedDate = chosedDate;
             this.loggedUser = loggedUser;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             ReloadData();
@@ -62,6 +57,15 @@ namespace ViaductMobile.View
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(listOfSupply).Supplies;
             chooseDayPicker.Date = DateTime.Now;
+            ReloadData();
+        }
+        public DelivererCart(User loggedUser, DateTime chosedDate, List<Supply> listOfSupply)
+        {
+            InitializeComponent();
+            this.loggedUser = loggedUser;
+            changedDate = chosedDate;
+            Xamarin.Forms.DataGrid.DataGridComponent.Init();
+            delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(listOfSupply).Supplies;
             ReloadData();
         }
 
@@ -86,15 +90,7 @@ namespace ViaductMobile.View
 
         private async void AddSupply(object sender, EventArgs e)
         {
-            if (report == null)
-            {
-                App.Current.MainPage = new NavigationPage(new AddSupply(delivererCartDataGrid, loggedUser, cartList.Count(), delivererId, chooseDayPicker.Date, usersPicker.SelectedItem.ToString()))
-                {
-                    BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                    BarTextColor = Color.White
-                };
-            }
-            else if (report.Closed == true)
+            if (report.Closed == true)
             {
                 await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
             }
@@ -110,21 +106,7 @@ namespace ViaductMobile.View
         [Obsolete]
         private async void EditSupply(object sender, EventArgs e)
         {
-            if (report == null)
-            {
-                Supply clickedRow = (Supply)delivererCartDataGrid.SelectedItem;
-                if (clickedRow != null)
-                {
-                    App.Current.MainPage = new NavigationPage(new AddSupply(clickedRow, delivererCartDataGrid, loggedUser, cartList.Count(), delivererId, chooseDayPicker.Date))
-                    {
-                        BarBackgroundColor = Color.FromHex("#3B3B3B"),
-                        BarTextColor = Color.White
-                    };
-                }
-                else
-                    await DisplayAlert("Uwaga", "Proszę zaznaczyć wiersz", "OK");
-            }
-            else if (report.Closed == true)
+            if (report.Closed == true)
             {
                 await DisplayAlert("Uwaga", "Raport tego dnia został zamknięty, aby przywrócić dostawcę należy najpierw przywrócić raport", "OK");
             }
@@ -140,7 +122,9 @@ namespace ViaductMobile.View
                     };
                 }
                 else
+                {
                     await DisplayAlert("Uwaga", "Proszę zaznaczyć wiersz", "OK");
+                }
             }
         }
         [Obsolete]
@@ -190,7 +174,6 @@ namespace ViaductMobile.View
                 changedUser = usersPicker.SelectedItem.ToString();
                 SetCorrectUserPicker();
                 SetCorrectDelivererCart();
-                CheckIfButtonsShouldBeVisible();
             }
         }
         private void chooseDay_PropertyChanged(object sender, EventArgs e)
@@ -200,19 +183,16 @@ namespace ViaductMobile.View
                 changedDate = chooseDayPicker.Date;
                 SetCorrectDatePicker();
                 SetCorrectDelivererCart();
-                CheckIfButtonsShouldBeVisible();
             }
         }
 
         async void ReloadData()
         {
             User u = new User();
-            Deliverer d = new Deliverer();
             userNicknameList = await u.ReadAllUsers();
             SetCorrectUserPicker();
             SetCorrectDatePicker();
             SetCorrectDelivererCart();
-            CheckIfButtonsShouldBeVisible();
         }
         void SetCorrectUserPicker()
         {
@@ -278,20 +258,26 @@ namespace ViaductMobile.View
                 delivererCartDataGrid.ItemsSource = new ViewModels.DelivererCartVM(x).Supplies;
             }
             report = await Report.ReadTodayReport(chooseDayPicker.Date);
+            CheckIfButtonsShouldBeVisible();
+            UserDialogs.Instance.HideLoading();
         }
         void CheckIfButtonsShouldBeVisible()
         {
             if (!loggedUser.Nickname.Equals(usersPicker.SelectedItem))
             {
-                closeDayButton.IsVisible = addButton.IsVisible = deleteButton.IsVisible = editButton.IsVisible = false;
+                closeDayButton.IsEnabled = addButton.IsEnabled = deleteButton.IsEnabled = editButton.IsEnabled = false;
             }
             else
             {
-                closeDayButton.IsVisible = addButton.IsVisible = deleteButton.IsVisible = editButton.IsVisible = true;
+                closeDayButton.IsEnabled = addButton.IsEnabled = deleteButton.IsEnabled = editButton.IsEnabled = true;
             }
-            if (report is null)
+            if(report is null)
             {
-                closeDayButton.IsVisible = addButton.IsVisible = deleteButton.IsVisible = editButton.IsVisible = false;
+                closeDayButton.IsEnabled = addButton.IsEnabled = deleteButton.IsEnabled = editButton.IsEnabled = false;
+            }
+            else if (report.Id is null)
+            {
+                closeDayButton.IsEnabled = addButton.IsEnabled = deleteButton.IsEnabled = editButton.IsEnabled = false;
             }
         }
     }

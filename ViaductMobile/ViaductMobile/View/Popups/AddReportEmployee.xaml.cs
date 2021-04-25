@@ -22,38 +22,48 @@ namespace ViaductMobile.View.Popups
         User selectedUser = new User(), loggedUser;
         List<Employee> employeeList = new List<Employee>();
         List<Operation> operationList = new List<Operation>();
+        List<string> userNicknameList = new List<string>();
         decimal cash, partOfCash, bonus;
         int rate;
         string nickname, position, notification;
         public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Report readReport, User loggedUser)
         {
+            edit = false;
             InitializeComponent();
+            
             this.loggedUser = loggedUser;
-            nicknamePicker.ItemsSource = Methods.userList;
             positionPicker.ItemsSource = Methods.positionList;
             this.readReport = readReport;
             this.employeeList = employeeListt;
             this.operationList = operationListt;
-            edit = false;
+            ReadUsers();
         }
         public AddReportEmployee(List<Employee> employeeListt, List<Operation> operationListt, Employee employee, Report readReport, User loggedUser)
         {
+            edit = true;
             this.loggedUser = loggedUser;
             InitializeComponent();
-            nicknamePicker.ItemsSource = Methods.userList;
             positionPicker.ItemsSource = Methods.positionList;
             Xamarin.Forms.DataGrid.DataGridComponent.Init();
             this.readReport = readReport;
             this.employee = employee;
-            nicknamePicker.SelectedItem = employee.Nickname;
             positionPicker.SelectedItem = employee.Position;
             workFromTimePicker.Time = employee.WorkFrom.TimeOfDay;
             workToTimePicker.Time = employee.WorkTo.TimeOfDay;
             bonusEntry.Text = employee.Bonus.ToString();
             this.employeeList = employeeListt;
             this.operationList = operationListt;
-            edit = true;
+            ReadUsers();
         }
+        public async void ReadUsers()
+        {
+            nicknamePicker.ItemsSource = await loggedUser.ReadAllUsers();
+            if (edit)
+            {
+                nicknamePicker.SelectedItem = employee.Nickname;
+            }
+        }
+
         [Obsolete]
         private async void Back_Clicked(object sender, EventArgs e)
         {

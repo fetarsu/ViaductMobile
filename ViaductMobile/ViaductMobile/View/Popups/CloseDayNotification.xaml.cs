@@ -9,6 +9,8 @@ using ViaductMobile.Algorithms;
 using Xamarin.Forms;
 using ViaductMobile.Models;
 using Xamarin.Forms.Xaml;
+using ViaductMobile.Globals;
+using Acr.UserDialogs;
 
 namespace ViaductMobile.View.Popups
 {
@@ -62,6 +64,8 @@ namespace ViaductMobile.View.Popups
         [Obsolete]
         private async void End_Clicked(object sender, EventArgs e)
         {
+            UserDialogs.Instance.ShowLoading(Texts.loadingMessage);
+            await Task.Delay(100);
             newDeliverer.Closed = true;
             newEmployee.DayWage = Math.Round(newEmployee.DayWage, 2);
             await newEmployee.SaveEmployee();
@@ -82,6 +86,7 @@ namespace ViaductMobile.View.Popups
                 BarBackgroundColor = Color.FromHex("#3B3B3B"),
                 BarTextColor = Color.White
             };
+            UserDialogs.Instance.HideLoading();
         }
     }
 }

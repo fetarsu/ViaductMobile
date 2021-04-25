@@ -128,7 +128,7 @@ namespace ViaductMobile
             }
             foreach (var item in delivererList)
             {
-                decimal x = item.AmountToShouldBe;
+                decimal x = item.AmountToShouldBe -item.Courses;
                 shouldBe = shouldBe + x;
             }
             decimal q = readReport.Start;
