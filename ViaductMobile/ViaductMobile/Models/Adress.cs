@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Globals;
 using ViaductMobile.Models;
 
 namespace ViaductMobile.Models
@@ -16,7 +17,7 @@ namespace ViaductMobile.Models
         public string Number { get; set; }
         public decimal Amount { get; set; }
 
-        public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
+        public static MobileServiceClient client = new MobileServiceClient(Texts.connectionString);
         public async Task<bool> SaveAdress()
         {
 

@@ -15,7 +15,7 @@ namespace ViaductMobile
         public string Name { get; set; }
         public decimal Price { get; set; }
 
-        public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
+        public static MobileServiceClient client = new MobileServiceClient(Texts.connectionString);
         public async Task<bool> SavePizzas()
         {
 

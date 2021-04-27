@@ -11,6 +11,7 @@ namespace ViaductMobile.Globals
         public static readonly string emailToSendReportAddress = "infernoviaduct@gmail.com";
         public static readonly string userNicknameOnTablet = "Viaduct";
         public static readonly string programVersion = "1.0";
+        public static readonly string connectionString = "1.0";
 
         //Testing settings
         public static readonly string tabletMacAddressTesting = "A8:9C:ED:C7:48:3E";

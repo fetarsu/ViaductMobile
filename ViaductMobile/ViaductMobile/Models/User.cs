@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Globals;
 using ViaductMobile.Models;
 
 namespace ViaductMobile
@@ -18,7 +19,7 @@ namespace ViaductMobile
         public int DeliverRate { get; set; }
         public string Permission { get; set; }
 
-        public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
+        public static MobileServiceClient client = new MobileServiceClient(Texts.connectionString);
         public async Task<bool> SaveUser()
         {
 
@@ -88,11 +89,11 @@ namespace ViaductMobile
                 var xa = await client.GetTable<User>().Select(x => x.Nickname).ToListAsync();
                 return xa;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
-            
+
         }
         public async Task<List<User>> FindSinleUser(string nickname)
         {

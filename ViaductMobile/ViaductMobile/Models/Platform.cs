@@ -15,8 +15,8 @@ namespace ViaductMobile
         public string Name { get; set; }
         public decimal Course { get; set; }
 
-        public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
-        
+        public static MobileServiceClient client = new MobileServiceClient(Texts.connectionString);
+
         public async Task<List<Platform>> ReadPlatform()
         {
             return await client.GetTable<Platform>().ToListAsync();

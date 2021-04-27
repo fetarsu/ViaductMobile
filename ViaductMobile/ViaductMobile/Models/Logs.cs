@@ -13,7 +13,7 @@ namespace ViaductMobile.Models
         public string DeletedTable { get; set; }
         public DateTime Date { get; set; }
 
-        public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
+        public static MobileServiceClient client = new MobileServiceClient(Texts.connectionString);
         public async Task<bool> SaveLogs()
         {
             try

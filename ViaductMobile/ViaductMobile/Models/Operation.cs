@@ -19,7 +19,7 @@ namespace ViaductMobile.Models
         public string Type { get; set; }
         public string ReportId { get; set; }
 
-        public static MobileServiceClient client = new MobileServiceClient("https://viaductpizza.azurewebsites.net");
+        public static MobileServiceClient client = new MobileServiceClient(Texts.connectionString);
         public async Task<bool> SaveOperations()
         {
 
