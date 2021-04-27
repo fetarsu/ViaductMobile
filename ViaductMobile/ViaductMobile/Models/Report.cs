@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViaductMobile.Algorithms;
 using ViaductMobile.Models;
+using ViaductMobile.Globals;
 
 namespace ViaductMobile.Models
 {

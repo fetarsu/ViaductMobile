@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using ViaductMobile.Globals;
 using ViaductMobile.Models;
 
 namespace ViaductMobile.Models
