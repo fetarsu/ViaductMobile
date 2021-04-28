@@ -13,6 +13,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Acr.UserDialogs;
+using ViaductMobile.Globals;
 
 namespace ViaductMobile
 {
@@ -310,7 +311,7 @@ namespace ViaductMobile
                     SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
                     mail.From = new MailAddress("viaduct.email.sender@gmail.com");
                     mail.IsBodyHtml = true;
-                    mail.To.Add("r.switucha@gmail.com");
+                    mail.To.Add(Texts.emailToSendReportAddress);
                     mail.Subject = "Raport z dnia " + readReport.Date.Day + "." + readReport.Date.Month;
                     mail.Body =
                         "<h3>Rozliczenie</h3>" +

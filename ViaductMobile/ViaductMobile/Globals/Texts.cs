@@ -10,8 +10,8 @@ namespace ViaductMobile.Globals
         public static readonly string tabletMacAddress = "D0:B1:28:D5:87:E9";
         public static readonly string emailToSendReportAddress = "infernoviaduct@gmail.com";
         public static readonly string userNicknameOnTablet = "Viaduct";
-        public static readonly string programVersion = "1.0";
-        public static readonly string connectionString = "1.0";
+        public static readonly string programVersion = "1.4.2";
+        public static readonly string connectionString = "";
 
         //Testing settings
         public static readonly string tabletMacAddressTesting = "A8:9C:ED:C7:48:3E";
