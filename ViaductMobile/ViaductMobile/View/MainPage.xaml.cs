@@ -21,8 +21,7 @@ namespace ViaductMobile
             ToolbarItem moveToLogin = new ToolbarItem() { Text = "Zaloguj się", IconImageSource = "login.png" };
             moveToLogin.Clicked += MoveToLoginClicked;
             this.ToolbarItems.Add(moveToLogin);
-            //bool result = Methods.getMacAddress();
-            bool result = false;
+            bool result = Methods.getMacAddress();
             if (result)
             {
                 createReportButton.IsVisible = true;
