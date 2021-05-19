@@ -203,7 +203,8 @@ namespace ViaductMobile.View
             }
             else
             {
-                usersPicker.ItemsSource.Add(loggedUser.Nickname);
+                List<string> singleList = new List<string>() { loggedUser.Nickname };
+                usersPicker.ItemsSource = singleList;
             }
             if (usersPicker.SelectedItem is null)
             {
