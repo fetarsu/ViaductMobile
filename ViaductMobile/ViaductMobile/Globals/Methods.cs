@@ -26,7 +26,6 @@ namespace ViaductMobile.Algorithms
         public static readonly List<string> operationTypeList = new List<string>() { "Brak faktury", "Faktura" };
         public static Dictionary<String, Decimal> platformList = new Dictionary<String, Decimal>() { { "Vg", 0}, { "Vk", 0 }, { "Po", 5 }, { "Pg", 5 }, { "Gg", 7 },
         { "Go", 7},{ "Ug", 7},{ "Uo", 7},{ "Sg", 0},{ "So", 0},{ "KiK", 2},};
-        public static List<Report> test;
         public static List<Employee> reportEmployeeList;
         public static List<Operation> reportOperationList;
         public static List<string> userList;
@@ -83,6 +82,25 @@ namespace ViaductMobile.Algorithms
                 }
             }
             return false;
+        }
+
+        public static decimal CalculateDailyWage(TimeSpan startHour, TimeSpan endHour, int delivererRate)
+        {
+            TimeSpan hour24 = new TimeSpan(24, 00, 00);
+            double startHourAsDouble = startHour.TotalHours;
+            double endHourAsDouble = endHour.TotalHours;
+            double difference, minusStart;
+
+            if (startHourAsDouble >= 0 && endHourAsDouble < 8)
+            {
+                minusStart = (hour24 - startHour).TotalHours;
+                difference = minusStart + endHourAsDouble;
+            }
+            else
+            {
+                difference = (endHour - startHour).TotalHours;
+            }
+            return delivererRate * (decimal)difference;
         }
     }
 }

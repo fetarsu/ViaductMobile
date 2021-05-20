@@ -39,7 +39,7 @@
                         </x:Arguments>
                         <dg:DataGrid.Columns>
                             <dg:DataGridColumn Title="Adres" PropertyName="Adress" Width="2*"/>
-                            <dg:DataGridColumn Title="Kwota dostawy" PropertyName="Amount" Width="*"/>
+                            <dg:DataGridColumn Title="Kwota zamówienia" PropertyName="Amount" Width="*"/>
                             <dg:DataGridColumn Title="Kwota kursu" PropertyName="Course" Width="*"/>
                             <dg:DataGridColumn Title="Platforma" PropertyName="Platform" Width="*"/>
                             <dg:DataGridColumn Title="Skład" PropertyName="Components" Width="*"/>

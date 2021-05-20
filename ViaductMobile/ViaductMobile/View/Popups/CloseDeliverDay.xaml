@@ -21,7 +21,7 @@
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
     <StackLayout VerticalOptions="Center" Padding="20, 0" HorizontalOptions="FillAndExpand">
-        <Frame Style="{StaticResource popupFrame}" HeightRequest="500">
+        <Frame Style="{StaticResource popupFrame}" HeightRequest="400">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -33,14 +33,13 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Center">Wypisanie się</Label>
-                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="1">Praca od</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="1" VerticalOptions="Center">Praca od</Label>
                 <TimePicker Grid.Column="1" Grid.Row="1" x:Name="workFromEntry"></TimePicker>
-                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="2">Praca do</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="2" VerticalOptions="Center">Praca do</Label>
                 <TimePicker Grid.Column="1" Grid.Row="2" x:Name="workToEntry"></TimePicker>
-                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="3"> Tipy na karte</Label>
+                <Label Style="{StaticResource popupLabel}" Grid.Column="0" Grid.Row="3" VerticalOptions="Center"> Tipy na karte</Label>
                 <Entry Grid.Column="1" Grid.Row="3" Keyboard="Numeric" x:Name="TipsEntry"></Entry>
                 <Button Style="{StaticResource popupButton}" Grid.Column="0" Grid.Row="5" Text="Zakończ" Clicked="End_Clicked"></Button>
                 <Button Style="{StaticResource popupButton}" Grid.Column="1" Grid.Row="5" Text="Wróć" Clicked="Back_Clicked"></Button>
